@@ -5,7 +5,9 @@
 FROM node:22-bookworm-slim AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci
+# devDependencies (tailwind/postcss, tsc) build için gerekli — NODE_ENV=production
+# enjekte edilse bile atlanmasın diye --include=dev.
+RUN npm ci --include=dev
 
 FROM node:22-bookworm-slim AS builder
 WORKDIR /app
