@@ -1,0 +1,66 @@
+import { NextRequest } from "next/server";
+import { db } from "@/lib/db";
+
+// Basit iç analytics — KPI takibi için. PINLE_ADMIN_TOKEN env değişkeniyle korunur.
+// Kullanım: GET /api/stats?token=<PINLE_ADMIN_TOKEN>
+
+export async function GET(request: NextRequest) {
+  const token = request.nextUrl.searchParams.get("token");
+  const expected = process.env.PINLE_ADMIN_TOKEN;
+  if (!expected || token !== expected) {
+    return Response.json({ error: "Yetkisiz" }, { status: 401 });
+  }
+
+  const d = db();
+  const days = d
+    .prepare(
+      `WITH RECURSIVE dates(day) AS (
+         SELECT date('now', '-13 day')
+         UNION ALL SELECT date(day, '+1 day') FROM dates WHERE day < date('now')
+       )
+       SELECT dates.day,
+         (SELECT COUNT(*) FROM visits v WHERE v.day = dates.day) AS visitors,
+         (SELECT COUNT(*) FROM pins p WHERE date(p.created_at) = dates.day) AS pins,
+         (SELECT COUNT(*) FROM users u WHERE date(u.created_at) = dates.day) AS new_users,
+         (SELECT COUNT(*) FROM votes vt WHERE date(vt.created_at) = dates.day) AS votes,
+         (SELECT COUNT(*) FROM comments c WHERE date(c.created_at) = dates.day) AS comments
+       FROM dates ORDER BY dates.day`
+    )
+    .all();
+
+  const totals = d
+    .prepare(
+      `SELECT
+        (SELECT COUNT(*) FROM users) AS users,
+        (SELECT COUNT(*) FROM pins WHERE status = 'active') AS pins,
+        (SELECT COUNT(*) FROM pins WHERE status = 'hidden') AS hidden_pins,
+        (SELECT COUNT(*) FROM votes) AS votes,
+        (SELECT COUNT(*) FROM comments) AS comments,
+        (SELECT COUNT(*) FROM reports) AS reports`
+    )
+    .get();
+
+  const byKind = d
+    .prepare("SELECT kind, COUNT(*) AS c FROM pins WHERE status = 'active' GROUP BY kind")
+    .all();
+
+  // Katkı oranı: son 7 günün ziyaretçilerinden pin ekleyenlerin payı (launch KPI'sı)
+  const contribution = d
+    .prepare(
+      `SELECT
+        (SELECT COUNT(DISTINCT user_id) FROM visits WHERE day > date('now', '-7 day')) AS weekly_visitors,
+        (SELECT COUNT(DISTINCT user_id) FROM pins WHERE created_at > datetime('now', '-7 day')) AS weekly_pinners`
+    )
+    .get() as { weekly_visitors: number; weekly_pinners: number };
+
+  return Response.json({
+    totals,
+    byKind,
+    last14Days: days,
+    contributionRate:
+      contribution.weekly_visitors > 0
+        ? Math.round((contribution.weekly_pinners / contribution.weekly_visitors) * 100) / 100
+        : null,
+    ...contribution,
+  });
+}

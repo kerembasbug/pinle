@@ -39,3 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Pinle yerel veri
+/data/
+
+# Android imza anahtarı — ASLA commit etmeyin
+android.keystore
+
+# Yerel Claude yapılandırması
+.claude/

@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📍 Pinle
 
-## Getting Started
+Türkiye için harita tabanlı pin + yorum uygulaması. Üç katman: **Lezzet** 🍲 (ucuz yemek
+noktaları + fiyat doğrulama), **Anı** 💌 (anonim anı/itiraf pinleri), **Sorun** ⚠️ (mahalle
+sorun bildirimi). Puan, rozet, haftalık "Muhtar" ve liderlik tablosuyla oyunlaştırılmış.
 
-First, run the development server:
+Launch stratejisi ve viral pazarlama planı: [PAZARLAMA.md](PAZARLAMA.md)
+
+## Stack
+
+- Next.js 16 (App Router, Turbopack) — Web/PWA
+- MapLibre GL JS + [OpenFreeMap](https://openfreemap.org) tile'ları (API anahtarı yok, ücretsiz)
+- SQLite (better-sqlite3) — `data/pinle.db`; fotoğraflar `data/uploads/`
+- Anonim çerez kimliği — kayıt/e-posta yok
+
+## Geliştirme
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev                                # http://localhost:3000
+node scripts/fetch-osm.mjs                 # OSM'den gerçek İstanbul mekanları → data/seed-istanbul.json
+node scripts/seed.mjs data/seed-istanbul.json   # gerçek veriyi yükle (Pinle Ekibi 📌, oy/puan üretmez)
+node scripts/seed.mjs pinler.csv           # kendi CSV'n: name,category,price,lat,lng,note
+npm run seed                               # KURGUSAL demo verisi (sadece geliştirme)
+node scripts/gen-assets.mjs                # PWA ikonları + Play feature graphic
+node scripts/store-screenshots.mjs         # Play Store ekran görüntüleri (sistem Chrome ile)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Google Play
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+TWA (Bubblewrap) ile paketlenir — adım adım rehber, mağaza metinleri ve veri güvenliği
+cevapları: [PLAYSTORE.md](PLAYSTORE.md). Hazır görseller: `store-assets/`.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Ortam Değişkenleri
 
-## Learn More
+| Değişken | Amaç |
+|---|---|
+| `NEXT_PUBLIC_SITE_URL` | Canlı URL (sitemap, robots, OG linkleri için) — örn. `https://pinle.app` |
+| `PINLE_ADMIN_TOKEN` | `/api/stats?token=…` iç analytics erişimi (ayarlanmazsa endpoint kapalı) |
 
-To learn more about Next.js, take a look at the following resources:
+## Özellikler
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- 3 katman: Lezzet (fiyat doğrulama), Anı (❤️), Sorun (hâlâ duruyor/çözüldü)
+- 🏙️ **İlçe Ligi**: pin→ilçe ataması otomatik (en yakın merkez, İstanbul 39 ilçe) — `/liderler`
+- 📊 İç analytics: `/api/stats?token=…` (günlük ziyaretçi/pin/oy, katkı oranı KPI'sı)
+- Embed widget: `<iframe src="…/embed?kind=lezzet" width="100%" height="480"></iframe>`
+- SEO: dinamik sitemap (son 1000 pin), robots.txt, OG görselleri
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Deploy
 
-## Deploy on Vercel
+SQLite kullanıldığı için **kalıcı diskli** bir host gerekir (Fly.io, Railway, Hetzner, herhangi bir VPS):
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+docker build -t pinle .
+docker run -d -p 3000:3000 -v pinle-data:/app/data pinle
+# seed (opsiyonel): docker exec <container> node scripts/seed.mjs
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Vercel/serverless istenirse veritabanının Supabase veya Turso'ya taşınması gerekir —
+tüm SQL tek dosyada: `src/lib/db.ts`.
+
+## Launch öncesi checklist
+
+[PAZARLAMA.md](PAZARLAMA.md) içinde: gerçek seed verisi, KVKK metni, küfür listesi,
+analytics, sosyal hesaplar.
