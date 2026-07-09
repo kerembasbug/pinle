@@ -102,6 +102,15 @@ h1, h2, h3, .display {
   white-space: nowrap;
 }
 .pin-marker .bubble .price { color: var(--tomato-dark); }
+/* Fiyatı eksik yemek pini — mütevazı "₺?" daveti (katkı çağrısı) */
+.pin-marker .bubble .price-missing {
+  color: var(--ink);
+  opacity: 0.45;
+  border: 1px dashed currentColor;
+  border-radius: 999px;
+  padding: 0 5px;
+  font-size: 11px;
+}
 .pin-marker.verified .bubble { background: #e7f5f1; border-color: var(--teal); }
 .pin-marker .bubble.bubble-mini { padding: 2px 6px; font-size: 15px; }
 .pin-marker .tip {

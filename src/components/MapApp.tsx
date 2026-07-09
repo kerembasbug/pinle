@@ -10,6 +10,7 @@ import {
   groupForCategory,
   groupsForKind,
   hasGroups,
+  isPriceable,
   type CategoryGroup,
   type PinKind,
 } from "@/lib/categories";
@@ -145,7 +146,9 @@ export default function MapApp({
           ? `<span class="price">${price}</span>`
           : p.kind === "ani"
             ? `<span>${escapeHtml(String(p.name).slice(0, 14))}</span>`
-            : "";
+            : isPriceable(p.kind as PinKind, String(p.category))
+              ? `<span class="price-missing">₺?</span>` // yeme-içme, fiyat bekliyor — dokun, ekle
+              : "";
       const confirms = Number(p.confirms) || 0;
       el.innerHTML = `
         <div class="bubble${label ? "" : " bubble-mini"}">

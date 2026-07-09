@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { categoryById, kindMeta } from "@/lib/categories";
+import { categoryById, isPriceable, kindMeta, type PinKind } from "@/lib/categories";
 import type { Comment, PinDetail } from "@/lib/types";
 import { formatPrice, timeAgo } from "@/lib/types";
 import { blockAuthor, getBlocked } from "@/lib/blocklist";
@@ -134,8 +134,8 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
   const cat = pin ? categoryById(pin.category) : null;
   const meta = pin ? kindMeta(pin.kind) : null;
   const price = pin ? formatPrice(pin.price) : null;
-  const isFood = pin?.kind === "lezzet";
-  const needsPrice = isFood && pin?.price == null; // fiyatsız yemek pini → oylama anlamsız
+  const priceable = pin ? isPriceable(pin.kind as PinKind, pin.category) : false; // yeme-içme
+  const needsPrice = priceable && pin?.price == null; // fiyatsız yemek pini → oylama anlamsız
   const blocked = getBlocked();
   const visibleComments = comments.filter((c) => !blocked.has(c.authorId));
 
@@ -234,7 +234,7 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
                   <p className="mt-1.5 text-center text-xs opacity-50">Kendi pinini oylayamazsın</p>
                 )}
                 {/* Fiyatlı yemek pini — güncel fiyatı bildir */}
-                {isFood &&
+                {priceable &&
                   (editingPrice ? (
                     <div className="mt-2">{priceEditor}</div>
                   ) : (
