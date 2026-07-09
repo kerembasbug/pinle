@@ -1,0 +1,56 @@
+[
+ {
+  "name": "Destan Halk Lokantası",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": 40,
+  "lat": 40.990888,
+  "lng": 29.02662,
+  "note": "Belediye Kent Lokantası — 4 çeşit menü (çorba+ana yemek+pilav+cacık+ekmek). İstanbulkart ile 35₺."
+ },
+ {
+  "name": "kent lokantası",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": 50,
+  "lat": 38.297502,
+  "lng": 27.168067,
+  "note": "İzmir BB Kent Lokantası — 4 çeşit menü. Bazı şubelerde 25₺."
+ },
+ {
+  "name": "Kemeraltı Kent Lokantası",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": 50,
+  "lat": 38.419435,
+  "lng": 27.133516,
+  "note": "İzmir BB Kent Lokantası — 4 çeşit menü. Bazı şubelerde 25₺."
+ },
+ {
+  "name": "İzmir Büyükşehir Belediyesi Kent Lokantası",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": 50,
+  "lat": 38.488011,
+  "lng": 27.07561,
+  "note": "İzmir BB Kent Lokantası — 4 çeşit menü. Bazı şubelerde 25₺."
+ },
+ {
+  "name": "Kent Lokantası",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": 50,
+  "lat": 38.508886,
+  "lng": 27.037514,
+  "note": "İzmir BB Kent Lokantası — 4 çeşit menü. Bazı şubelerde 25₺."
+ },
+ {
+  "name": "Ahi Kent Lokantası",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": 75,
+  "lat": 39.947861,
+  "lng": 32.661375,
+  "note": "Belediye Kent Lokantası — 4 çeşit menü."
+ }
+]
