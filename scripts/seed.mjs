@@ -67,10 +67,24 @@ if (inputPath) {
   }
 
   const teamId = ensureUser("Pinle Ekibi 📌");
+  const findPin = db.prepare(
+    "SELECT id, price FROM pins WHERE name = ? AND ABS(lat - ?) < 1e-4 LIMIT 1"
+  );
+  const updatePrice = db.prepare("UPDATE pins SET price = ?, note = COALESCE(?, note) WHERE id = ?");
   let added = 0;
+  let priced = 0;
   db.transaction(() => {
     for (const r of rows) {
-      if (!r.name || !r.lat || !r.lng || pinExists(r.name, r.lat)) continue;
+      if (!r.name || !r.lat || !r.lng) continue;
+      const existing = findPin.get(r.name, r.lat);
+      if (existing) {
+        // Fiyatlı seed: mevcut pinin fiyatı boşsa doldur (eski fiyatsız seed'i güncelle)
+        if (r.price != null && existing.price == null) {
+          updatePrice.run(r.price, r.note ?? null, existing.id);
+          priced++;
+        }
+        continue;
+      }
       insertPin.run(
         randomUUID(), teamId, r.name, r.kind ?? "lezzet", r.category ?? "diger",
         r.price ?? null, r.note ?? null, r.lat, r.lng, "-0 day"
@@ -78,7 +92,7 @@ if (inputPath) {
       added++;
     }
   })();
-  console.log(`GERÇEK VERİ: ${added} pin eklendi (${rows.length - added} atlandı). Sahibi: "Pinle Ekibi 📌", oy/puan üretilmedi.`);
+  console.log(`GERÇEK VERİ: ${added} yeni pin, ${priced} pin fiyatı güncellendi. Sahibi: "Pinle Ekibi 📌".`);
   process.exit(0);
 }
 
