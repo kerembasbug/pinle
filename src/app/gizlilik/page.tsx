@@ -13,14 +13,15 @@ export default function Privacy() {
 
       <div className="sticker p-4 text-sm leading-relaxed flex flex-col gap-3">
         <p>
-          <strong>Özet:</strong> Hesap yok, e-posta yok, telefon yok. Konumun takip edilmez.
-          Sadece haritaya kendi eklediğin içerik saklanır.
+          <strong>Özet:</strong> Zorunlu hesap yok, telefon yok. Anonim başlarsın; konumun
+          takip edilmez. Sadece haritaya kendi eklediğin içerik saklanır. Puanlarını başka
+          cihaza taşımak istersen Google veya e-posta ile giriş isteğe bağlıdır.
         </p>
 
         <h2 className="text-base font-extrabold">1. Veri Sorumlusu</h2>
         <p>
-          [ŞİRKET/ŞAHIS ADI], [adres]. İletişim: [e-posta].{" "}
-          <em className="opacity-60">(Launch öncesi doldurulacak.)</em>
+          Pinle uygulaması <strong>Revoba</strong> tarafından işletilir. Her türlü veri talebi
+          ve iletişim için: <a href="mailto:info@revoba.net" className="underline">info@revoba.net</a>.
         </p>
 
         <h2 className="text-base font-extrabold">2. İşlenen Veriler</h2>
@@ -30,14 +31,17 @@ export default function Privacy() {
           eşleştirilmez. <strong>İçerik verileri:</strong> Eklediğin pinler (mekan/konu adı,
           kategori, fiyat, not, fotoğraf ve pinlediğin noktanın koordinatı), yorumların ve
           oyların. <strong>Kullanım verisi:</strong> Günlük tekil ziyaret sayısı (anonim
-          kimlik bazında, IP adresi saklanmaz).
+          kimlik bazında, IP adresi saklanmaz). <strong>İsteğe bağlı giriş bilgisi:</strong>{" "}
+          Yalnızca &quot;hesabımı koru&quot; dersen — Google ile girişte Google hesap
+          kimliğin/e-postan, e-posta ile girişte verdiğin e-posta adresi saklanır ve anonim
+          kimliğine bağlanır. Giriş yapmazsan bu veriler hiç toplanmaz.
         </p>
 
         <h2 className="text-base font-extrabold">3. İşlenmeyen Veriler</h2>
         <p>
-          Ad-soyad, e-posta, telefon, cihaz konum geçmişi toplanmaz. &quot;Konumumu bul&quot;
-          özelliği konumunu yalnızca cihazında, haritayı ortalamak için kullanır — sunucuya
-          gönderilmez.
+          Ad-soyad, telefon, cihaz konum geçmişi toplanmaz. E-posta yalnızca e-posta ile
+          giriş yapmayı <em>sen</em> seçersen alınır. &quot;Konumumu bul&quot; özelliği
+          konumunu yalnızca cihazında, haritayı ortalamak için kullanır — sunucuya gönderilmez.
         </p>
 
         <h2 className="text-base font-extrabold">4. İşleme Amacı ve Hukuki Sebep</h2>
@@ -56,11 +60,27 @@ export default function Privacy() {
           İçerikler sen silinmesini isteyene kadar saklanır.
         </p>
 
-        <h2 className="text-base font-extrabold">6. Hakların (KVKK m.11)</h2>
+        <h2 className="text-base font-extrabold" id="hesap-silme">
+          6. Hesap ve Veri Silme (KVKK m.11)
+        </h2>
         <p>
-          Verilerine erişme, düzeltme, silme ve işlemeye itiraz etme hakkına sahipsin.
-          Talebin için [e-posta] adresine anonim kullanıcı adınla (profilde görünen isim)
-          başvurabilirsin; anonim kimliğinle eşleşen tüm veriler silinir.
+          Verilerine erişme, düzeltme, silme ve işlemeye itiraz etme hakkına sahipsin. Hesabının
+          ve ona bağlı tüm verilerin silinmesini istemek için{" "}
+          <a href="mailto:info@revoba.net?subject=Pinle%20hesap%20silme" className="underline">
+            info@revoba.net
+          </a>{" "}
+          adresine şu bilgiyle başvur:
+        </p>
+        <ul className="list-disc pl-5 flex flex-col gap-1">
+          <li>Profilinde görünen kullanıcı adın (ör. &quot;Gezgin Baykuş #371&quot;), ve</li>
+          <li>giriş yaptıysan Google/e-posta ile giriş yaptığın e-posta adresin.</li>
+        </ul>
+        <p>
+          Talebin üzerine, o kimliğe bağlı <strong>tüm veriler kalıcı olarak silinir</strong>:
+          eklediğin pinler, yorumlar, oylar, puan ve rozetlerin, varsa bağlı Google/e-posta
+          giriş kaydın. Silme 30 gün içinde tamamlanır; yasal saklama yükümlülüğü olan veri
+          tutmuyoruz. Alternatif olarak profilden &quot;Çıkış yap&quot; ile giriş bağlantını
+          kaldırabilir, uygulamayı anonim kullanmaya devam edebilirsin.
         </p>
 
         <h2 className="text-base font-extrabold">7. İçerik Kuralları</h2>
@@ -74,8 +94,7 @@ export default function Privacy() {
         </p>
 
         <p className="opacity-60">
-          Bu metin bir taslaktır; yayına almadan önce hukuki danışmanlık alınması önerilir.
-          Son güncelleme: 5 Temmuz 2026.
+          Son güncelleme: 9 Temmuz 2026.
         </p>
       </div>
 
