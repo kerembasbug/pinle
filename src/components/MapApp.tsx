@@ -16,6 +16,8 @@ import { getBlocked } from "@/lib/blocklist";
 import PinSheet from "./PinSheet";
 import NewPinSheet from "./NewPinSheet";
 import ProfileSheet from "./ProfileSheet";
+import SearchSheet, { type SearchResult } from "./SearchSheet";
+import Onboarding from "./Onboarding";
 
 const MAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
 const ISTANBUL: [number, number] = [28.98, 41.03];
@@ -44,6 +46,7 @@ export default function MapApp({ initialPinId }: { initialPinId?: string }) {
   const [category, setCategory] = useState(""); // grup içindeki seçili alt kategori
   const [me, setMe] = useState<Me | null>(null);
   const [toast, setToast] = useState<{ msg: string; key: number } | null>(null);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const showToast = useCallback((msg: string) => {
     setToast({ msg, key: Date.now() });
@@ -70,53 +73,79 @@ export default function MapApp({ initialPinId }: { initialPinId?: string }) {
     });
     fetch(`/api/pins?${params}`)
       .then((r) => r.json())
-      .then(({ pins }: { pins: PinSummary[] }) => syncMarkers(pins))
+      .then(({ pins }: { pins: PinSummary[] }) => {
+        const src = map.getSource("pins") as maplibregl.GeoJSONSource | undefined;
+        if (!src) return;
+        const blocked = getBlocked();
+        const features = pins
+          .filter((p) => !blocked.has(p.authorId))
+          .map((p) => ({
+            type: "Feature" as const,
+            geometry: { type: "Point" as const, coordinates: [p.lng, p.lat] },
+            properties: {
+              id: p.id,
+              emoji: categoryById(p.category).emoji,
+              price: p.price ?? null,
+              kind: p.kind,
+              confirms: p.confirms,
+              name: p.name,
+              verified: p.confirms >= 3 && p.confirms > p.outdated ? 1 : 0,
+            },
+          }));
+        src.setData({ type: "FeatureCollection", features });
+      })
       .catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const syncMarkers = useCallback((allPins: PinSummary[]) => {
+  // Kümelenmemiş (tekil) pinler için DOM marker'ları senkronla — emoji/fiyat görünümü korunur
+  const syncDomMarkers = useCallback(() => {
     const map = mapRef.current;
-    if (!map) return;
-    const blocked = getBlocked();
-    const pins = allPins.filter((p) => !blocked.has(p.authorId));
+    if (!map || !map.getSource("pins")) return;
+    const feats = map.querySourceFeatures("pins", {
+      filter: ["!", ["has", "point_count"]],
+    });
     const markers = markersRef.current;
-    const keep = new Set(pins.map((p) => p.id));
-    for (const [id, m] of markers) {
-      if (!keep.has(id)) {
-        m.remove();
-        markers.delete(id);
-      }
-    }
-    for (const pin of pins) {
-      if (markers.has(pin.id)) continue;
-      const cat = categoryById(pin.category);
+    const seen = new Set<string>();
+    for (const f of feats) {
+      const p = f.properties as Record<string, unknown>;
+      const id = p.id as string;
+      if (seen.has(id)) continue;
+      seen.add(id);
+      if (markers.has(id)) continue;
       const el = document.createElement("div");
-      el.className = "pin-marker" + (pin.confirms >= 3 && pin.confirms > pin.outdated ? " verified" : "");
-      const price = formatPrice(pin.price);
-      const icon = VOTE_ICON[pin.kind] ?? "✓";
-      // Fiyatsız pinler kalabalıkta haritayı boğmasın: sadece emoji (anı pinleri isim gösterir)
+      el.className = "pin-marker" + (p.verified ? " verified" : "");
+      const price = formatPrice(typeof p.price === "number" ? p.price : null);
+      const icon = VOTE_ICON[p.kind as string] ?? "✓";
       const label =
         price != null
           ? `<span class="price">${price}</span>`
-          : pin.kind === "ani"
-            ? `<span>${escapeHtml(pin.name.slice(0, 14))}</span>`
+          : p.kind === "ani"
+            ? `<span>${escapeHtml(String(p.name).slice(0, 14))}</span>`
             : "";
+      const confirms = Number(p.confirms) || 0;
       el.innerHTML = `
         <div class="bubble${label ? "" : " bubble-mini"}">
-          <span>${cat.emoji}</span>
+          <span>${p.emoji}</span>
           ${label}
-          ${pin.confirms > 0 ? `<span style="color:var(--teal)">${icon}${pin.confirms}</span>` : ""}
+          ${confirms > 0 ? `<span style="color:var(--teal)">${icon}${confirms}</span>` : ""}
         </div>
         <div class="tip"></div>`;
       el.addEventListener("click", (e) => {
         e.stopPropagation();
-        setSheet({ kind: "pin", id: pin.id });
+        setSheet({ kind: "pin", id });
       });
+      const coords = (f.geometry as GeoJSON.Point).coordinates as [number, number];
       const marker = new maplibregl.Marker({ element: el, anchor: "bottom" })
-        .setLngLat([pin.lng, pin.lat])
+        .setLngLat(coords)
         .addTo(map);
-      markersRef.current.set(pin.id, marker);
+      markers.set(id, marker);
+    }
+    for (const [id, m] of markers) {
+      if (!seen.has(id)) {
+        m.remove();
+        markers.delete(id);
+      }
     }
   }, []);
 
@@ -130,18 +159,67 @@ export default function MapApp({ initialPinId }: { initialPinId?: string }) {
       attributionControl: { compact: true },
     });
     mapRef.current = map;
-    map.on("moveend", loadPins);
     if (process.env.NODE_ENV !== "production") {
       (window as unknown as { __map?: maplibregl.Map }).__map = map;
     }
-    loadPins();
+
+    map.on("load", () => {
+      map.addSource("pins", {
+        type: "geojson",
+        data: { type: "FeatureCollection", features: [] },
+        cluster: true,
+        clusterMaxZoom: 14,
+        clusterRadius: 55,
+      });
+      // Küme balonları — sayıya göre büyür
+      map.addLayer({
+        id: "clusters",
+        type: "circle",
+        source: "pins",
+        filter: ["has", "point_count"],
+        paint: {
+          "circle-color": "#e8442e",
+          "circle-stroke-color": "#221b15",
+          "circle-stroke-width": 2.5,
+          "circle-radius": ["step", ["get", "point_count"], 18, 20, 24, 100, 32],
+        },
+      });
+      map.addLayer({
+        id: "cluster-count",
+        type: "symbol",
+        source: "pins",
+        filter: ["has", "point_count"],
+        layout: {
+          "text-field": "{point_count_abbreviated}",
+          "text-font": ["Noto Sans Regular"],
+          "text-size": 15,
+        },
+        paint: { "text-color": "#ffffff" },
+      });
+      // Kümeye tıkla → aç
+      map.on("click", "clusters", (e) => {
+        const f = map.queryRenderedFeatures(e.point, { layers: ["clusters"] })[0];
+        const clusterId = f.properties?.cluster_id;
+        const src = map.getSource("pins") as maplibregl.GeoJSONSource;
+        src.getClusterExpansionZoom(clusterId).then((zoom) => {
+          map.easeTo({ center: (f.geometry as GeoJSON.Point).coordinates as [number, number], zoom });
+        });
+      });
+      map.on("mouseenter", "clusters", () => (map.getCanvas().style.cursor = "pointer"));
+      map.on("mouseleave", "clusters", () => (map.getCanvas().style.cursor = ""));
+      // Harita durulunca tekil DOM marker'ları senkronla
+      map.on("idle", syncDomMarkers);
+      map.on("moveend", loadPins);
+      loadPins();
+    });
+
     refreshMe();
     return () => {
       map.remove();
       mapRef.current = null;
       markersRef.current.clear();
     };
-  }, [loadPins, refreshMe]);
+  }, [loadPins, syncDomMarkers, refreshMe]);
 
   const clearMarkers = () => {
     for (const m of markersRef.current.values()) m.remove();
@@ -207,6 +285,17 @@ export default function MapApp({ initialPinId }: { initialPinId?: string }) {
     refreshMe();
   };
 
+  const gotoResult = (r: SearchResult) => {
+    setSearchOpen(false);
+    mapRef.current?.flyTo({ center: [r.lng, r.lat], zoom: 16 });
+    setTimeout(() => setSheet({ kind: "pin", id: r.id }), 400);
+  };
+
+  const gotoCity = (center: [number, number]) => {
+    setSearchOpen(false);
+    mapRef.current?.flyTo({ center, zoom: 12.5 });
+  };
+
   return (
     <div className="fixed inset-0 paper-grain">
       <div ref={mapDiv} className="map-canvas-host absolute inset-0" />
@@ -214,14 +303,20 @@ export default function MapApp({ initialPinId }: { initialPinId?: string }) {
       {/* Üst bar */}
       <header className="absolute top-0 left-0 right-0 z-20 px-3 pt-3 pointer-events-none">
         <div className="flex items-center gap-2">
-          <div className="sticker pointer-events-auto flex items-center gap-1.5 px-3.5 py-1.5">
-            <span className="text-xl">📍</span>
-            <span className="display text-xl font-extrabold tracking-tight text-tomato">Pinle</span>
+          <div className="sticker pointer-events-auto flex items-center gap-1 px-3 py-1.5">
+            <span className="text-lg">📍</span>
+            <span className="display text-lg font-extrabold tracking-tight text-tomato">Pinle</span>
           </div>
-          <div className="flex-1" />
+          <button
+            onClick={() => setSearchOpen(true)}
+            className="sticker pointer-events-auto flex flex-1 items-center gap-2 px-3 py-1.5 text-sm opacity-90"
+          >
+            <span>🔎</span>
+            <span className="opacity-60">Ara / şehir seç…</span>
+          </button>
           <button
             onClick={() => setSheet({ kind: "profile" })}
-            className="btn btn-mustard pointer-events-auto px-3.5 py-1.5 text-sm"
+            className="btn btn-mustard pointer-events-auto px-3 py-1.5 text-sm"
           >
             ⭐ {me ? me.points : "—"}
           </button>
@@ -362,6 +457,18 @@ export default function MapApp({ initialPinId }: { initialPinId?: string }) {
         me={me}
         onClose={() => setSheet({ kind: "none" })}
       />
+      <SearchSheet
+        open={searchOpen}
+        onClose={() => setSearchOpen(false)}
+        onPickResult={gotoResult}
+        onPickCity={gotoCity}
+        onLocate={() => {
+          setSearchOpen(false);
+          locate();
+        }}
+      />
+
+      <Onboarding />
 
       {toast && (
         <div key={toast.key} className="toast">
