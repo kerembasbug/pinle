@@ -30,6 +30,12 @@ export const metadata: Metadata = {
     siteName: "Pinle",
     locale: "tr_TR",
     type: "website",
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Pinle — Ucuz Lezzet Haritası",
+    description: "Ucuz ve iyi yemek noktalarını pinle, fiyatları doğrula.",
   },
 };
 

@@ -31,7 +31,13 @@ type SheetState =
 
 const VOTE_ICON: Record<string, string> = { lezzet: "✓", ani: "❤️", sorun: "⚠️" };
 
-export default function MapApp({ initialPinId }: { initialPinId?: string }) {
+export default function MapApp({
+  initialPinId,
+  initialCenter,
+}: {
+  initialPinId?: string;
+  initialCenter?: [number, number];
+}) {
   const mapDiv = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const markersRef = useRef<Map<string, maplibregl.Marker>>(new Map());
@@ -157,8 +163,8 @@ export default function MapApp({ initialPinId }: { initialPinId?: string }) {
     const map = new maplibregl.Map({
       container: mapDiv.current,
       style: MAP_STYLE,
-      center: ISTANBUL,
-      zoom: 12.2,
+      center: initialCenter ?? ISTANBUL,
+      zoom: initialCenter ? 12.5 : 12.2,
       attributionControl: { compact: true },
     });
     mapRef.current = map;

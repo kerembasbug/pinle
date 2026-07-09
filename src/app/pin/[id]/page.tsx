@@ -27,7 +27,8 @@ export async function generateMetadata({
   return {
     title,
     description,
-    openGraph: { title, description, type: "article" },
+    openGraph: { title, description, type: "article", url: `/pin/${id}` },
+    twitter: { card: "summary_large_image", title, description },
   };
 }
 
