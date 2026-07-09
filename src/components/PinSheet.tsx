@@ -18,6 +18,8 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
   const [comments, setComments] = useState<Comment[]>([]);
   const [myVote, setMyVote] = useState(0);
   const [text, setText] = useState("");
+  const [priceInput, setPriceInput] = useState("");
+  const [editingPrice, setEditingPrice] = useState(false);
   const [busy, setBusy] = useState(false);
   const loadedFor = useRef<string | null>(null);
 
@@ -25,6 +27,8 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
     if (!pinId) return;
     loadedFor.current = pinId;
     setPin(null);
+    setPriceInput("");
+    setEditingPrice(false);
     fetch(`/api/pins/${pinId}`)
       .then((r) => (r.ok ? r.json() : Promise.reject()))
       .then((data) => {
@@ -73,6 +77,29 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
     onToast(`+${data.earned} puan! 💬`);
   };
 
+  const submitPrice = async () => {
+    if (!pin || busy) return;
+    const val = Number(priceInput.replace(",", ".").replace(/[^\d.]/g, ""));
+    if (!Number.isFinite(val) || val < 1 || val > 100000) {
+      return onToast("Geçerli bir fiyat gir (₺)");
+    }
+    setBusy(true);
+    const res = await fetch(`/api/pins/${pin.id}/price`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ price: val }),
+    });
+    const data = await res.json();
+    setBusy(false);
+    if (!res.ok) return onToast(data.error ?? "Fiyat kaydedilemedi");
+    setPin({ ...pin, price: data.price, confirms: data.confirms, outdated: data.outdated });
+    if (data.myVote !== undefined) setMyVote(data.myVote);
+    setPriceInput("");
+    setEditingPrice(false);
+    onToast(`+${data.earned} puan · fiyat kaydedildi 🏷️`);
+    onChanged();
+  };
+
   const share = async () => {
     if (!pin) return;
     const url = `${location.origin}/pin/${pin.id}`;
@@ -107,8 +134,35 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
   const cat = pin ? categoryById(pin.category) : null;
   const meta = pin ? kindMeta(pin.kind) : null;
   const price = pin ? formatPrice(pin.price) : null;
+  const isFood = pin?.kind === "lezzet";
+  const needsPrice = isFood && pin?.price == null; // fiyatsız yemek pini → oylama anlamsız
   const blocked = getBlocked();
   const visibleComments = comments.filter((c) => !blocked.has(c.authorId));
+
+  const priceEditor = (
+    <div className="flex gap-2">
+      <div className="sticker-flat flex flex-1 items-center gap-1 bg-cream px-3">
+        <span className="text-lg font-bold text-tomato">₺</span>
+        <input
+          value={priceInput}
+          onChange={(e) => setPriceInput(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && submitPrice()}
+          inputMode="decimal"
+          maxLength={8}
+          placeholder="örn. 120"
+          className="w-full bg-transparent py-2.5 text-sm outline-none"
+          autoFocus
+        />
+      </div>
+      <button
+        onClick={submitPrice}
+        disabled={busy || !priceInput.trim()}
+        className="btn btn-tomato px-4 text-sm"
+      >
+        Kaydet
+      </button>
+    </div>
+  );
 
   return (
     <>
@@ -144,27 +198,54 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
               />
             )}
 
-            {/* Doğrulama */}
-            <div className="mt-4 flex gap-2">
-              <button
-                onClick={() => vote(1)}
-                disabled={pin.isMine}
-                className={`btn flex-1 py-2.5 text-sm ${myVote === 1 ? "btn-teal" : "btn-cream"}`}
-              >
-                {meta!.voteYes} ({pin.confirms})
-              </button>
-              {meta!.voteNo && (
-                <button
-                  onClick={() => vote(-1)}
-                  disabled={pin.isMine}
-                  className={`btn flex-1 py-2.5 text-sm ${myVote === -1 ? "btn-tomato" : "btn-cream"}`}
-                >
-                  {meta!.voteNo} ({pin.outdated})
-                </button>
-              )}
-            </div>
-            {pin.isMine && (
-              <p className="mt-1.5 text-center text-xs opacity-50">Kendi pinini oylayamazsın</p>
+            {needsPrice ? (
+              /* Fiyatsız yemek pini — çekirdek eksik veri. Ekleme akışı öne çıkar,
+                 oylama gizli (doğrulanacak fiyat yok). Yeniden pinlemeye gerek yok. */
+              <div className="mt-4 sticker-flat bg-cream p-3">
+                <p className="text-sm font-extrabold">💰 Fiyatı biliyor musun?</p>
+                <p className="mb-2 text-xs opacity-60">
+                  Ekle, mahalle görsün. <span className="font-bold text-tomato">+5 puan</span> —
+                  çıkıp yeniden pinlemene gerek yok.
+                </p>
+                {priceEditor}
+              </div>
+            ) : (
+              <>
+                {/* Doğrulama */}
+                <div className="mt-4 flex gap-2">
+                  <button
+                    onClick={() => vote(1)}
+                    disabled={pin.isMine}
+                    className={`btn flex-1 py-2.5 text-sm ${myVote === 1 ? "btn-teal" : "btn-cream"}`}
+                  >
+                    {meta!.voteYes} ({pin.confirms})
+                  </button>
+                  {meta!.voteNo && (
+                    <button
+                      onClick={() => vote(-1)}
+                      disabled={pin.isMine}
+                      className={`btn flex-1 py-2.5 text-sm ${myVote === -1 ? "btn-tomato" : "btn-cream"}`}
+                    >
+                      {meta!.voteNo} ({pin.outdated})
+                    </button>
+                  )}
+                </div>
+                {pin.isMine && (
+                  <p className="mt-1.5 text-center text-xs opacity-50">Kendi pinini oylayamazsın</p>
+                )}
+                {/* Fiyatlı yemek pini — güncel fiyatı bildir */}
+                {isFood &&
+                  (editingPrice ? (
+                    <div className="mt-2">{priceEditor}</div>
+                  ) : (
+                    <button
+                      onClick={() => setEditingPrice(true)}
+                      className="mt-2 text-xs underline opacity-50"
+                    >
+                      💸 Fiyat değişti mi? Güncelle
+                    </button>
+                  ))}
+              </>
             )}
 
             <div className="mt-3 flex items-center gap-2">

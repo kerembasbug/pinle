@@ -19,6 +19,7 @@ const LIMITS: Record<string, { perDay: number }> = {
   comment: { perDay: 60 },
   vote: { perDay: 200 },
   report: { perDay: 20 },
+  price: { perDay: 60 },
 };
 
 const TABLES: Record<string, string> = {
@@ -26,6 +27,7 @@ const TABLES: Record<string, string> = {
   comment: "comments",
   vote: "votes",
   report: "reports",
+  price: "price_reports",
 };
 
 /** Günlük eylem limiti — uid başına. Limit aşıldıysa false döner. */

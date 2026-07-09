@@ -69,6 +69,15 @@ function migrate(d: Database.Database) {
       PRIMARY KEY (pin_id, user_id)
     );
 
+    CREATE TABLE IF NOT EXISTS price_reports (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      pin_id TEXT NOT NULL REFERENCES pins(id),
+      user_id TEXT NOT NULL REFERENCES users(id),
+      price REAL NOT NULL,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_pricerep_pin ON price_reports(pin_id, created_at);
+
     CREATE TABLE IF NOT EXISTS points_events (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       user_id TEXT NOT NULL REFERENCES users(id),

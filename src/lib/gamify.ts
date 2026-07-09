@@ -6,6 +6,7 @@ export const POINTS = {
   VOTE: 2,
   PIN_CONFIRMED: 5, // pin sahibine, pini ilk kez doğrulandığında
   COMMENT: 3,
+  PRICE: 5, // mevcut bir pine fiyat ekleme/güncelleme (fiyat-öncelikli çekirdek veri)
 } as const;
 
 export type Badge = {
