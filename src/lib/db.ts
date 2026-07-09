@@ -85,6 +85,22 @@ function migrate(d: Database.Database) {
     );
   `);
 
+  // users: kimlik (login) kolonları — anonim başla, isteğe bağlı bağla
+  const userCols = d.prepare("PRAGMA table_info(users)").all() as { name: string }[];
+  if (!userCols.some((c) => c.name === "email")) {
+    d.exec("ALTER TABLE users ADD COLUMN email TEXT");
+  }
+  if (!userCols.some((c) => c.name === "google_sub")) {
+    d.exec("ALTER TABLE users ADD COLUMN google_sub TEXT");
+  }
+  if (!userCols.some((c) => c.name === "linked_at")) {
+    d.exec("ALTER TABLE users ADD COLUMN linked_at TEXT");
+  }
+  d.exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_users_email ON users(email) WHERE email IS NOT NULL");
+  d.exec(
+    "CREATE UNIQUE INDEX IF NOT EXISTS idx_users_google ON users(google_sub) WHERE google_sub IS NOT NULL"
+  );
+
   // Var olan veritabanları için: sonradan eklenen kolonlar
   const pinCols = d.prepare("PRAGMA table_info(pins)").all() as { name: string }[];
   if (!pinCols.some((c) => c.name === "kind")) {

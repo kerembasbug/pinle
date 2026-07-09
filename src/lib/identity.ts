@@ -58,3 +58,18 @@ export async function getUserIfExists(): Promise<{ id: string; name: string } | 
     | undefined;
   return row ?? null;
 }
+
+/** Oturum çerezini belirli bir kullanıcıya ayarlar (hesaba geçiş / login sonrası). */
+export async function setSessionUser(userId: string) {
+  const store = await cookies();
+  store.set(COOKIE, userId, { maxAge: ONE_YEAR, httpOnly: true, sameSite: "lax", path: "/" });
+}
+
+/** Çıkış: yeni anonim kimlik başlatır. */
+export async function logout() {
+  const store = await cookies();
+  const uid = crypto.randomUUID();
+  store.set(COOKIE, uid, { maxAge: ONE_YEAR, httpOnly: true, sameSite: "lax", path: "/" });
+  const name = nameFromId(uid);
+  db().prepare("INSERT OR IGNORE INTO users (id, name) VALUES (?, ?)").run(uid, name);
+}

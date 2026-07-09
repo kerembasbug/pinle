@@ -3,9 +3,15 @@
 import Link from "next/link";
 import type { Me } from "@/lib/types";
 
-type Props = { open: boolean; me: Me | null; onClose: () => void };
+type Props = {
+  open: boolean;
+  me: Me | null;
+  onClose: () => void;
+  onOpenAuth: () => void;
+  onLogout: () => void;
+};
 
-export default function ProfileSheet({ open, me, onClose }: Props) {
+export default function ProfileSheet({ open, me, onClose, onOpenAuth, onLogout }: Props) {
   return (
     <>
       {open && <div className="fixed inset-0 z-20 bg-ink/20" onClick={onClose} />}
@@ -57,8 +63,29 @@ export default function ProfileSheet({ open, me, onClose }: Props) {
               <Link href="/liderler" className="btn btn-mustard mt-4 block py-3 text-center">
                 🏆 Liderlik Tablosu
               </Link>
+
+              {/* Giriş / hesap durumu */}
+              {me.email ? (
+                <div className="mt-3 sticker-flat flex items-center gap-2 bg-[#e7f5f1] px-3 py-2.5">
+                  <span className="text-lg">✅</span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-xs opacity-60">Giriş yapıldı</p>
+                    <p className="truncate text-sm font-bold">{me.email}</p>
+                  </div>
+                  <button onClick={onLogout} className="text-xs underline opacity-60">
+                    Çıkış
+                  </button>
+                </div>
+              ) : (
+                <button onClick={onOpenAuth} className="btn btn-teal mt-3 w-full py-3">
+                  🔐 Hesabımı koru / Giriş yap
+                </button>
+              )}
+
               <p className="mt-3 text-center text-[11px] opacity-40">
-                Anonim hesap — puanların bu cihazın çerezine bağlı ·{" "}
+                {me.email
+                  ? "Puanların hesabına bağlı — başka cihazda giriş yapınca gelir."
+                  : "Anonim hesap — giriş yapmazsan puanların bu cihaza bağlı."}{" "}
                 <Link href="/gizlilik" className="underline">
                   Gizlilik
                 </Link>

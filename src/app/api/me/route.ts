@@ -6,9 +6,11 @@ export async function GET() {
   const user = await getOrCreateUser();
   const d = db();
   recordVisit(user.id);
-  const points = (
-    d.prepare("SELECT points FROM users WHERE id = ?").get(user.id) as { points: number }
-  ).points;
+  const urow = d.prepare("SELECT points, email FROM users WHERE id = ?").get(user.id) as {
+    points: number;
+    email: string | null;
+  };
+  const points = urow.points;
   const pinCount = (
     d.prepare("SELECT COUNT(*) AS c FROM pins WHERE user_id = ? AND status = 'active'").get(user.id) as { c: number }
   ).c;
@@ -44,6 +46,7 @@ export async function GET() {
     weeklyPoints,
     weeklyRank,
     isMuhtar: weeklyRank === 1,
+    email: urow.email,
     badges: badgesFor(user.id),
   });
 }

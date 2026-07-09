@@ -18,6 +18,7 @@ import NewPinSheet from "./NewPinSheet";
 import ProfileSheet from "./ProfileSheet";
 import SearchSheet, { type SearchResult } from "./SearchSheet";
 import Onboarding from "./Onboarding";
+import AuthSheet from "./AuthSheet";
 
 const MAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
 const ISTANBUL: [number, number] = [28.98, 41.03];
@@ -47,6 +48,7 @@ export default function MapApp({ initialPinId }: { initialPinId?: string }) {
   const [me, setMe] = useState<Me | null>(null);
   const [toast, setToast] = useState<{ msg: string; key: number } | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
 
   const showToast = useCallback((msg: string) => {
     setToast({ msg, key: Date.now() });
@@ -296,6 +298,27 @@ export default function MapApp({ initialPinId }: { initialPinId?: string }) {
     mapRef.current?.flyTo({ center, zoom: 12.5 });
   };
 
+  const logout = async () => {
+    await fetch("/api/auth/logout", { method: "POST" }).catch(() => {});
+    setSheet({ kind: "none" });
+    showToast("Çıkış yapıldı 👋");
+    refreshMe();
+  };
+
+  // E-posta linkinden dönüş (?auth=ok / expired)
+  useEffect(() => {
+    const p = new URLSearchParams(window.location.search);
+    const a = p.get("auth");
+    if (!a) return;
+    if (a === "ok") {
+      showToast("Giriş başarılı 🎉");
+      refreshMe();
+    } else if (a === "expired") {
+      showToast("Bağlantının süresi dolmuş, tekrar dene");
+    }
+    window.history.replaceState({}, "", window.location.pathname);
+  }, [showToast, refreshMe]);
+
   return (
     <div className="fixed inset-0 paper-grain">
       <div ref={mapDiv} className="map-canvas-host absolute inset-0" />
@@ -456,6 +479,17 @@ export default function MapApp({ initialPinId }: { initialPinId?: string }) {
         open={sheet.kind === "profile"}
         me={me}
         onClose={() => setSheet({ kind: "none" })}
+        onOpenAuth={() => {
+          setSheet({ kind: "none" });
+          setAuthOpen(true);
+        }}
+        onLogout={logout}
+      />
+      <AuthSheet
+        open={authOpen}
+        onClose={() => setAuthOpen(false)}
+        onToast={showToast}
+        onLinked={refreshMe}
       />
       <SearchSheet
         open={searchOpen}

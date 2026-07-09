@@ -46,6 +46,7 @@ export type Me = {
   weeklyPoints: number;
   weeklyRank: number | null;
   isMuhtar: boolean;
+  email: string | null;
   badges: { id: string; label: string; emoji: string; earned: boolean; progress: string }[];
 };
 
