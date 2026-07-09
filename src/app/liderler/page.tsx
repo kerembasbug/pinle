@@ -43,12 +43,20 @@ function Board({ title, rows, crown }: { title: string; rows: Row[]; crown?: boo
 
 type DistrictRow = { district: string; pins: number; week: number };
 
-function DistrictBoard({ rows }: { rows: DistrictRow[] }) {
+function DistrictBoard({
+  rows,
+  title = "🏙️ İlçe Ligi",
+  subtitle = "Hangi ilçe haritayı daha çok dolduruyor?",
+}: {
+  rows: DistrictRow[];
+  title?: string;
+  subtitle?: string;
+}) {
   const max = rows[0]?.pins ?? 1;
   return (
     <section className="w-full max-w-sm">
-      <h2 className="text-lg font-extrabold">🏙️ İlçe Ligi</h2>
-      <p className="text-xs opacity-60">Hangi ilçe haritayı daha çok dolduruyor?</p>
+      <h2 className="text-lg font-extrabold">{title}</h2>
+      <p className="text-xs opacity-60">{subtitle}</p>
       <div className="mt-2 flex flex-col gap-2">
         {rows.length === 0 && (
           <p className="sticker-flat px-3 py-3 text-sm opacity-60">Henüz pin yok.</p>
@@ -81,6 +89,14 @@ function DistrictBoard({ rows }: { rows: DistrictRow[] }) {
 
 export default function Leaderboard() {
   const d = db();
+  const cities = d
+    .prepare(
+      `SELECT city AS district, COUNT(*) AS pins,
+        SUM(CASE WHEN created_at > datetime('now', '-7 day') THEN 1 ELSE 0 END) AS week
+       FROM pins WHERE status = 'active' AND city IS NOT NULL AND city != '-'
+       GROUP BY city ORDER BY pins DESC, week DESC LIMIT 10`
+    )
+    .all() as DistrictRow[];
   const districts = d
     .prepare(
       `SELECT district, COUNT(*) AS pins,
@@ -114,6 +130,13 @@ export default function Leaderboard() {
         <span className="display text-2xl font-extrabold text-tomato">Pinle</span>
       </Link>
       <h1 className="text-2xl font-extrabold">🏆 Liderlik Tablosu</h1>
+      {cities.length > 1 && (
+        <DistrictBoard
+          rows={cities}
+          title="🏙️ Şehir Ligi"
+          subtitle="Hangi şehir haritayı daha çok dolduruyor?"
+        />
+      )}
       <DistrictBoard rows={districts} />
       <Board title="Bu Hafta" rows={weekly} crown />
       <Board title="Tüm Zamanlar" rows={allTime} />

@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { CATEGORIES_BY_KIND, kindMeta, type PinKind } from "@/lib/categories";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { groupsForKind, hasGroups, kindMeta, type PinKind } from "@/lib/categories";
 
 type Props = {
   coords: { lat: number; lng: number } | null;
@@ -12,9 +12,12 @@ type Props = {
 
 export default function NewPinSheet({ coords, pinKind, onClose, onCreated }: Props) {
   const meta = kindMeta(pinKind);
-  const categories = CATEGORIES_BY_KIND[pinKind];
+  const groups = useMemo(() => groupsForKind(pinKind), [pinKind]);
+  const grouped = hasGroups(pinKind);
+  const [groupId, setGroupId] = useState(groups[0].id);
+  const activeGroup = groups.find((g) => g.id === groupId) ?? groups[0];
   const [name, setName] = useState("");
-  const [category, setCategory] = useState(categories[0].id);
+  const [category, setCategory] = useState(groups[0].categories[0].id);
   const [price, setPrice] = useState("");
   const [note, setNote] = useState("");
   const [error, setError] = useState("");
@@ -24,8 +27,10 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated }: Pro
 
   useEffect(() => {
     if (coords) {
+      const gs = groupsForKind(pinKind);
       setName("");
-      setCategory(CATEGORIES_BY_KIND[pinKind][0].id);
+      setGroupId(gs[0].id);
+      setCategory(gs[0].categories[0].id);
       setPrice("");
       setNote("");
       setError("");
@@ -65,12 +70,33 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated }: Pro
           <h2 className="pt-1 text-xl font-extrabold">{meta.formTitle}</h2>
           <p className="text-xs opacity-60">{meta.formHint}</p>
 
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            {categories.map((c) => (
+          {/* Gruplu kind: önce grup, sonra alt kategori */}
+          {grouped && (
+            <div className="mt-3 flex gap-1.5 overflow-x-auto pb-1 [scrollbar-width:none]">
+              {groups.map((g) => (
+                <button
+                  key={g.id}
+                  onClick={() => {
+                    setGroupId(g.id);
+                    setCategory(g.categories[0].id);
+                  }}
+                  className={`btn shrink-0 px-3 py-1 text-[13px] ${
+                    groupId === g.id ? "btn-tomato" : "btn-cream"
+                  }`}
+                >
+                  {g.emoji} {g.label}
+                </button>
+              ))}
+            </div>
+          )}
+          <div className="mt-2 flex flex-wrap gap-1.5">
+            {activeGroup.categories.map((c) => (
               <button
                 key={c.id}
                 onClick={() => setCategory(c.id)}
-                className={`btn px-3 py-1 text-[13px] ${category === c.id ? "btn-tomato" : "btn-cream"}`}
+                className={`btn px-3 py-1 text-[13px] ${
+                  category === c.id ? (grouped ? "btn-teal" : "btn-tomato") : "btn-cream"
+                }`}
               >
                 {c.emoji} {c.label}
               </button>

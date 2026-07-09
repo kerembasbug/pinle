@@ -1,7 +1,7 @@
 import Database from "better-sqlite3";
 import fs from "node:fs";
 import path from "node:path";
-import { nearestDistrict } from "./districts";
+import { nearestPlace } from "./districts";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 
@@ -33,6 +33,7 @@ function migrate(d: Database.Database) {
       kind TEXT NOT NULL DEFAULT 'lezzet',
       category TEXT NOT NULL,
       district TEXT,
+      city TEXT,
       price REAL,
       note TEXT,
       photo TEXT,
@@ -92,15 +93,21 @@ function migrate(d: Database.Database) {
   if (!pinCols.some((c) => c.name === "district")) {
     d.exec("ALTER TABLE pins ADD COLUMN district TEXT");
   }
+  if (!pinCols.some((c) => c.name === "city")) {
+    d.exec("ALTER TABLE pins ADD COLUMN city TEXT");
+  }
 
-  // İlçesi atanmamış pinleri doldur (seed dahil her açılışta idempotent)
+  // İlçe/şehri atanmamış pinleri doldur (seed dahil her açılışta idempotent)
   const missing = d
-    .prepare("SELECT id, lat, lng FROM pins WHERE district IS NULL")
+    .prepare("SELECT id, lat, lng FROM pins WHERE district IS NULL OR city IS NULL")
     .all() as { id: string; lat: number; lng: number }[];
   if (missing.length > 0) {
-    const upd = d.prepare("UPDATE pins SET district = ? WHERE id = ?");
+    const upd = d.prepare("UPDATE pins SET district = ?, city = ? WHERE id = ?");
     const tx = d.transaction(() => {
-      for (const p of missing) upd.run(nearestDistrict(p.lat, p.lng) ?? "-", p.id);
+      for (const p of missing) {
+        const place = nearestPlace(p.lat, p.lng);
+        upd.run(place?.district ?? "-", place?.city ?? "-", p.id);
+      }
     });
     tx();
   }

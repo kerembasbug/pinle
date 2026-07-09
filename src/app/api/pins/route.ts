@@ -4,26 +4,10 @@ import path from "node:path";
 import { db, awardPoints } from "@/lib/db";
 import { getOrCreateUser } from "@/lib/identity";
 import { isValidKind, categoryInKind, kindMeta } from "@/lib/categories";
-import { nearestDistrict } from "@/lib/districts";
+import { nearestPlace } from "@/lib/districts";
 import { isClean, withinRateLimit } from "@/lib/moderation";
 import { POINTS } from "@/lib/gamify";
 import { authorIdFor } from "@/lib/authorId";
-
-const PIN_LIST_SQL = `
-  SELECT p.id, p.user_id, p.name, p.kind, p.category, p.price, p.lat, p.lng, p.created_at,
-    COALESCE(SUM(CASE WHEN v.value = 1 THEN 1 END), 0) AS confirms,
-    COALESCE(SUM(CASE WHEN v.value = -1 THEN 1 END), 0) AS outdated,
-    (SELECT COUNT(*) FROM comments c WHERE c.pin_id = p.id) AS comment_count
-  FROM pins p
-  LEFT JOIN votes v ON v.pin_id = p.id
-  WHERE p.status = 'active'
-    AND p.lat BETWEEN ? AND ? AND p.lng BETWEEN ? AND ?
-    AND (? = '' OR p.kind = ?)
-    AND (? = '' OR p.category = ?)
-  GROUP BY p.id
-  ORDER BY p.created_at DESC
-  LIMIT 300
-`;
 
 export async function GET(request: NextRequest) {
   const q = request.nextUrl.searchParams;
@@ -32,13 +16,37 @@ export async function GET(request: NextRequest) {
   const minLng = Number(q.get("minLng") ?? -180);
   const maxLng = Number(q.get("maxLng") ?? 180);
   const kind = q.get("kind") ?? "";
-  const category = q.get("category") ?? "";
+  // `categories`: virgülle ayrık liste (grup filtresi). Geriye uyumluluk için `category` de kabul.
+  const catParam = q.get("categories") ?? q.get("category") ?? "";
+  const categories = catParam
+    .split(",")
+    .map((c) => c.trim())
+    .filter(Boolean)
+    .slice(0, 40);
   if ([minLat, maxLat, minLng, maxLng].some(Number.isNaN)) {
     return Response.json({ error: "Geçersiz sınırlar" }, { status: 400 });
   }
+
+  const catFilter =
+    categories.length > 0 ? `AND p.category IN (${categories.map(() => "?").join(",")})` : "";
+  const sql = `
+    SELECT p.id, p.user_id, p.name, p.kind, p.category, p.price, p.lat, p.lng, p.created_at,
+      COALESCE(SUM(CASE WHEN v.value = 1 THEN 1 END), 0) AS confirms,
+      COALESCE(SUM(CASE WHEN v.value = -1 THEN 1 END), 0) AS outdated,
+      (SELECT COUNT(*) FROM comments c WHERE c.pin_id = p.id) AS comment_count
+    FROM pins p
+    LEFT JOIN votes v ON v.pin_id = p.id
+    WHERE p.status = 'active'
+      AND p.lat BETWEEN ? AND ? AND p.lng BETWEEN ? AND ?
+      AND (? = '' OR p.kind = ?)
+      ${catFilter}
+    GROUP BY p.id
+    ORDER BY p.created_at DESC
+    LIMIT 400
+  `;
   const rows = db()
-    .prepare(PIN_LIST_SQL)
-    .all(minLat, maxLat, minLng, maxLng, kind, kind, category, category) as Record<
+    .prepare(sql)
+    .all(minLat, maxLat, minLng, maxLng, kind, kind, ...categories) as Record<
     string,
     unknown
   >[];
@@ -112,13 +120,17 @@ export async function POST(request: NextRequest) {
   }
 
   const id = crypto.randomUUID();
-  const district = nearestDistrict(lat, lng) ?? "-";
+  const place = nearestPlace(lat, lng);
   db()
     .prepare(
-      `INSERT INTO pins (id, user_id, name, kind, category, district, price, note, photo, lat, lng)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO pins (id, user_id, name, kind, category, district, city, price, note, photo, lat, lng)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
-    .run(id, user.id, name, kind, category, district, price, note || null, photoName, lat, lng);
+    .run(
+      id, user.id, name, kind, category,
+      place?.district ?? "-", place?.city ?? "-",
+      price, note || null, photoName, lat, lng
+    );
 
   const earned = POINTS.PIN + (photoName ? POINTS.PIN_PHOTO_BONUS : 0);
   awardPoints(user.id, earned, "pin");

@@ -2,7 +2,14 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import maplibregl from "maplibre-gl";
-import { CATEGORIES_BY_KIND, KINDS, categoryById, type PinKind } from "@/lib/categories";
+import {
+  KINDS,
+  categoryById,
+  groupsForKind,
+  hasGroups,
+  type CategoryGroup,
+  type PinKind,
+} from "@/lib/categories";
 import type { Me, PinSummary } from "@/lib/types";
 import { formatPrice } from "@/lib/types";
 import { getBlocked } from "@/lib/blocklist";
@@ -25,7 +32,7 @@ export default function MapApp({ initialPinId }: { initialPinId?: string }) {
   const mapDiv = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const markersRef = useRef<Map<string, maplibregl.Marker>>(new Map());
-  const categoryRef = useRef<string>("");
+  const categoriesRef = useRef<string>(""); // API'ye gidecek virgüllü kategori listesi
   const kindRef = useRef<PinKind>("lezzet");
 
   const [sheet, setSheet] = useState<SheetState>(
@@ -33,7 +40,8 @@ export default function MapApp({ initialPinId }: { initialPinId?: string }) {
   );
   const [placing, setPlacing] = useState(false);
   const [kind, setKind] = useState<PinKind>("lezzet");
-  const [category, setCategory] = useState("");
+  const [group, setGroup] = useState<CategoryGroup | null>(null); // seçili ana grup
+  const [category, setCategory] = useState(""); // grup içindeki seçili alt kategori
   const [me, setMe] = useState<Me | null>(null);
   const [toast, setToast] = useState<{ msg: string; key: number } | null>(null);
 
@@ -58,7 +66,7 @@ export default function MapApp({ initialPinId }: { initialPinId?: string }) {
       minLng: String(b.getWest()),
       maxLng: String(b.getEast()),
       kind: kindRef.current,
-      category: categoryRef.current,
+      categories: categoriesRef.current,
     });
     fetch(`/api/pins?${params}`)
       .then((r) => r.json())
@@ -140,20 +148,35 @@ export default function MapApp({ initialPinId }: { initialPinId?: string }) {
     markersRef.current.clear();
   };
 
+  // Filtreyi güncelle: grup + opsiyonel alt kategori → API'ye kategori listesi
+  const applyFilter = (g: CategoryGroup | null, catId: string) => {
+    if (catId) categoriesRef.current = catId;
+    else if (g) categoriesRef.current = g.categories.map((c) => c.id).join(",");
+    else categoriesRef.current = "";
+    clearMarkers();
+    loadPins();
+  };
+
+  const pickGroup = (g: CategoryGroup) => {
+    const next = group?.id === g.id ? null : g;
+    setGroup(next);
+    setCategory("");
+    applyFilter(next, "");
+  };
+
   const pickCategory = (id: string) => {
     const next = category === id ? "" : id;
     setCategory(next);
-    categoryRef.current = next;
-    clearMarkers();
-    loadPins();
+    applyFilter(group, next);
   };
 
   const pickKind = (id: PinKind) => {
     if (id === kind) return;
     setKind(id);
     kindRef.current = id;
+    setGroup(null);
     setCategory("");
-    categoryRef.current = "";
+    categoriesRef.current = "";
     clearMarkers();
     loadPins();
   };
@@ -215,20 +238,63 @@ export default function MapApp({ initialPinId }: { initialPinId?: string }) {
             </button>
           ))}
         </div>
-        {/* Kategori çipleri */}
-        <div className="mt-2 flex gap-1.5 overflow-x-auto pb-1 pointer-events-auto [-webkit-overflow-scrolling:touch] [scrollbar-width:none]">
-          {CATEGORIES_BY_KIND[kind].map((c) => (
-            <button
-              key={c.id}
-              onClick={() => pickCategory(c.id)}
-              className={`btn shrink-0 px-3 py-1 text-[13px] ${
-                category === c.id ? "btn-tomato" : "btn-cream"
-              }`}
-            >
-              {c.emoji} {c.label}
-            </button>
-          ))}
-        </div>
+        {/* Ana grup çipleri (gruplu kind için) — çubuk şişmesin diye sadece gruplar */}
+        {hasGroups(kind) ? (
+          <>
+            <div className="mt-2 flex gap-1.5 overflow-x-auto pb-1 pointer-events-auto [-webkit-overflow-scrolling:touch] [scrollbar-width:none]">
+              {groupsForKind(kind).map((g) => (
+                <button
+                  key={g.id}
+                  onClick={() => pickGroup(g)}
+                  className={`btn shrink-0 px-3 py-1 text-[13px] ${
+                    group?.id === g.id ? "btn-tomato" : "btn-cream"
+                  }`}
+                >
+                  {g.emoji} {g.label}
+                </button>
+              ))}
+            </div>
+            {/* Alt kategoriler — yalnızca bir grup seçiliyken açılır */}
+            {group && (
+              <div className="mt-1 flex gap-1.5 overflow-x-auto pb-1 pointer-events-auto [-webkit-overflow-scrolling:touch] [scrollbar-width:none]">
+                <button
+                  onClick={() => pickCategory("")}
+                  className={`btn shrink-0 px-3 py-1 text-xs ${
+                    category === "" ? "btn-teal" : "btn-cream"
+                  }`}
+                >
+                  ✳️ Tümü
+                </button>
+                {group.categories.map((c) => (
+                  <button
+                    key={c.id}
+                    onClick={() => pickCategory(c.id)}
+                    className={`btn shrink-0 px-3 py-1 text-xs ${
+                      category === c.id ? "btn-teal" : "btn-cream"
+                    }`}
+                  >
+                    {c.emoji} {c.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </>
+        ) : (
+          /* Tek gruplu kind (Anı/Sorun): doğrudan kategoriler */
+          <div className="mt-2 flex gap-1.5 overflow-x-auto pb-1 pointer-events-auto [-webkit-overflow-scrolling:touch] [scrollbar-width:none]">
+            {groupsForKind(kind)[0]?.categories.map((c) => (
+              <button
+                key={c.id}
+                onClick={() => pickCategory(c.id)}
+                className={`btn shrink-0 px-3 py-1 text-[13px] ${
+                  category === c.id ? "btn-tomato" : "btn-cream"
+                }`}
+              >
+                {c.emoji} {c.label}
+              </button>
+            ))}
+          </div>
+        )}
       </header>
 
       {/* Nişangah modu */}
