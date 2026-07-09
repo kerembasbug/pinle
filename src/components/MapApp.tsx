@@ -35,6 +35,7 @@ export default function MapApp({ initialPinId }: { initialPinId?: string }) {
   const mapDiv = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const markersRef = useRef<Map<string, maplibregl.Marker>>(new Map());
+  const meMarkerRef = useRef<maplibregl.Marker | null>(null); // kullanıcının kendi konumu
   const categoriesRef = useRef<string>(""); // API'ye gidecek virgüllü kategori listesi
   const kindRef = useRef<PinKind>("lezzet");
 
@@ -263,13 +264,27 @@ export default function MapApp({ initialPinId }: { initialPinId?: string }) {
 
   const locate = () => {
     if (!navigator.geolocation) return showToast("Konum desteklenmiyor 😕");
+    showToast("Konumun bulunuyor…");
     navigator.geolocation.getCurrentPosition(
-      (pos) =>
-        mapRef.current?.flyTo({
-          center: [pos.coords.longitude, pos.coords.latitude],
-          zoom: 15,
-        }),
-      () => showToast("Konum alınamadı")
+      (pos) => {
+        const map = mapRef.current;
+        if (!map) return;
+        const lngLat: [number, number] = [pos.coords.longitude, pos.coords.latitude];
+        if (meMarkerRef.current) {
+          meMarkerRef.current.setLngLat(lngLat);
+        } else {
+          const el = document.createElement("div");
+          el.className = "me-marker";
+          el.innerHTML = `<div class="me-pulse"></div><div class="me-dot">🧍</div>`;
+          meMarkerRef.current = new maplibregl.Marker({ element: el, anchor: "center" })
+            .setLngLat(lngLat)
+            .addTo(map);
+        }
+        map.flyTo({ center: lngLat, zoom: 15 });
+        showToast("Buradasın 🧍");
+      },
+      () => showToast("Konum alınamadı"),
+      { enableHighAccuracy: true, timeout: 10000 }
     );
   };
 

@@ -99,6 +99,18 @@ export const CATEGORY_GROUPS: Record<PinKind, CategoryGroup[]> = {
       ],
     },
     {
+      id: "g-bar",
+      label: "Bar & Gece",
+      emoji: "🍺",
+      categories: [
+        { id: "ickili-restoran", label: "İçkili Restoran", emoji: "🍷" },
+        { id: "meyhane", label: "Meyhane", emoji: "🍶" },
+        { id: "bar", label: "Bar & Pub", emoji: "🍺" },
+        { id: "gece-kulubu", label: "Gece Kulübü", emoji: "🎶" },
+        { id: "nargile", label: "Nargile", emoji: "💨" },
+      ],
+    },
+    {
       id: "g-market",
       label: "Market & Alışveriş",
       emoji: "🛒",
