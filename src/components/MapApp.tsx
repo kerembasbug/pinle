@@ -5,6 +5,8 @@ import maplibregl from "maplibre-gl";
 import {
   KINDS,
   categoryById,
+  categoryInKind,
+  groupForCategory,
   groupsForKind,
   hasGroups,
   type CategoryGroup,
@@ -34,15 +36,22 @@ const VOTE_ICON: Record<string, string> = { lezzet: "✓", ani: "❤️", sorun:
 export default function MapApp({
   initialPinId,
   initialCenter,
+  initialCategory,
 }: {
   initialPinId?: string;
   initialCenter?: [number, number];
+  initialCategory?: string;
 }) {
+  // Şehir/kategori sayfasından gelen ön-filtre (yalnızca geçerli lezzet kategorisi)
+  const initialCat =
+    initialCategory && categoryInKind("lezzet", initialCategory) ? initialCategory : "";
+  const initialGroup = initialCat ? (groupForCategory("lezzet", initialCat) ?? null) : null;
+
   const mapDiv = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const markersRef = useRef<Map<string, maplibregl.Marker>>(new Map());
   const meMarkerRef = useRef<maplibregl.Marker | null>(null); // kullanıcının kendi konumu
-  const categoriesRef = useRef<string>(""); // API'ye gidecek virgüllü kategori listesi
+  const categoriesRef = useRef<string>(initialCat); // API'ye gidecek virgüllü kategori listesi
   const kindRef = useRef<PinKind>("lezzet");
 
   const [sheet, setSheet] = useState<SheetState>(
@@ -50,8 +59,8 @@ export default function MapApp({
   );
   const [placing, setPlacing] = useState(false);
   const [kind, setKind] = useState<PinKind>("lezzet");
-  const [group, setGroup] = useState<CategoryGroup | null>(null); // seçili ana grup
-  const [category, setCategory] = useState(""); // grup içindeki seçili alt kategori
+  const [group, setGroup] = useState<CategoryGroup | null>(initialGroup); // seçili ana grup
+  const [category, setCategory] = useState(initialCat); // grup içindeki seçili alt kategori
   const [me, setMe] = useState<Me | null>(null);
   const [toast, setToast] = useState<{ msg: string; key: number } | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);

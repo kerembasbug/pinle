@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { db } from "@/lib/db";
-import { CITIES } from "@/lib/cities";
+import { CITIES, cityCatCombos } from "@/lib/cities";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -20,6 +20,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${BASE}/sehir/${c.slug}`,
       changeFrequency: "daily" as const,
       priority: 0.9,
+    })),
+    ...cityCatCombos().map((c) => ({
+      url: `${BASE}/sehir/${c.city}/${c.category}`,
+      changeFrequency: "daily" as const,
+      priority: 0.7,
     })),
     { url: `${BASE}/gizlilik`, changeFrequency: "monthly", priority: 0.3 },
     ...pins.map((p) => ({

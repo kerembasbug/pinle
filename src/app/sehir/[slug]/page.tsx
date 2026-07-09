@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CITIES, cityBySlug, cityPins, cityStats } from "@/lib/cities";
+import { CITIES, cityBySlug, cityCatCombos, cityPins, cityStats } from "@/lib/cities";
 import { categoryById } from "@/lib/categories";
 import { formatPrice } from "@/lib/types";
 
@@ -39,6 +39,9 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
   const stats = cityStats(city.name);
   const pins = cityPins(city.name, 40);
   const others = CITIES.filter((c) => c.slug !== city.slug);
+  const catLinks = cityCatCombos()
+    .filter((c) => c.city === city.slug)
+    .map((c) => c.category);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -110,6 +113,26 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
       <Link href={`/?sehir=${city.slug}`} className="btn btn-tomato self-start px-7 py-3 text-lg">
         {city.name} Haritasını Aç 🗺️
       </Link>
+
+      {catLinks.length > 0 && (
+        <section className="flex flex-col gap-2">
+          <h2 className="text-lg font-extrabold">Kategoriye göre</h2>
+          <div className="flex flex-wrap gap-2">
+            {catLinks.map((c) => {
+              const m = categoryById(c);
+              return (
+                <Link
+                  key={c}
+                  href={`/sehir/${city.slug}/${c}`}
+                  className="btn btn-cream px-3 py-1.5 text-sm"
+                >
+                  {m.emoji} {m.label}
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {pins.length > 0 ? (
         <section className="flex flex-col gap-2">
