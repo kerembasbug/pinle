@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import maplibregl from "maplibre-gl";
 import {
   KINDS,
@@ -15,12 +16,16 @@ import {
 import type { Me, PinSummary } from "@/lib/types";
 import { formatPrice } from "@/lib/types";
 import { getBlocked } from "@/lib/blocklist";
-import PinSheet from "./PinSheet";
-import NewPinSheet from "./NewPinSheet";
-import ProfileSheet from "./ProfileSheet";
-import SearchSheet, { type SearchResult } from "./SearchSheet";
-import Onboarding from "./Onboarding";
-import AuthSheet from "./AuthSheet";
+import type { SearchResult } from "./SearchSheet";
+
+// Sheet/overlay bileşenleri yalnızca etkileşimde açılır → ilk JS bundle'ından
+// çıkar (lazy-load). Kritik yol yalnızca harita + MapLibre olur.
+const PinSheet = dynamic(() => import("./PinSheet"), { ssr: false });
+const NewPinSheet = dynamic(() => import("./NewPinSheet"), { ssr: false });
+const ProfileSheet = dynamic(() => import("./ProfileSheet"), { ssr: false });
+const SearchSheet = dynamic(() => import("./SearchSheet"), { ssr: false });
+const Onboarding = dynamic(() => import("./Onboarding"), { ssr: false });
+const AuthSheet = dynamic(() => import("./AuthSheet"), { ssr: false });
 
 const MAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
 const ISTANBUL: [number, number] = [28.98, 41.03];

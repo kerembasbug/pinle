@@ -55,6 +55,9 @@ export default function RootLayout({
   return (
     <html lang="tr" className={`${baloo.variable} ${sora.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">
+        {/* Harita tile sunucusuna erken bağlan — LCP için (React head'e hoist eder) */}
+        <link rel="preconnect" href="https://tiles.openfreemap.org" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://tiles.openfreemap.org" />
         {children}
         <SwRegister />
       </body>
