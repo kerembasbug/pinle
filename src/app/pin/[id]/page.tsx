@@ -20,7 +20,8 @@ export async function generateMetadata({
   const pin = getPin(id);
   if (!pin) return { title: "Pin bulunamadı — Pinle" };
   const price = formatPrice(pin.price);
-  const title = `${pin.name}${price ? ` — ${price}` : ""} | Pinle`;
+  const priceStr = price ? `${pin.price_item ? `${pin.price_item} ` : ""}${price}` : "";
+  const title = `${pin.name}${priceStr ? ` — ${priceStr}` : ""} | Pinle`;
   const description =
     pin.note ??
     `${categoryById(pin.category).label} · ${(CONFIRM_LABEL[pin.kind] ?? CONFIRM_LABEL.lezzet)(pin.confirms)} · Pinle`;
@@ -58,7 +59,16 @@ export default async function PinPage({ params }: { params: Promise<{ id: string
             </p>
           </div>
         </div>
-        {price && <p className="display mt-3 text-4xl font-extrabold text-tomato">{price}</p>}
+        {price && (
+          <p className="display mt-3 text-4xl font-extrabold text-tomato">
+            {pin.price_item && (
+              <span className="mr-2 align-middle text-base font-bold opacity-60">
+                {pin.price_item}
+              </span>
+            )}
+            {price}
+          </p>
+        )}
         {pin.note && <p className="mt-2 text-[15px]">{pin.note}</p>}
         {pin.photo && (
           // eslint-disable-next-line @next/next/no-img-element

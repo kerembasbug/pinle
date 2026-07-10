@@ -10,7 +10,7 @@ export async function GET(
   const me = await getUserIfExists();
   const pin = db()
     .prepare(
-      `SELECT p.id, p.user_id, p.name, p.kind, p.category, p.price, p.note, p.photo, p.lat, p.lng, p.created_at,
+      `SELECT p.id, p.user_id, p.name, p.kind, p.category, p.price, p.price_item, p.note, p.photo, p.lat, p.lng, p.created_at,
         u.name AS author,
         COALESCE((SELECT COUNT(*) FROM votes v WHERE v.pin_id = p.id AND v.value = 1), 0) AS confirms,
         COALESCE((SELECT COUNT(*) FROM votes v WHERE v.pin_id = p.id AND v.value = -1), 0) AS outdated

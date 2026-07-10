@@ -41,6 +41,7 @@ export type CityPin = {
   kind: string;
   category: string;
   price: number | null;
+  price_item: string | null;
   district: string | null;
   confirms: number;
 };
@@ -49,7 +50,7 @@ export type CityPin = {
 export function cityPins(name: string, limit = 40): CityPin[] {
   return db()
     .prepare(
-      `SELECT p.id, p.name, p.kind, p.category, p.price, p.district,
+      `SELECT p.id, p.name, p.kind, p.category, p.price, p.price_item, p.district,
               COALESCE((SELECT COUNT(*) FROM votes v WHERE v.pin_id = p.id AND v.value = 1), 0) AS confirms
          FROM pins p
         WHERE p.status = 'active' AND p.city = ?
@@ -83,7 +84,7 @@ export const CITYCAT_MIN_PINS = 3;
 export function cityCatPins(name: string, category: string, limit = 40): CityPin[] {
   return db()
     .prepare(
-      `SELECT p.id, p.name, p.kind, p.category, p.price, p.district,
+      `SELECT p.id, p.name, p.kind, p.category, p.price, p.price_item, p.district,
               COALESCE((SELECT COUNT(*) FROM votes v WHERE v.pin_id = p.id AND v.value = 1), 0) AS confirms
          FROM pins p
         WHERE p.status = 'active' AND p.city = ? AND p.category = ?

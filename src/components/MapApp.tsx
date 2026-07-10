@@ -141,9 +141,10 @@ export default function MapApp({
       el.className = "pin-marker" + (p.verified ? " verified" : "");
       const price = formatPrice(typeof p.price === "number" ? p.price : null);
       const icon = VOTE_ICON[p.kind as string] ?? "✓";
+      const priceItem = typeof p.price_item === "string" ? p.price_item.slice(0, 12) : "";
       const label =
         price != null
-          ? `<span class="price">${price}</span>`
+          ? `<span class="price">${priceItem ? escapeHtml(priceItem) + " " : ""}${price}</span>`
           : p.kind === "ani"
             ? `<span>${escapeHtml(String(p.name).slice(0, 14))}</span>`
             : isPriceable(p.kind as PinKind, String(p.category))

@@ -157,8 +157,11 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
                       </span>
                     </span>
                     {price && (
-                      <span className="display shrink-0 text-lg font-extrabold text-tomato">
-                        {price}
+                      <span className="shrink-0 text-right">
+                        {p.price_item && (
+                          <span className="block text-[10px] opacity-60">{p.price_item}</span>
+                        )}
+                        <span className="display text-lg font-extrabold text-tomato">{price}</span>
                       </span>
                     )}
                   </Link>

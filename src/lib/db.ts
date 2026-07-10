@@ -74,6 +74,7 @@ function migrate(d: Database.Database) {
       pin_id TEXT NOT NULL REFERENCES pins(id),
       user_id TEXT NOT NULL REFERENCES users(id),
       price REAL NOT NULL,
+      item TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
     CREATE INDEX IF NOT EXISTS idx_pricerep_pin ON price_reports(pin_id, created_at);
@@ -120,6 +121,15 @@ function migrate(d: Database.Database) {
   }
   if (!pinCols.some((c) => c.name === "city")) {
     d.exec("ALTER TABLE pins ADD COLUMN city TEXT");
+  }
+  // Fiyatın "ne için" olduğu kısa etiket (örn. "Döner", "Kahvaltı"). Fiyat hep
+  // bir kaleme bağlı olmalı — mekan çıplak rakamla fiyatlanmasın.
+  if (!pinCols.some((c) => c.name === "price_item")) {
+    d.exec("ALTER TABLE pins ADD COLUMN price_item TEXT");
+  }
+  const priceRepCols = d.prepare("PRAGMA table_info(price_reports)").all() as { name: string }[];
+  if (priceRepCols.length && !priceRepCols.some((c) => c.name === "item")) {
+    d.exec("ALTER TABLE price_reports ADD COLUMN item TEXT");
   }
 
   // İlçe/şehri atanmamış pinleri doldur (seed dahil her açılışta idempotent)

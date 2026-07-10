@@ -1,22 +1,29 @@
 import { db, awardPoints } from "@/lib/db";
 import { getOrCreateUser } from "@/lib/identity";
-import { withinRateLimit } from "@/lib/moderation";
+import { withinRateLimit, isClean } from "@/lib/moderation";
 import { POINTS } from "@/lib/gamify";
 
 // Mevcut bir pine güncel fiyat bildir. Fiyatsız OSM mekanlarını topluluk
 // böyle doldurur — çıkıp aynı mekanı yeniden pinlemeye gerek kalmaz.
+// Fiyat hep bir "kalem" (ne için) ile: mekan çıplak rakamla fiyatlanmasın.
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
   const user = await getOrCreateUser();
-  const { price } = (await request.json().catch(() => ({}))) as { price?: number };
+  const { price, item } = (await request.json().catch(() => ({}))) as {
+    price?: number;
+    item?: string;
+  };
 
   if (typeof price !== "number" || !Number.isFinite(price) || price < 1 || price > 100000) {
     return Response.json({ error: "Geçerli bir fiyat gir (1–100000 ₺)" }, { status: 400 });
   }
   const value = Math.round(price * 100) / 100; // en fazla 2 ondalık
+  const label = (item ?? "").trim().slice(0, 40);
+  if (!label) return Response.json({ error: "Ne için? (örn. Döner)" }, { status: 400 });
+  if (!isClean(label)) return Response.json({ error: "Uygunsuz metin" }, { status: 400 });
 
   const d = db();
   const pin = d
@@ -30,12 +37,13 @@ export async function POST(
 
   const changed = pin.price !== value;
 
-  d.prepare("INSERT INTO price_reports (pin_id, user_id, price) VALUES (?, ?, ?)").run(
+  d.prepare("INSERT INTO price_reports (pin_id, user_id, price, item) VALUES (?, ?, ?, ?)").run(
     id,
     user.id,
-    value
+    value,
+    label
   );
-  d.prepare("UPDATE pins SET price = ? WHERE id = ?").run(value, id);
+  d.prepare("UPDATE pins SET price = ?, price_item = ? WHERE id = ?").run(value, label, id);
 
   // Fiyat değiştiyse oylar artık eski fiyatı doğruluyordu → sıfırla (oylar hep
   // GÜNCEL fiyatı doğrular; "hâlâ bu fiyat" anlamı korunur).
@@ -56,6 +64,7 @@ export async function POST(
 
   return Response.json({
     price: value,
+    price_item: label,
     changed,
     earned: POINTS.PRICE,
     confirms: counts.confirms,

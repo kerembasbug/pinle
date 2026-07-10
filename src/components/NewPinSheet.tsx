@@ -1,7 +1,14 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { groupsForKind, hasGroups, kindMeta, type PinKind } from "@/lib/categories";
+import {
+  categoryById,
+  groupsForKind,
+  hasGroups,
+  isPriceable,
+  kindMeta,
+  type PinKind,
+} from "@/lib/categories";
 
 type Props = {
   coords: { lat: number; lng: number } | null;
@@ -19,6 +26,7 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated }: Pro
   const [name, setName] = useState("");
   const [category, setCategory] = useState(groups[0].categories[0].id);
   const [price, setPrice] = useState("");
+  const [priceItem, setPriceItem] = useState("");
   const [note, setNote] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -32,6 +40,7 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated }: Pro
       setGroupId(gs[0].id);
       setCategory(gs[0].categories[0].id);
       setPrice("");
+      setPriceItem("");
       setNote("");
       setError("");
       setPhotoName("");
@@ -48,6 +57,7 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated }: Pro
     fd.set("kind", pinKind);
     fd.set("category", category);
     fd.set("price", meta.hasPrice ? price : "");
+    fd.set("price_item", meta.hasPrice ? priceItem : "");
     fd.set("note", note);
     fd.set("lat", String(coords.lat));
     fd.set("lng", String(coords.lng));
@@ -110,6 +120,15 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated }: Pro
             placeholder={meta.namePlaceholder}
             className="sticker-flat mt-3 w-full px-3 py-2.5 text-[15px] outline-none focus:border-tomato bg-cream"
           />
+          {meta.hasPrice && isPriceable(pinKind, category) && (
+            <input
+              value={priceItem}
+              onChange={(e) => setPriceItem(e.target.value)}
+              maxLength={40}
+              placeholder={`Fiyat ne için? (örn. ${categoryById(category).label})`}
+              className="sticker-flat mt-2 w-full px-3 py-2.5 text-[15px] outline-none focus:border-tomato bg-cream"
+            />
+          )}
           <div className="mt-2 flex gap-2">
             {meta.hasPrice && (
               <div className="sticker-flat flex flex-1 items-center bg-cream focus-within:border-tomato">

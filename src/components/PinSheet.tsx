@@ -19,6 +19,7 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
   const [myVote, setMyVote] = useState(0);
   const [text, setText] = useState("");
   const [priceInput, setPriceInput] = useState("");
+  const [itemInput, setItemInput] = useState("");
   const [editingPrice, setEditingPrice] = useState(false);
   const [busy, setBusy] = useState(false);
   const loadedFor = useRef<string | null>(null);
@@ -36,6 +37,12 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
         setPin(data.pin);
         setComments(data.comments);
         setMyVote(data.myVote);
+        // Ürün etiketini ön-doldur: mevcut değer ya da kategori adı (örn. "Döner")
+        const p = data.pin;
+        setItemInput(
+          p.price_item ??
+            (isPriceable(p.kind, p.category) ? categoryById(p.category).label : "")
+        );
       })
       .catch(() => {
         onToast("Pin yüklenemedi");
@@ -83,16 +90,24 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
     if (!Number.isFinite(val) || val < 1 || val > 100000) {
       return onToast("Geçerli bir fiyat gir (₺)");
     }
+    const item = itemInput.trim();
+    if (!item) return onToast("Ne için? (örn. Döner)");
     setBusy(true);
     const res = await fetch(`/api/pins/${pin.id}/price`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ price: val }),
+      body: JSON.stringify({ price: val, item }),
     });
     const data = await res.json();
     setBusy(false);
     if (!res.ok) return onToast(data.error ?? "Fiyat kaydedilemedi");
-    setPin({ ...pin, price: data.price, confirms: data.confirms, outdated: data.outdated });
+    setPin({
+      ...pin,
+      price: data.price,
+      price_item: data.price_item,
+      confirms: data.confirms,
+      outdated: data.outdated,
+    });
     if (data.myVote !== undefined) setMyVote(data.myVote);
     setPriceInput("");
     setEditingPrice(false);
@@ -140,27 +155,35 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
   const visibleComments = comments.filter((c) => !blocked.has(c.authorId));
 
   const priceEditor = (
-    <div className="flex gap-2">
-      <div className="sticker-flat flex flex-1 items-center gap-1 bg-cream px-3">
-        <span className="text-lg font-bold text-tomato">₺</span>
-        <input
-          value={priceInput}
-          onChange={(e) => setPriceInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && submitPrice()}
-          inputMode="decimal"
-          maxLength={8}
-          placeholder="örn. 120"
-          className="w-full bg-transparent py-2.5 text-sm outline-none"
-          autoFocus
-        />
+    <div className="flex flex-col gap-2">
+      <input
+        value={itemInput}
+        onChange={(e) => setItemInput(e.target.value)}
+        maxLength={40}
+        placeholder="Ne için? (örn. Döner, Kahvaltı tabağı)"
+        className="sticker-flat bg-cream px-3 py-2 text-sm outline-none focus:border-tomato"
+      />
+      <div className="flex gap-2">
+        <div className="sticker-flat flex flex-1 items-center gap-1 bg-cream px-3">
+          <span className="text-lg font-bold text-tomato">₺</span>
+          <input
+            value={priceInput}
+            onChange={(e) => setPriceInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && submitPrice()}
+            inputMode="decimal"
+            maxLength={8}
+            placeholder="örn. 120"
+            className="w-full bg-transparent py-2.5 text-sm outline-none"
+          />
+        </div>
+        <button
+          onClick={submitPrice}
+          disabled={busy || !priceInput.trim() || !itemInput.trim()}
+          className="btn btn-tomato px-4 text-sm"
+        >
+          Kaydet
+        </button>
       </div>
-      <button
-        onClick={submitPrice}
-        disabled={busy || !priceInput.trim()}
-        className="btn btn-tomato px-4 text-sm"
-      >
-        Kaydet
-      </button>
     </div>
   );
 
@@ -184,7 +207,12 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
                 </p>
               </div>
               {price && (
-                <div className="display text-2xl font-extrabold text-tomato">{price}</div>
+                <div className="shrink-0 text-right">
+                  {pin.price_item && (
+                    <div className="text-[10px] font-bold opacity-60">{pin.price_item}</div>
+                  )}
+                  <div className="display text-2xl font-extrabold text-tomato">{price}</div>
+                </div>
               )}
             </div>
 

@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { db, awardPoints } from "@/lib/db";
 import { getOrCreateUser } from "@/lib/identity";
-import { isValidKind, categoryInKind, kindMeta } from "@/lib/categories";
+import { isValidKind, categoryInKind, kindMeta, categoryById, isPriceable } from "@/lib/categories";
 import { nearestPlace } from "@/lib/districts";
 import { isClean, withinRateLimit } from "@/lib/moderation";
 import { POINTS } from "@/lib/gamify";
@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
   const catFilter =
     categories.length > 0 ? `AND p.category IN (${categories.map(() => "?").join(",")})` : "";
   const sql = `
-    SELECT p.id, p.user_id, p.name, p.kind, p.category, p.price, p.lat, p.lng, p.created_at,
+    SELECT p.id, p.user_id, p.name, p.kind, p.category, p.price, p.price_item, p.lat, p.lng, p.created_at,
       COALESCE(SUM(CASE WHEN v.value = 1 THEN 1 END), 0) AS confirms,
       COALESCE(SUM(CASE WHEN v.value = -1 THEN 1 END), 0) AS outdated,
       (SELECT COUNT(*) FROM comments c WHERE c.pin_id = p.id) AS comment_count
@@ -77,6 +77,7 @@ export async function POST(request: NextRequest) {
   const category = String(form.get("category") ?? "");
   const note = String(form.get("note") ?? "").trim();
   const priceRaw = String(form.get("price") ?? "").trim();
+  const priceItemRaw = String(form.get("price_item") ?? "").trim().slice(0, 40);
   const lat = Number(form.get("lat"));
   const lng = Number(form.get("lng"));
   const photo = form.get("photo");
@@ -103,6 +104,16 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: "Geçersiz fiyat" }, { status: 400 });
     }
   }
+  // Fiyat varsa "ne için" etiketi: verilmişse onu, yoksa kategori adını kullan
+  // (örn. döner kategorisi → "Döner"). Fiyat yoksa etiket de yok.
+  let priceItem: string | null = null;
+  if (price != null) {
+    priceItem = priceItemRaw || (isPriceable(kind, category) ? categoryById(category).label : "");
+    priceItem = priceItem || null;
+    if (priceItem && !isClean(priceItem)) {
+      return Response.json({ error: "Metin uygunsuz ifade içeriyor" }, { status: 400 });
+    }
+  }
   if (Number.isNaN(lat) || Number.isNaN(lng) || Math.abs(lat) > 90 || Math.abs(lng) > 180) {
     return Response.json({ error: "Geçersiz konum" }, { status: 400 });
   }
@@ -123,13 +134,13 @@ export async function POST(request: NextRequest) {
   const place = nearestPlace(lat, lng);
   db()
     .prepare(
-      `INSERT INTO pins (id, user_id, name, kind, category, district, city, price, note, photo, lat, lng)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO pins (id, user_id, name, kind, category, district, city, price, price_item, note, photo, lat, lng)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       id, user.id, name, kind, category,
       place?.district ?? "-", place?.city ?? "-",
-      price, note || null, photoName, lat, lng
+      price, priceItem, note || null, photoName, lat, lng
     );
 
   const earned = POINTS.PIN + (photoName ? POINTS.PIN_PHOTO_BONUS : 0);

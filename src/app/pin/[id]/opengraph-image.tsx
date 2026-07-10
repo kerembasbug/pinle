@@ -73,8 +73,13 @@ export default async function OgImage({ params }: { params: Promise<{ id: string
                 </div>
               </div>
               {price && (
-                <div style={{ fontSize: 96, fontWeight: 800, color: "#e8442e", marginTop: 12 }}>
-                  {price}
+                <div style={{ display: "flex", alignItems: "baseline", gap: 16, marginTop: 12 }}>
+                  {pin!.price_item && (
+                    <div style={{ fontSize: 40, fontWeight: 700, color: "#221b15", opacity: 0.6 }}>
+                      {pin!.price_item}
+                    </div>
+                  )}
+                  <div style={{ fontSize: 96, fontWeight: 800, color: "#e8442e" }}>{price}</div>
                 </div>
               )}
               <div style={{ display: "flex", gap: 20, marginTop: 20, fontSize: 32 }}>

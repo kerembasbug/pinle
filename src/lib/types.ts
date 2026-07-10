@@ -4,6 +4,7 @@ export type PinSummary = {
   kind: string;
   category: string;
   price: number | null;
+  price_item: string | null;
   lat: number;
   lng: number;
   created_at: string;
@@ -19,6 +20,7 @@ export type PinDetail = {
   kind: string;
   category: string;
   price: number | null;
+  price_item: string | null;
   note: string | null;
   photo: string | null;
   lat: number;
