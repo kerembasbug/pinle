@@ -1,13 +1,7 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import {
-  groupsForKind,
-  hasGroups,
-  itemSuggestionsFor,
-  kindMeta,
-  type PinKind,
-} from "@/lib/categories";
+import { useEffect, useRef, useState } from "react";
+import { PLACE_TYPES, itemSuggestionsFor, kindMeta, type PinKind } from "@/lib/categories";
 
 type Props = {
   coords: { lat: number; lng: number } | null;
@@ -36,12 +30,8 @@ function distMeters(a: { lat: number; lng: number }, b: { lat: number; lng: numb
 
 export default function NewPinSheet({ coords, pinKind, onClose, onCreated, onPickExisting }: Props) {
   const meta = kindMeta(pinKind);
-  const groups = useMemo(() => groupsForKind(pinKind), [pinKind]);
-  const grouped = hasGroups(pinKind);
-  const [groupId, setGroupId] = useState(groups[0].id);
-  const activeGroup = groups.find((g) => g.id === groupId) ?? groups[0];
   const [name, setName] = useState("");
-  const [category, setCategory] = useState(groups[0].categories[0].id);
+  const [category, setCategory] = useState(PLACE_TYPES[0].id); // seçili yer tipi
   const [price, setPrice] = useState("");
   const [priceItem, setPriceItem] = useState("");
   const [qty, setQty] = useState(1);
@@ -59,10 +49,8 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated, onPic
 
   useEffect(() => {
     if (coords) {
-      const gs = groupsForKind(pinKind);
       setName("");
-      setGroupId(gs[0].id);
-      setCategory(gs[0].categories[0].id);
+      setCategory(PLACE_TYPES[0].id);
       setPrice("");
       setPriceItem("");
       setQty(1);
@@ -259,35 +247,18 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated, onPic
             </div>
           )}
 
-          {/* Gruplu kind: önce grup, sonra alt kategori */}
-          {grouped && (
-            <div className="mt-3 flex gap-1.5 overflow-x-auto pb-1 [scrollbar-width:none]">
-              {groups.map((g) => (
-                <button
-                  key={g.id}
-                  onClick={() => {
-                    setGroupId(g.id);
-                    setCategory(g.categories[0].id);
-                  }}
-                  className={`btn shrink-0 px-3 py-1 text-[13px] ${
-                    groupId === g.id ? "btn-tomato" : "btn-cream"
-                  }`}
-                >
-                  {g.emoji} {g.label}
-                </button>
-              ))}
-            </div>
-          )}
-          <div className="mt-2 flex flex-wrap gap-1.5">
-            {activeGroup.categories.map((c) => (
+          {/* Yer tipi — tek dokunuş, tek seviye */}
+          <p className="mt-3 text-xs font-bold opacity-55">Burası ne? 👇</p>
+          <div className="mt-1.5 flex flex-wrap gap-1.5">
+            {PLACE_TYPES.map((t) => (
               <button
-                key={c.id}
-                onClick={() => setCategory(c.id)}
+                key={t.id}
+                onClick={() => setCategory(t.id)}
                 className={`btn px-3 py-1 text-[13px] ${
-                  category === c.id ? (grouped ? "btn-teal" : "btn-tomato") : "btn-cream"
+                  category === t.id ? "btn-tomato" : "btn-cream"
                 }`}
               >
-                {c.emoji} {c.label}
+                {t.emoji} {t.label}
               </button>
             ))}
           </div>
@@ -313,7 +284,7 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated, onPic
             value={note}
             onChange={(e) => setNote(e.target.value)}
             maxLength={280}
-            rows={pinKind === "ani" ? 4 : 2}
+            rows={2}
             placeholder={meta.notePlaceholder}
             className="sticker-flat mt-2 w-full resize-none px-3 py-2.5 text-[15px] outline-none focus:border-tomato bg-cream"
           />

@@ -4,14 +4,12 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import maplibregl from "maplibre-gl";
 import {
-  KINDS,
+  PLACE_TYPES,
   categoryById,
   categoryInKind,
-  groupForCategory,
-  groupsForKind,
-  hasGroups,
+  categoryFilterIds,
   isPriceable,
-  type CategoryGroup,
+  placeTypeIdOf,
   type PinKind,
 } from "@/lib/categories";
 import type { Me, PinSummary } from "@/lib/types";
@@ -48,25 +46,25 @@ export default function MapApp({
   initialCenter?: [number, number];
   initialCategory?: string;
 }) {
-  // Şehir/kategori sayfasından gelen ön-filtre (yalnızca geçerli lezzet kategorisi)
-  const initialCat =
-    initialCategory && categoryInKind("lezzet", initialCategory) ? initialCategory : "";
-  const initialGroup = initialCat ? (groupForCategory("lezzet", initialCat) ?? null) : null;
+  // Şehir/kategori sayfasından gelen ön-filtre → yer tipi (eski id de çözülür)
+  const initialType =
+    initialCategory && categoryInKind("lezzet", initialCategory)
+      ? placeTypeIdOf(initialCategory)
+      : "";
 
   const mapDiv = useRef<HTMLDivElement>(null);
   const mapRef = useRef<maplibregl.Map | null>(null);
   const markersRef = useRef<Map<string, maplibregl.Marker>>(new Map());
   const meMarkerRef = useRef<maplibregl.Marker | null>(null); // kullanıcının kendi konumu
-  const categoriesRef = useRef<string>(initialCat); // API'ye gidecek virgüllü kategori listesi
+  // API'ye gidecek virgüllü kategori listesi (seçili yer tipinin genişletilmiş id'leri)
+  const categoriesRef = useRef<string>(initialType ? categoryFilterIds(initialType).join(",") : "");
   const kindRef = useRef<PinKind>("lezzet");
 
   const [sheet, setSheet] = useState<SheetState>(
     initialPinId ? { kind: "pin", id: initialPinId } : { kind: "none" }
   );
   const [placing, setPlacing] = useState(false);
-  const [kind, setKind] = useState<PinKind>("lezzet");
-  const [group, setGroup] = useState<CategoryGroup | null>(initialGroup); // seçili ana grup
-  const [category, setCategory] = useState(initialCat); // grup içindeki seçili alt kategori
+  const [placeType, setPlaceType] = useState(initialType); // seçili yer tipi ("" = tümü)
   const [me, setMe] = useState<Me | null>(null);
   const [toast, setToast] = useState<{ msg: string; key: number } | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -331,35 +329,11 @@ export default function MapApp({
     markersRef.current.clear();
   };
 
-  // Filtreyi güncelle: grup + opsiyonel alt kategori → API'ye kategori listesi
-  const applyFilter = (g: CategoryGroup | null, catId: string) => {
-    if (catId) categoriesRef.current = catId;
-    else if (g) categoriesRef.current = g.categories.map((c) => c.id).join(",");
-    else categoriesRef.current = "";
-    clearMarkers();
-    loadPins();
-  };
-
-  const pickGroup = (g: CategoryGroup) => {
-    const next = group?.id === g.id ? null : g;
-    setGroup(next);
-    setCategory("");
-    applyFilter(next, "");
-  };
-
-  const pickCategory = (id: string) => {
-    const next = category === id ? "" : id;
-    setCategory(next);
-    applyFilter(group, next);
-  };
-
-  const pickKind = (id: PinKind) => {
-    if (id === kind) return;
-    setKind(id);
-    kindRef.current = id;
-    setGroup(null);
-    setCategory("");
-    categoriesRef.current = "";
+  // Yer tipi filtresi: seçince o tipin genişletilmiş id listesini API'ye gönder.
+  const pickType = (id: string) => {
+    const next = placeType === id ? "" : id;
+    setPlaceType(next);
+    categoriesRef.current = next ? categoryFilterIds(next).join(",") : "";
     clearMarkers();
     loadPins();
   };
@@ -394,7 +368,7 @@ export default function MapApp({
     const c = mapRef.current?.getCenter();
     if (!c) return;
     setPlacing(false);
-    setSheet({ kind: "new", lat: c.lat, lng: c.lng, pinKind: kind });
+    setSheet({ kind: "new", lat: c.lat, lng: c.lng, pinKind: "lezzet" });
   };
 
   const onPinCreated = (id: string, earned: number) => {
@@ -482,75 +456,28 @@ export default function MapApp({
             ⭐ {me ? me.points : "—"}
           </button>
         </div>
-        {/* Katman sekmeleri */}
-        <div className="mt-2 flex gap-1.5 pointer-events-auto">
-          {KINDS.map((k) => (
+        {/* Yer tipi filtresi — tek seviye, kaydırılabilir tek satır */}
+        <div className="mt-2 flex gap-1.5 overflow-x-auto pb-1 pointer-events-auto [-webkit-overflow-scrolling:touch] [scrollbar-width:none]">
+          <button
+            onClick={() => pickType("")}
+            className={`btn shrink-0 px-3 py-1 text-[13px] ${
+              placeType === "" ? "btn-tomato" : "btn-cream"
+            }`}
+          >
+            ✳️ Tümü
+          </button>
+          {PLACE_TYPES.map((t) => (
             <button
-              key={k.id}
-              onClick={() => pickKind(k.id)}
-              className={`btn px-3.5 py-1.5 text-sm ${kind === k.id ? "btn-tomato" : "btn-cream"}`}
+              key={t.id}
+              onClick={() => pickType(t.id)}
+              className={`btn shrink-0 px-3 py-1 text-[13px] ${
+                placeType === t.id ? "btn-tomato" : "btn-cream"
+              }`}
             >
-              {k.emoji} {k.label}
+              {t.emoji} {t.label}
             </button>
           ))}
         </div>
-        {/* Ana grup çipleri (gruplu kind için) — çubuk şişmesin diye sadece gruplar */}
-        {hasGroups(kind) ? (
-          <>
-            <div className="mt-2 flex gap-1.5 overflow-x-auto pb-1 pointer-events-auto [-webkit-overflow-scrolling:touch] [scrollbar-width:none]">
-              {groupsForKind(kind).map((g) => (
-                <button
-                  key={g.id}
-                  onClick={() => pickGroup(g)}
-                  className={`btn shrink-0 px-3 py-1 text-[13px] ${
-                    group?.id === g.id ? "btn-tomato" : "btn-cream"
-                  }`}
-                >
-                  {g.emoji} {g.label}
-                </button>
-              ))}
-            </div>
-            {/* Alt kategoriler — yalnızca bir grup seçiliyken açılır */}
-            {group && (
-              <div className="mt-1 flex gap-1.5 overflow-x-auto pb-1 pointer-events-auto [-webkit-overflow-scrolling:touch] [scrollbar-width:none]">
-                <button
-                  onClick={() => pickCategory("")}
-                  className={`btn shrink-0 px-3 py-1 text-xs ${
-                    category === "" ? "btn-teal" : "btn-cream"
-                  }`}
-                >
-                  ✳️ Tümü
-                </button>
-                {group.categories.map((c) => (
-                  <button
-                    key={c.id}
-                    onClick={() => pickCategory(c.id)}
-                    className={`btn shrink-0 px-3 py-1 text-xs ${
-                      category === c.id ? "btn-teal" : "btn-cream"
-                    }`}
-                  >
-                    {c.emoji} {c.label}
-                  </button>
-                ))}
-              </div>
-            )}
-          </>
-        ) : (
-          /* Tek gruplu kind (Anı/Sorun): doğrudan kategoriler */
-          <div className="mt-2 flex gap-1.5 overflow-x-auto pb-1 pointer-events-auto [-webkit-overflow-scrolling:touch] [scrollbar-width:none]">
-            {groupsForKind(kind)[0]?.categories.map((c) => (
-              <button
-                key={c.id}
-                onClick={() => pickCategory(c.id)}
-                className={`btn shrink-0 px-3 py-1 text-[13px] ${
-                  category === c.id ? "btn-tomato" : "btn-cream"
-                }`}
-              >
-                {c.emoji} {c.label}
-              </button>
-            ))}
-          </div>
-        )}
       </header>
 
       {/* Nişangah modu */}
