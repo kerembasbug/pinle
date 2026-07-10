@@ -71,6 +71,8 @@ export default function MapApp({
   const [toast, setToast] = useState<{ msg: string; key: number } | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
+  const [liveMode, setLiveMode] = useState(false);
+  const liveMarkersRef = useRef<maplibregl.Marker[]>([]);
 
   const showToast = useCallback((msg: string) => {
     setToast({ msg, key: Date.now() });
@@ -101,6 +103,56 @@ export default function MapApp({
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
   }, []);
+
+  // 🔴 Canlı mod: son 60 dk'nın hareketleri (yeni pin + fiyat) nabız işaretleriyle.
+  // Websocket yok — 30 sn'de bir hafif sorgu; kapatınca işaretler temizlenir.
+  useEffect(() => {
+    if (!liveMode) return;
+    let cancelled = false;
+    const clear = () => {
+      for (const m of liveMarkersRef.current) m.remove();
+      liveMarkersRef.current = [];
+    };
+    const load = async (first = false) => {
+      try {
+        const res = await fetch("/api/live");
+        const data = (await res.json()) as {
+          events: { id: string; lat: number; lng: number; type: string; name: string }[];
+        };
+        if (cancelled) return;
+        const map = mapRef.current;
+        if (!map) return;
+        clear();
+        for (const ev of data.events) {
+          const el = document.createElement("div");
+          el.className = "live-marker";
+          el.innerHTML = `<div class="live-ping"></div><div class="live-dot">${
+            ev.type === "price" ? "🏷️" : "📌"
+          }</div>`;
+          el.title = ev.name;
+          el.addEventListener("click", (e) => {
+            e.stopPropagation();
+            setSheet({ kind: "pin", id: ev.id });
+          });
+          liveMarkersRef.current.push(
+            new maplibregl.Marker({ element: el, anchor: "center" })
+              .setLngLat([ev.lng, ev.lat])
+              .addTo(map)
+          );
+        }
+        if (first) showToast(`🔴 Son 1 saatte ${data.events.length} hareket`);
+      } catch {
+        /* sessiz — sonraki turda tekrar dener */
+      }
+    };
+    load(true);
+    const t = setInterval(load, 30000);
+    return () => {
+      cancelled = true;
+      clearInterval(t);
+      clear();
+    };
+  }, [liveMode, showToast]);
 
   const refreshMe = useCallback(() => {
     fetch("/api/me")
@@ -515,6 +567,14 @@ export default function MapApp({
       {/* Sağ alt kontroller */}
       {!placing && sheet.kind === "none" && (
         <div className="absolute bottom-0 right-0 z-20 flex flex-col items-end gap-2.5 p-4 pb-[calc(env(safe-area-inset-bottom,0px)+16px)]">
+          <button
+            onClick={() => setLiveMode((v) => !v)}
+            className={`btn h-11 w-11 text-lg ${liveMode ? "btn-tomato live-btn-on" : "btn-cream"}`}
+            aria-label="Canlı hareketler (son 1 saat)"
+            aria-pressed={liveMode}
+          >
+            {liveMode ? "🔴" : "⚪"}
+          </button>
           <button onClick={locate} className="btn btn-cream h-11 w-11 text-lg" aria-label="Konumumu bul">
             🧿
           </button>
