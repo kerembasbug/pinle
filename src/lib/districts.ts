@@ -90,6 +90,7 @@ const PLACES: Place[] = [
   { city: "Aydın", district: "Nazilli", lat: 37.913, lng: 28.32 },
   { city: "Aydın", district: "Söke", lat: 37.75, lng: 27.41 },
   { city: "Aydın", district: "Kuşadası", lat: 37.86, lng: 27.26 },
+  { city: "Aydın", district: "Kuşadası", lat: 37.715, lng: 27.29 }, // Davutlar sahili
   { city: "Aydın", district: "Didim", lat: 37.38, lng: 27.27 },
   { city: "Aydın", district: "Germencik", lat: 37.87, lng: 27.6 },
 

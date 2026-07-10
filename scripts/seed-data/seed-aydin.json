@@ -1,0 +1,3710 @@
+[
+ {
+  "name": "Efsane Çöp Şiş Necati Baba",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.706254,
+  "lng": 27.384183,
+  "note": null
+ },
+ {
+  "name": "Kiosk SSK",
+  "kind": "lezzet",
+  "category": "kirtasiye",
+  "price": null,
+  "lat": 37.768807,
+  "lng": 27.264881,
+  "note": null
+ },
+ {
+  "name": "Ankara Gozleme",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.768987,
+  "lng": 27.26553,
+  "note": null
+ },
+ {
+  "name": "Istiklar Restaurant",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.768347,
+  "lng": 27.264916,
+  "note": null
+ },
+ {
+  "name": "poyraz et",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.762421,
+  "lng": 27.3733,
+  "note": null
+ },
+ {
+  "name": "Şok",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.759117,
+  "lng": 27.26757,
+  "note": null
+ },
+ {
+  "name": "Sökeli Adakçı",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.761598,
+  "lng": 27.381417,
+  "note": null
+ },
+ {
+  "name": "Decoworld Yapı Market Söke",
+  "kind": "lezzet",
+  "category": "nalbur",
+  "price": null,
+  "lat": 37.707299,
+  "lng": 27.383236,
+  "note": null
+ },
+ {
+  "name": "FLO",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.683207,
+  "lng": 27.380796,
+  "note": null
+ },
+ {
+  "name": "Shell",
+  "kind": "lezzet",
+  "category": "benzinlik",
+  "price": null,
+  "lat": 37.691274,
+  "lng": 27.381262,
+  "note": null
+ },
+ {
+  "name": "Gülsüm Hanım Kahvaltı evi",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.778321,
+  "lng": 27.323536,
+  "note": null
+ },
+ {
+  "name": "Kasap Osman'ın Yeri",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.778174,
+  "lng": 27.323551,
+  "note": null
+ },
+ {
+  "name": "Yaylaköy Köyevi Kahvaltı",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.778064,
+  "lng": 27.323597,
+  "note": null
+ },
+ {
+  "name": "Şahan Elektrik",
+  "kind": "lezzet",
+  "category": "teknoloji",
+  "price": null,
+  "lat": 37.715259,
+  "lng": 27.22991,
+  "note": null
+ },
+ {
+  "name": "BİM",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.761775,
+  "lng": 27.386422,
+  "note": null
+ },
+ {
+  "name": "Gelebec Cafe Restaurant",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.66872,
+  "lng": 27.314754,
+  "note": null
+ },
+ {
+  "name": "Köfteci Yusuf",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.682302,
+  "lng": 27.380698,
+  "note": null
+ },
+ {
+  "name": "Hür Meydan Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.759594,
+  "lng": 27.266064,
+  "note": null
+ },
+ {
+  "name": "Fırat Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.758208,
+  "lng": 27.263855,
+  "note": null
+ },
+ {
+  "name": "Tarihi Çınaraltı Et Lokantası",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.758719,
+  "lng": 27.289407,
+  "note": null
+ },
+ {
+  "name": "Oleatrium Zeytin ve Zeytinyağı Tarihi Müzesi",
+  "kind": "lezzet",
+  "category": "muze",
+  "price": null,
+  "lat": 37.758643,
+  "lng": 27.291133,
+  "note": null
+ },
+ {
+  "name": "Göl başı kahvaltı gözleme evi",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.759618,
+  "lng": 27.291092,
+  "note": null
+ },
+ {
+  "name": "Saraydamı Gözleme Kahvalti Ve Ev Yemekleri",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.757219,
+  "lng": 27.290856,
+  "note": null
+ },
+ {
+  "name": "Güneş Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.727469,
+  "lng": 27.246464,
+  "note": null
+ },
+ {
+  "name": "Teti Beach Cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.730754,
+  "lng": 27.242209,
+  "note": null
+ },
+ {
+  "name": "Sirena Beach Cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.730942,
+  "lng": 27.242197,
+  "note": null
+ },
+ {
+  "name": "Meydan Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.729885,
+  "lng": 27.245363,
+  "note": null
+ },
+ {
+  "name": "Egem Unlu Mamülleri",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": null,
+  "lat": 37.726885,
+  "lng": 27.240516,
+  "note": null
+ },
+ {
+  "name": "Ekomini",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.730966,
+  "lng": 27.242228,
+  "note": null
+ },
+ {
+  "name": "Kuşadası Devlet Hastanesi Güzel Çamlı Semt Polikliniği",
+  "kind": "lezzet",
+  "category": "klinik",
+  "price": null,
+  "lat": 37.713896,
+  "lng": 27.218391,
+  "note": null
+ },
+ {
+  "name": "Petek Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.730138,
+  "lng": 27.247816,
+  "note": null
+ },
+ {
+  "name": "Dolunay Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.729533,
+  "lng": 27.243705,
+  "note": null
+ },
+ {
+  "name": "Opet Söke",
+  "kind": "lezzet",
+  "category": "benzinlik",
+  "price": null,
+  "lat": 37.724308,
+  "lng": 27.391991,
+  "note": null
+ },
+ {
+  "name": "Alpet",
+  "kind": "lezzet",
+  "category": "benzinlik",
+  "price": null,
+  "lat": 37.726724,
+  "lng": 27.392667,
+  "note": null
+ },
+ {
+  "name": "Gulf",
+  "kind": "lezzet",
+  "category": "benzinlik",
+  "price": null,
+  "lat": 37.730847,
+  "lng": 27.396443,
+  "note": null
+ },
+ {
+  "name": "Petrol Ofisi",
+  "kind": "lezzet",
+  "category": "benzinlik",
+  "price": null,
+  "lat": 37.733808,
+  "lng": 27.283913,
+  "note": null
+ },
+ {
+  "name": "DÜNYA'NIN EN İYİ SİTESİ",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.77384,
+  "lng": 27.279228,
+  "note": null
+ },
+ {
+  "name": "Ugur restaurant",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.759642,
+  "lng": 27.261602,
+  "note": null
+ },
+ {
+  "name": "Köşeo",
+  "kind": "lezzet",
+  "category": "tost",
+  "price": null,
+  "lat": 37.756735,
+  "lng": 27.260197,
+  "note": null
+ },
+ {
+  "name": "Has Cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.759914,
+  "lng": 27.264441,
+  "note": null
+ },
+ {
+  "name": "Türkan Saylan Parki",
+  "kind": "lezzet",
+  "category": "park",
+  "price": null,
+  "lat": 37.75684,
+  "lng": 27.257215,
+  "note": null
+ },
+ {
+  "name": "Genç Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.72608,
+  "lng": 27.392211,
+  "note": null
+ },
+ {
+  "name": "Barlas Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.736734,
+  "lng": 27.39619,
+  "note": null
+ },
+ {
+  "name": "Yenikent Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.762437,
+  "lng": 27.390604,
+  "note": null
+ },
+ {
+  "name": "Ece Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.762753,
+  "lng": 27.390675,
+  "note": null
+ },
+ {
+  "name": "Selçuk Ecza Deposu",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.769701,
+  "lng": 27.391032,
+  "note": null
+ },
+ {
+  "name": "Kahve Dükkanı",
+  "kind": "lezzet",
+  "category": "kahveci",
+  "price": null,
+  "lat": 37.768353,
+  "lng": 27.391843,
+  "note": null
+ },
+ {
+  "name": "Kadıköy Kafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.768885,
+  "lng": 27.39296,
+  "note": null
+ },
+ {
+  "name": "Keyif Kafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.768523,
+  "lng": 27.393145,
+  "note": null
+ },
+ {
+  "name": "Serhat Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.765998,
+  "lng": 27.392763,
+  "note": null
+ },
+ {
+  "name": "Komagene",
+  "kind": "lezzet",
+  "category": "doner",
+  "price": null,
+  "lat": 37.76622,
+  "lng": 27.39248,
+  "note": null
+ },
+ {
+  "name": "Otağ Unlu Mamüller",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": null,
+  "lat": 37.762579,
+  "lng": 27.394861,
+  "note": null
+ },
+ {
+  "name": "Lukoil",
+  "kind": "lezzet",
+  "category": "benzinlik",
+  "price": null,
+  "lat": 37.769391,
+  "lng": 27.388715,
+  "note": null
+ },
+ {
+  "name": "Columbia",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.690306,
+  "lng": 27.380901,
+  "note": null
+ },
+ {
+  "name": "Mavi",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.690585,
+  "lng": 27.380955,
+  "note": null
+ },
+ {
+  "name": "Penti",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.690847,
+  "lng": 27.381005,
+  "note": null
+ },
+ {
+  "name": "Lee",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.690949,
+  "lng": 27.381025,
+  "note": null
+ },
+ {
+  "name": "Tommy Hilfiger",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.691054,
+  "lng": 27.381045,
+  "note": null
+ },
+ {
+  "name": "Kahvehane",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.726342,
+  "lng": 27.248729,
+  "note": null
+ },
+ {
+  "name": "Panorama Restaurant",
+  "kind": "lezzet",
+  "category": "doner",
+  "price": null,
+  "lat": 37.775899,
+  "lng": 27.300869,
+  "note": null
+ },
+ {
+  "name": "Zeus Restaurant Cafe Beach",
+  "kind": "lezzet",
+  "category": "kahvalti",
+  "price": null,
+  "lat": 37.711998,
+  "lng": 27.213496,
+  "note": null
+ },
+ {
+  "name": "Semt Pazarı",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.735448,
+  "lng": 27.29064,
+  "note": null
+ },
+ {
+  "name": "Yaman Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.698293,
+  "lng": 27.364019,
+  "note": null
+ },
+ {
+  "name": "Furkan Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.698871,
+  "lng": 27.363429,
+  "note": null
+ },
+ {
+  "name": "Söke Sahil Gazinosu",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.749094,
+  "lng": 27.254158,
+  "note": null
+ },
+ {
+  "name": "Güzelçamlı Sahil Pazarı",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.721204,
+  "lng": 27.233113,
+  "note": null
+ },
+ {
+  "name": "Atakent Pazarı",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.736129,
+  "lng": 27.247367,
+  "note": null
+ },
+ {
+  "name": "Aykuştur Pazarı",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.760542,
+  "lng": 27.264721,
+  "note": null
+ },
+ {
+  "name": "Zeytindalı Park Kafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.763067,
+  "lng": 27.391246,
+  "note": null
+ },
+ {
+  "name": "Söke Yenikent Halk Pazarı (Pazartesi)",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.762214,
+  "lng": 27.390723,
+  "note": null
+ },
+ {
+  "name": "Volkswagen",
+  "kind": "lezzet",
+  "category": "otogaleri",
+  "price": null,
+  "lat": 37.813794,
+  "lng": 27.278708,
+  "note": null
+ },
+ {
+  "name": "Yuvam Restaurant",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.796617,
+  "lng": 27.269838,
+  "note": null
+ },
+ {
+  "name": "As Kebap",
+  "kind": "lezzet",
+  "category": "tost",
+  "price": null,
+  "lat": 37.867126,
+  "lng": 27.264274,
+  "note": null
+ },
+ {
+  "name": "Ferah Fresh Fish",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.861251,
+  "lng": 27.254497,
+  "note": null
+ },
+ {
+  "name": "Orient Cafe & Bar",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.871195,
+  "lng": 27.26392,
+  "note": null
+ },
+ {
+  "name": "Kuşadası Özel Hastanesi",
+  "kind": "lezzet",
+  "category": "klinik",
+  "price": null,
+  "lat": 37.860022,
+  "lng": 27.267868,
+  "note": null
+ },
+ {
+  "name": "Cafe & Cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.863952,
+  "lng": 27.262298,
+  "note": null
+ },
+ {
+  "name": "Candan Bistro Cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.862983,
+  "lng": 27.260823,
+  "note": null
+ },
+ {
+  "name": "Outdoor-Restaurant",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.90552,
+  "lng": 27.271276,
+  "note": null
+ },
+ {
+  "name": "Ilker market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.823275,
+  "lng": 27.263622,
+  "note": null
+ },
+ {
+  "name": "Sultan Bahçesi Et Restoran",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.874009,
+  "lng": 27.264582,
+  "note": null
+ },
+ {
+  "name": "carpediem",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.860568,
+  "lng": 27.260167,
+  "note": null
+ },
+ {
+  "name": "çınar restorant",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.874296,
+  "lng": 27.264282,
+  "note": null
+ },
+ {
+  "name": "Kule Seafood Restaurant",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.860587,
+  "lng": 27.253698,
+  "note": null
+ },
+ {
+  "name": "Bolu Çırağan Restaurant",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.854181,
+  "lng": 27.282055,
+  "note": null
+ },
+ {
+  "name": "alo 24",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.85799,
+  "lng": 27.264435,
+  "note": null
+ },
+ {
+  "name": "Andız Restaurant",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.854359,
+  "lng": 27.295471,
+  "note": null
+ },
+ {
+  "name": "Emir Optik",
+  "kind": "lezzet",
+  "category": "optik",
+  "price": null,
+  "lat": 37.84794,
+  "lng": 27.25701,
+  "note": null
+ },
+ {
+  "name": "jade beach club",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.857346,
+  "lng": 27.24512,
+  "note": null
+ },
+ {
+  "name": "Can Pide",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.869153,
+  "lng": 27.264542,
+  "note": null
+ },
+ {
+  "name": "moil restorant",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.870139,
+  "lng": 27.27473,
+  "note": null
+ },
+ {
+  "name": "Mavi Balık",
+  "kind": "lezzet",
+  "category": "balik",
+  "price": null,
+  "lat": 37.860638,
+  "lng": 27.253298,
+  "note": null
+ },
+ {
+  "name": "Şehit aileleri ve gaziler derneği",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.853339,
+  "lng": 27.254386,
+  "note": null
+ },
+ {
+  "name": "christines cafe",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.809742,
+  "lng": 27.28058,
+  "note": null
+ },
+ {
+  "name": "artemis beach club",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.798364,
+  "lng": 27.26907,
+  "note": null
+ },
+ {
+  "name": "Flower Cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.865192,
+  "lng": 27.2627,
+  "note": null
+ },
+ {
+  "name": "Ali Pehlivanoğlu",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.850333,
+  "lng": 27.250247,
+  "note": null
+ },
+ {
+  "name": "Çatı",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.873924,
+  "lng": 27.264588,
+  "note": null
+ },
+ {
+  "name": "Toros",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.861205,
+  "lng": 27.255677,
+  "note": null
+ },
+ {
+  "name": "Tekzen",
+  "kind": "lezzet",
+  "category": "nalbur",
+  "price": null,
+  "lat": 37.800191,
+  "lng": 27.28513,
+  "note": null
+ },
+ {
+  "name": "Üsküdar Çaycısı",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.865297,
+  "lng": 27.262989,
+  "note": null
+ },
+ {
+  "name": "Can Can",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.828883,
+  "lng": 27.252002,
+  "note": null
+ },
+ {
+  "name": "Osmanlı Dürümcüsü",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.862709,
+  "lng": 27.261235,
+  "note": null
+ },
+ {
+  "name": "Mezgit Restaurant",
+  "kind": "lezzet",
+  "category": "balik",
+  "price": null,
+  "lat": 37.869499,
+  "lng": 27.26457,
+  "note": null
+ },
+ {
+  "name": "GIO Restaurant & Lounge Bar",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.87105,
+  "lng": 27.264744,
+  "note": null
+ },
+ {
+  "name": "Sebze ve Meyve Hali",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.85103,
+  "lng": 27.261135,
+  "note": null
+ },
+ {
+  "name": "Oksijen Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.866576,
+  "lng": 27.264022,
+  "note": null
+ },
+ {
+  "name": "Pamukkale Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.810806,
+  "lng": 27.279988,
+  "note": null
+ },
+ {
+  "name": "Özlem Pide",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.854904,
+  "lng": 27.255107,
+  "note": null
+ },
+ {
+  "name": "Okyanus eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.864374,
+  "lng": 27.267139,
+  "note": null
+ },
+ {
+  "name": "Paker Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.856691,
+  "lng": 27.263993,
+  "note": null
+ },
+ {
+  "name": "Yamanlar Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.856475,
+  "lng": 27.263845,
+  "note": null
+ },
+ {
+  "name": "Buket Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.856172,
+  "lng": 27.265833,
+  "note": null
+ },
+ {
+  "name": "Tek Ağaç Kitap & Kırtasiye",
+  "kind": "lezzet",
+  "category": "kirtasiye",
+  "price": null,
+  "lat": 37.857633,
+  "lng": 27.262499,
+  "note": null
+ },
+ {
+  "name": "Komsu",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.864211,
+  "lng": 27.262498,
+  "note": null
+ },
+ {
+  "name": "Jamela Coffee",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.864717,
+  "lng": 27.262862,
+  "note": null
+ },
+ {
+  "name": "Kahve Sokağı Kuşadası",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.863189,
+  "lng": 27.261827,
+  "note": null
+ },
+ {
+  "name": "Yunus",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.862559,
+  "lng": 27.260764,
+  "note": null
+ },
+ {
+  "name": "Avlu Restaurant",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.860828,
+  "lng": 27.257816,
+  "note": null
+ },
+ {
+  "name": "Aldi Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.829045,
+  "lng": 27.251345,
+  "note": null
+ },
+ {
+  "name": "LC Waikiki",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.80974,
+  "lng": 27.278476,
+  "note": null
+ },
+ {
+  "name": "Mango",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.809149,
+  "lng": 27.27799,
+  "note": null
+ },
+ {
+  "name": "Baharat",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.860464,
+  "lng": 27.260496,
+  "note": null
+ },
+ {
+  "name": "Tranche",
+  "kind": "lezzet",
+  "category": "kebap",
+  "price": null,
+  "lat": 37.867609,
+  "lng": 27.263607,
+  "note": null
+ },
+ {
+  "name": "Zümrüt Pide",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.858219,
+  "lng": 27.25795,
+  "note": null
+ },
+ {
+  "name": "Çizgi Bilgisayar",
+  "kind": "lezzet",
+  "category": "teknoloji",
+  "price": null,
+  "lat": 37.859065,
+  "lng": 27.262093,
+  "note": null
+ },
+ {
+  "name": "Tuğba Kuruyemiş",
+  "kind": "lezzet",
+  "category": "kuruyemis",
+  "price": null,
+  "lat": 37.857796,
+  "lng": 27.260824,
+  "note": null
+ },
+ {
+  "name": "Metin Usta",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.859179,
+  "lng": 27.260448,
+  "note": null
+ },
+ {
+  "name": "Sözlüm Et & Balık",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.860606,
+  "lng": 27.2535,
+  "note": null
+ },
+ {
+  "name": "Gönül meyhanesi",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.86056,
+  "lng": 27.253823,
+  "note": null
+ },
+ {
+  "name": "Çivici Market Free Shop",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.860523,
+  "lng": 27.253951,
+  "note": null
+ },
+ {
+  "name": "Opet",
+  "kind": "lezzet",
+  "category": "benzinlik",
+  "price": null,
+  "lat": 37.836758,
+  "lng": 27.25908,
+  "note": null
+ },
+ {
+  "name": "Memoil",
+  "kind": "lezzet",
+  "category": "benzinlik",
+  "price": null,
+  "lat": 37.823652,
+  "lng": 27.263217,
+  "note": null
+ },
+ {
+  "name": "PTT",
+  "kind": "lezzet",
+  "category": "benzinlik",
+  "price": null,
+  "lat": 37.858099,
+  "lng": 27.262923,
+  "note": null
+ },
+ {
+  "name": "seç",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.859932,
+  "lng": 27.263966,
+  "note": null
+ },
+ {
+  "name": "Toros",
+  "kind": "lezzet",
+  "category": "balik",
+  "price": null,
+  "lat": 37.861281,
+  "lng": 27.256145,
+  "note": null
+ },
+ {
+  "name": "Okay Döner",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.860527,
+  "lng": 27.260577,
+  "note": null
+ },
+ {
+  "name": "çağdaş veteriner kliniği",
+  "kind": "lezzet",
+  "category": "veteriner",
+  "price": null,
+  "lat": 37.867347,
+  "lng": 27.264719,
+  "note": null
+ },
+ {
+  "name": "antepli hakan usta",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.857434,
+  "lng": 27.261152,
+  "note": null
+ },
+ {
+  "name": "Liman Cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.869692,
+  "lng": 27.2639,
+  "note": null
+ },
+ {
+  "name": "Suadiye Marmaris",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.861021,
+  "lng": 27.259323,
+  "note": null
+ },
+ {
+  "name": "ADL",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.810637,
+  "lng": 27.278977,
+  "note": null
+ },
+ {
+  "name": "Suwen",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.808591,
+  "lng": 27.277564,
+  "note": null
+ },
+ {
+  "name": "Altın Yıldız",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.810589,
+  "lng": 27.279359,
+  "note": null
+ },
+ {
+  "name": "Hotiç",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.809247,
+  "lng": 27.277607,
+  "note": null
+ },
+ {
+  "name": "United Colors of Benetton",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.808827,
+  "lng": 27.277239,
+  "note": null
+ },
+ {
+  "name": "Mado",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.810084,
+  "lng": 27.279103,
+  "note": null
+ },
+ {
+  "name": "Hasan usta süt tatlıları",
+  "kind": "lezzet",
+  "category": "kuruyemis",
+  "price": null,
+  "lat": 37.809426,
+  "lng": 27.27799,
+  "note": null
+ },
+ {
+  "name": "LTB",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.808388,
+  "lng": 27.277816,
+  "note": null
+ },
+ {
+  "name": "Deichmann",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.809099,
+  "lng": 27.27744,
+  "note": null
+ },
+ {
+  "name": "Şimal",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.809259,
+  "lng": 27.277516,
+  "note": null
+ },
+ {
+  "name": "Kids shoes",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.808344,
+  "lng": 27.277722,
+  "note": null
+ },
+ {
+  "name": "Ada Kitap Kırtasiye",
+  "kind": "lezzet",
+  "category": "kirtasiye",
+  "price": null,
+  "lat": 37.809098,
+  "lng": 27.277304,
+  "note": null
+ },
+ {
+  "name": "DeFacto",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.808514,
+  "lng": 27.277945,
+  "note": null
+ },
+ {
+  "name": "Billabong",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.808775,
+  "lng": 27.277324,
+  "note": null
+ },
+ {
+  "name": "Bereket Döner",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.810922,
+  "lng": 27.278825,
+  "note": null
+ },
+ {
+  "name": "Panço Çocuk Giyim",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.809284,
+  "lng": 27.277294,
+  "note": null
+ },
+ {
+  "name": "Colin's",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.809986,
+  "lng": 27.27894,
+  "note": null
+ },
+ {
+  "name": "Ruby Stars",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.809273,
+  "lng": 27.277377,
+  "note": null
+ },
+ {
+  "name": "Sarıyıldız Spor Giyim",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.809264,
+  "lng": 27.277452,
+  "note": null
+ },
+ {
+  "name": "Stone",
+  "kind": "lezzet",
+  "category": "hediyelik",
+  "price": null,
+  "lat": 37.808292,
+  "lng": 27.277629,
+  "note": null
+ },
+ {
+  "name": "Nasırettin Hoca Uygur Mutfağı",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.867403,
+  "lng": 27.264935,
+  "note": null
+ },
+ {
+  "name": "Kutes Cafe Bar",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.861573,
+  "lng": 27.257184,
+  "note": null
+ },
+ {
+  "name": "Birrada",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.86118,
+  "lng": 27.256116,
+  "note": null
+ },
+ {
+  "name": "Naz Balık",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.861156,
+  "lng": 27.256503,
+  "note": null
+ },
+ {
+  "name": "Kuzey balık",
+  "kind": "lezzet",
+  "category": "hediyelik",
+  "price": null,
+  "lat": 37.861303,
+  "lng": 27.256804,
+  "note": null
+ },
+ {
+  "name": "Macit",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.861034,
+  "lng": 27.256693,
+  "note": null
+ },
+ {
+  "name": "Güverte",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.86124,
+  "lng": 27.256062,
+  "note": null
+ },
+ {
+  "name": "Kutes",
+  "kind": "lezzet",
+  "category": "dondurma",
+  "price": null,
+  "lat": 37.861477,
+  "lng": 27.257077,
+  "note": null
+ },
+ {
+  "name": "Ali baba",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.861458,
+  "lng": 27.256878,
+  "note": null
+ },
+ {
+  "name": "Yiyin gari balık ekmek",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.861234,
+  "lng": 27.256673,
+  "note": null
+ },
+ {
+  "name": "Kuzey Balık",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.861281,
+  "lng": 27.256767,
+  "note": null
+ },
+ {
+  "name": "Takı & Hediyelik eşya",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.861626,
+  "lng": 27.257722,
+  "note": null
+ },
+ {
+  "name": "İstanköy",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.861294,
+  "lng": 27.256083,
+  "note": null
+ },
+ {
+  "name": "Koçtaş",
+  "kind": "lezzet",
+  "category": "nalbur",
+  "price": null,
+  "lat": 37.84793,
+  "lng": 27.258819,
+  "note": null
+ },
+ {
+  "name": "U.S. Polo Assn.",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.809668,
+  "lng": 27.278117,
+  "note": null
+ },
+ {
+  "name": "Moil",
+  "kind": "lezzet",
+  "category": "benzinlik",
+  "price": null,
+  "lat": 37.870362,
+  "lng": 27.274808,
+  "note": null
+ },
+ {
+  "name": "Cafe Turko",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.912342,
+  "lng": 27.332786,
+  "note": null
+ },
+ {
+  "name": "Sef Restaurant",
+  "kind": "lezzet",
+  "category": "balik",
+  "price": null,
+  "lat": 37.872912,
+  "lng": 27.265716,
+  "note": null
+ },
+ {
+  "name": "Simit Dünyası",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": null,
+  "lat": 37.847533,
+  "lng": 27.244409,
+  "note": null
+ },
+ {
+  "name": "Nihavend Meyhane",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.873933,
+  "lng": 27.264798,
+  "note": null
+ },
+ {
+  "name": "Ada Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.832674,
+  "lng": 27.258555,
+  "note": null
+ },
+ {
+  "name": "Göker Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.84127,
+  "lng": 27.25976,
+  "note": null
+ },
+ {
+  "name": "Aslım Ada Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.846081,
+  "lng": 27.261251,
+  "note": null
+ },
+ {
+  "name": "Görkem Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.849226,
+  "lng": 27.26104,
+  "note": null
+ },
+ {
+  "name": "Liva - Fırın & Cafe",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": null,
+  "lat": 37.844067,
+  "lng": 27.264923,
+  "note": null
+ },
+ {
+  "name": "Ada Modern Sanat Galerisi",
+  "kind": "lezzet",
+  "category": "muze",
+  "price": null,
+  "lat": 37.861253,
+  "lng": 27.257159,
+  "note": null
+ },
+ {
+  "name": "artcafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.861326,
+  "lng": 27.257136,
+  "note": null
+ },
+ {
+  "name": "Corner Shop Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.858006,
+  "lng": 27.257481,
+  "note": null
+ },
+ {
+  "name": "Cafe Roma",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.862585,
+  "lng": 27.259892,
+  "note": null
+ },
+ {
+  "name": "Ata Mini Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.833988,
+  "lng": 27.262025,
+  "note": null
+ },
+ {
+  "name": "Ömür Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.864798,
+  "lng": 27.262924,
+  "note": null
+ },
+ {
+  "name": "Bizim Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.865254,
+  "lng": 27.266445,
+  "note": null
+ },
+ {
+  "name": "Dolunay Steak House",
+  "kind": "lezzet",
+  "category": "kebap",
+  "price": null,
+  "lat": 37.860976,
+  "lng": 27.256256,
+  "note": null
+ },
+ {
+  "name": "Ada 09 Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.8567,
+  "lng": 27.264138,
+  "note": null
+ },
+ {
+  "name": "Yılmaz Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.855147,
+  "lng": 27.267167,
+  "note": null
+ },
+ {
+  "name": "The Geyik",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.860996,
+  "lng": 27.259356,
+  "note": null
+ },
+ {
+  "name": "Mios Şukufe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.86097,
+  "lng": 27.259393,
+  "note": null
+ },
+ {
+  "name": "Sur Cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.861315,
+  "lng": 27.258961,
+  "note": null
+ },
+ {
+  "name": "Şeker Ustanın Yeri",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.840319,
+  "lng": 27.260016,
+  "note": null
+ },
+ {
+  "name": "İmplamer Ağız ve Diş Sağlığı Polikliniği",
+  "kind": "lezzet",
+  "category": "dishekimi",
+  "price": null,
+  "lat": 37.849862,
+  "lng": 27.258438,
+  "note": null
+ },
+ {
+  "name": "Özer Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.853416,
+  "lng": 27.255809,
+  "note": null
+ },
+ {
+  "name": "Seray Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.855144,
+  "lng": 27.255354,
+  "note": null
+ },
+ {
+  "name": "Semt Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.853162,
+  "lng": 27.256909,
+  "note": null
+ },
+ {
+  "name": "Kaliteci",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": null,
+  "lat": 37.860216,
+  "lng": 27.260597,
+  "note": null
+ },
+ {
+  "name": "Sanayi Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.838968,
+  "lng": 27.260495,
+  "note": null
+ },
+ {
+  "name": "Demir Manav",
+  "kind": "lezzet",
+  "category": "manav",
+  "price": null,
+  "lat": 37.854876,
+  "lng": 27.255058,
+  "note": null
+ },
+ {
+  "name": "Karacasulu Hasan Usta",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.854843,
+  "lng": 27.254996,
+  "note": null
+ },
+ {
+  "name": "Murat",
+  "kind": "lezzet",
+  "category": "kurutemizleme",
+  "price": null,
+  "lat": 37.854804,
+  "lng": 27.254932,
+  "note": null
+ },
+ {
+  "name": "Peynircim",
+  "kind": "lezzet",
+  "category": "sarkuteri",
+  "price": null,
+  "lat": 37.854775,
+  "lng": 27.254881,
+  "note": null
+ },
+ {
+  "name": "Ankara Dönercisi",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.86193,
+  "lng": 27.258793,
+  "note": null
+ },
+ {
+  "name": "Adaplı Meyhane",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.874699,
+  "lng": 27.26559,
+  "note": null
+ },
+ {
+  "name": "Islak Hamburger",
+  "kind": "lezzet",
+  "category": "tost",
+  "price": null,
+  "lat": 37.861045,
+  "lng": 27.259292,
+  "note": null
+ },
+ {
+  "name": "No33",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.860845,
+  "lng": 27.259561,
+  "note": null
+ },
+ {
+  "name": "Kaffa",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.860783,
+  "lng": 27.259647,
+  "note": null
+ },
+ {
+  "name": "Angel Cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.860748,
+  "lng": 27.259701,
+  "note": null
+ },
+ {
+  "name": "Neopolis Cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.860535,
+  "lng": 27.26004,
+  "note": null
+ },
+ {
+  "name": "Maya Lokanta",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.860821,
+  "lng": 27.262308,
+  "note": null
+ },
+ {
+  "name": "Maydanoz Döner",
+  "kind": "lezzet",
+  "category": "tost",
+  "price": null,
+  "lat": 37.857256,
+  "lng": 27.262625,
+  "note": null
+ },
+ {
+  "name": "Köfteci Hasan",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.85889,
+  "lng": 27.258455,
+  "note": null
+ },
+ {
+  "name": "AliZa Andolu Lokantası",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.857684,
+  "lng": 27.261915,
+  "note": null
+ },
+ {
+  "name": "Oksa Port",
+  "kind": "lezzet",
+  "category": "balik",
+  "price": null,
+  "lat": 37.860705,
+  "lng": 27.254754,
+  "note": null
+ },
+ {
+  "name": "Billy's Brasserie & Bar",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.861172,
+  "lng": 27.25439,
+  "note": null
+ },
+ {
+  "name": "Aytemiz",
+  "kind": "lezzet",
+  "category": "benzinlik",
+  "price": null,
+  "lat": 37.853481,
+  "lng": 27.259812,
+  "note": null
+ },
+ {
+  "name": "Total",
+  "kind": "lezzet",
+  "category": "benzinlik",
+  "price": null,
+  "lat": 37.854593,
+  "lng": 27.264597,
+  "note": null
+ },
+ {
+  "name": "Aygaz",
+  "kind": "lezzet",
+  "category": "benzinlik",
+  "price": null,
+  "lat": 37.88732,
+  "lng": 27.271874,
+  "note": null
+ },
+ {
+  "name": "Eczane Sağlık",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.85244,
+  "lng": 27.258389,
+  "note": null
+ },
+ {
+  "name": "Pandora",
+  "kind": "lezzet",
+  "category": "veteriner",
+  "price": null,
+  "lat": 37.852257,
+  "lng": 27.257908,
+  "note": null
+ },
+ {
+  "name": "Eczane Güneş",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.852472,
+  "lng": 27.258489,
+  "note": null
+ },
+ {
+  "name": "Eczane Ezgi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.852612,
+  "lng": 27.258727,
+  "note": null
+ },
+ {
+  "name": "The Hand CoffeeShop",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.86174,
+  "lng": 27.258584,
+  "note": null
+ },
+ {
+  "name": "Colombia coffee",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.811073,
+  "lng": 27.279136,
+  "note": null
+ },
+ {
+  "name": "Brew mood coffee",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.807686,
+  "lng": 27.278409,
+  "note": null
+ },
+ {
+  "name": "Can Laundry Camasirhane",
+  "kind": "lezzet",
+  "category": "kurutemizleme",
+  "price": null,
+  "lat": 37.857292,
+  "lng": 27.262304,
+  "note": null
+ },
+ {
+  "name": "Turhan Veteriner Kliniği",
+  "kind": "lezzet",
+  "category": "veteriner",
+  "price": null,
+  "lat": 37.859897,
+  "lng": 27.266274,
+  "note": null
+ },
+ {
+  "name": "Be Soul Kuşadası",
+  "kind": "lezzet",
+  "category": "balik",
+  "price": null,
+  "lat": 37.844495,
+  "lng": 27.243209,
+  "note": null
+ },
+ {
+  "name": "Kervan Kuruyemiş",
+  "kind": "lezzet",
+  "category": "kuruyemis",
+  "price": null,
+  "lat": 37.857873,
+  "lng": 27.260159,
+  "note": null
+ },
+ {
+  "name": "Çetinkaya Outlet",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.857871,
+  "lng": 27.260292,
+  "note": null
+ },
+ {
+  "name": "Efe Elektronik",
+  "kind": "lezzet",
+  "category": "teknoloji",
+  "price": null,
+  "lat": 37.857789,
+  "lng": 27.261548,
+  "note": null
+ },
+ {
+  "name": "İstanköy Patisserie",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": null,
+  "lat": 37.857913,
+  "lng": 27.261976,
+  "note": null
+ },
+ {
+  "name": "Karadeniz Yayla Şarküteri",
+  "kind": "lezzet",
+  "category": "sarkuteri",
+  "price": null,
+  "lat": 37.856522,
+  "lng": 27.264685,
+  "note": null
+ },
+ {
+  "name": "Kubilay Kırtasiye",
+  "kind": "lezzet",
+  "category": "kirtasiye",
+  "price": null,
+  "lat": 37.856454,
+  "lng": 27.265287,
+  "note": null
+ },
+ {
+  "name": "Akkuş Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": null,
+  "lat": 37.854091,
+  "lng": 27.267197,
+  "note": null
+ },
+ {
+  "name": "Aslan Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.854365,
+  "lng": 27.266406,
+  "note": null
+ },
+ {
+  "name": "Güven Kasap",
+  "kind": "lezzet",
+  "category": "kasap",
+  "price": null,
+  "lat": 37.853099,
+  "lng": 27.268258,
+  "note": null
+ },
+ {
+  "name": "Urfa Lavaş Pide & Lahmacun",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.853069,
+  "lng": 27.268307,
+  "note": null
+ },
+ {
+  "name": "Beyaz Fırın",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": null,
+  "lat": 37.852245,
+  "lng": 27.270599,
+  "note": null
+ },
+ {
+  "name": "Mare Balık Restaurant",
+  "kind": "lezzet",
+  "category": "balik",
+  "price": null,
+  "lat": 37.851014,
+  "lng": 27.24294,
+  "note": null
+ },
+ {
+  "name": "Ganaj Pastanesi",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": null,
+  "lat": 37.854012,
+  "lng": 27.267508,
+  "note": null
+ },
+ {
+  "name": "Kaan Erkek Kuaförü",
+  "kind": "lezzet",
+  "category": "kuafor",
+  "price": null,
+  "lat": 37.853786,
+  "lng": 27.267768,
+  "note": null
+ },
+ {
+  "name": "Tekno SA Extra",
+  "kind": "lezzet",
+  "category": "teknoloji",
+  "price": null,
+  "lat": 37.8323,
+  "lng": 27.256098,
+  "note": null
+ },
+ {
+  "name": "Ada Müzeyyen",
+  "kind": "lezzet",
+  "category": "balik",
+  "price": null,
+  "lat": 37.856484,
+  "lng": 27.261703,
+  "note": null
+ },
+ {
+  "name": "Dönerci Hikmet Usta",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.85245,
+  "lng": 27.254853,
+  "note": null
+ },
+ {
+  "name": "Focuss Dental Laboratory",
+  "kind": "lezzet",
+  "category": "dishekimi",
+  "price": null,
+  "lat": 37.859133,
+  "lng": 27.267996,
+  "note": null
+ },
+ {
+  "name": "Deniz Ticareti Tarihi Müzesi",
+  "kind": "lezzet",
+  "category": "muze",
+  "price": null,
+  "lat": 37.863553,
+  "lng": 27.247722,
+  "note": null
+ },
+ {
+  "name": "Türkiye Tarım Kredi Kooperatif Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.849722,
+  "lng": 27.268683,
+  "note": null
+ },
+ {
+  "name": "bahçeli Restaurant ocakbaşı",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.841913,
+  "lng": 27.246959,
+  "note": null
+ },
+ {
+  "name": "Il Pino A La Carte Italian",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": null,
+  "lat": 37.912681,
+  "lng": 27.261469,
+  "note": null
+ },
+ {
+  "name": "Su A La Carte Seafood",
+  "kind": "lezzet",
+  "category": "balik",
+  "price": null,
+  "lat": 37.909365,
+  "lng": 27.262201,
+  "note": null
+ },
+ {
+  "name": "Denteas Clinic",
+  "kind": "lezzet",
+  "category": "klinik",
+  "price": null,
+  "lat": 37.892452,
+  "lng": 27.273693,
+  "note": null
+ },
+ {
+  "name": "Kuşadası Devlet Hastanesi",
+  "kind": "lezzet",
+  "category": "klinik",
+  "price": null,
+  "lat": 37.878469,
+  "lng": 27.267467,
+  "note": null
+ },
+ {
+  "name": "Arena",
+  "kind": "lezzet",
+  "category": "sinema",
+  "price": null,
+  "lat": 37.907095,
+  "lng": 27.269518,
+  "note": null
+ },
+ {
+  "name": "Kuşadası Şehit Kaya Aldoğan Lisesi Kantini",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.863711,
+  "lng": 27.264116,
+  "note": null
+ },
+ {
+  "name": "Saydam Tıp Merkezi ve Cerrahi Birimi",
+  "kind": "lezzet",
+  "category": "klinik",
+  "price": null,
+  "lat": 37.864191,
+  "lng": 27.267701,
+  "note": null
+ },
+ {
+  "name": "Yılmaz Yapı Market",
+  "kind": "lezzet",
+  "category": "nalbur",
+  "price": null,
+  "lat": 37.792992,
+  "lng": 27.279719,
+  "note": null
+ },
+ {
+  "name": "Bayraktar",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.835297,
+  "lng": 27.262696,
+  "note": null
+ },
+ {
+  "name": "Gözde Hastanesi Kuşadası",
+  "kind": "lezzet",
+  "category": "klinik",
+  "price": null,
+  "lat": 37.866406,
+  "lng": 27.265228,
+  "note": null
+ },
+ {
+  "name": "Kuşadası Balık Pazarı",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.861385,
+  "lng": 27.256447,
+  "note": null
+ },
+ {
+  "name": "Kuşadası Kapalı Pazar Yeri",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.851046,
+  "lng": 27.259657,
+  "note": null
+ },
+ {
+  "name": "İzabel Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.838074,
+  "lng": 27.251902,
+  "note": null
+ },
+ {
+  "name": "Seç Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.841825,
+  "lng": 27.247354,
+  "note": null
+ },
+ {
+  "name": "Dilara Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.841699,
+  "lng": 27.247237,
+  "note": null
+ },
+ {
+  "name": "Tepe Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.843858,
+  "lng": 27.245364,
+  "note": null
+ },
+ {
+  "name": "İzmir Gevrek Boyoz Sarayı",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": null,
+  "lat": 37.844415,
+  "lng": 27.244272,
+  "note": null
+ },
+ {
+  "name": "Secret Garden Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.845057,
+  "lng": 27.244224,
+  "note": null
+ },
+ {
+  "name": "Elit Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.842655,
+  "lng": 27.242138,
+  "note": null
+ },
+ {
+  "name": "Eski Kafa",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.861337,
+  "lng": 27.258613,
+  "note": null
+ },
+ {
+  "name": "Şenol Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": null,
+  "lat": 37.85591,
+  "lng": 27.255842,
+  "note": null
+ },
+ {
+  "name": "Nokta Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.853636,
+  "lng": 27.260203,
+  "note": null
+ },
+ {
+  "name": "Alev Balık",
+  "kind": "lezzet",
+  "category": "balik",
+  "price": null,
+  "lat": 37.861708,
+  "lng": 27.259494,
+  "note": null
+ },
+ {
+  "name": "2000 Motorlu Taşıtlar",
+  "kind": "lezzet",
+  "category": "otogaleri",
+  "price": null,
+  "lat": 37.841938,
+  "lng": 27.260199,
+  "note": null
+ },
+ {
+  "name": "Markada Otomotiv & Inşaat",
+  "kind": "lezzet",
+  "category": "otogaleri",
+  "price": null,
+  "lat": 37.840033,
+  "lng": 27.258971,
+  "note": null
+ },
+ {
+  "name": "Vatan Bilgisayar",
+  "kind": "lezzet",
+  "category": "teknoloji",
+  "price": null,
+  "lat": 37.845561,
+  "lng": 27.26097,
+  "note": null
+ },
+ {
+  "name": "Yılmazlar Yapı",
+  "kind": "lezzet",
+  "category": "nalbur",
+  "price": null,
+  "lat": 37.84081,
+  "lng": 27.258787,
+  "note": null
+ },
+ {
+  "name": "Güral Porselen",
+  "kind": "lezzet",
+  "category": "nalbur",
+  "price": null,
+  "lat": 37.847112,
+  "lng": 27.258755,
+  "note": null
+ },
+ {
+  "name": "Boğalı Demir Çelik",
+  "kind": "lezzet",
+  "category": "nalbur",
+  "price": null,
+  "lat": 37.841654,
+  "lng": 27.258647,
+  "note": null
+ },
+ {
+  "name": "Mazlumlar Yapı Market",
+  "kind": "lezzet",
+  "category": "nalbur",
+  "price": null,
+  "lat": 37.842171,
+  "lng": 27.259052,
+  "note": null
+ },
+ {
+  "name": "Yurtbay Seramik",
+  "kind": "lezzet",
+  "category": "nalbur",
+  "price": null,
+  "lat": 37.842336,
+  "lng": 27.25911,
+  "note": null
+ },
+ {
+  "name": "Ege Seramik",
+  "kind": "lezzet",
+  "category": "nalbur",
+  "price": null,
+  "lat": 37.842621,
+  "lng": 27.25925,
+  "note": null
+ },
+ {
+  "name": "Dildâde Börek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": null,
+  "lat": 37.855754,
+  "lng": 27.266262,
+  "note": null
+ },
+ {
+  "name": "Nazilli Pazarı",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.788493,
+  "lng": 27.275786,
+  "note": null
+ },
+ {
+  "name": "Özel Park Ağız ve Dış Sağlığı Polikliniği",
+  "kind": "lezzet",
+  "category": "dishekimi",
+  "price": null,
+  "lat": 37.857342,
+  "lng": 27.263831,
+  "note": null
+ },
+ {
+  "name": "Arya Cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.86325,
+  "lng": 27.261238,
+  "note": null
+ },
+ {
+  "name": "İstanköy Balıkçısı",
+  "kind": "lezzet",
+  "category": "balik",
+  "price": null,
+  "lat": 37.861223,
+  "lng": 27.255949,
+  "note": null
+ },
+ {
+  "name": "Cafedemi",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.847036,
+  "lng": 27.8429,
+  "note": null
+ },
+ {
+  "name": "Pehlivanoğlu Supermarket",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.85159,
+  "lng": 27.822034,
+  "note": null
+ },
+ {
+  "name": "Continental Aydın Merkez Lastik Bayi - Ege Balans",
+  "kind": "lezzet",
+  "category": "tamir",
+  "price": null,
+  "lat": 37.845705,
+  "lng": 27.820307,
+  "note": null
+ },
+ {
+  "name": "Sport In Street Forum Aydın AVM",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.846795,
+  "lng": 27.861527,
+  "note": null
+ },
+ {
+  "name": "Diş Hastanesi",
+  "kind": "lezzet",
+  "category": "dishekimi",
+  "price": null,
+  "lat": 37.846656,
+  "lng": 27.820493,
+  "note": null
+ },
+ {
+  "name": "Opet Efeler",
+  "kind": "lezzet",
+  "category": "benzinlik",
+  "price": null,
+  "lat": 37.844524,
+  "lng": 27.862529,
+  "note": null
+ },
+ {
+  "name": "Petline",
+  "kind": "lezzet",
+  "category": "benzinlik",
+  "price": null,
+  "lat": 37.844684,
+  "lng": 27.893217,
+  "note": null
+ },
+ {
+  "name": "USPet",
+  "kind": "lezzet",
+  "category": "benzinlik",
+  "price": null,
+  "lat": 37.845079,
+  "lng": 27.897023,
+  "note": null
+ },
+ {
+  "name": "Opet Parmaksızlar",
+  "kind": "lezzet",
+  "category": "benzinlik",
+  "price": null,
+  "lat": 37.841446,
+  "lng": 27.831612,
+  "note": null
+ },
+ {
+  "name": "Fizik",
+  "kind": "lezzet",
+  "category": "klinik",
+  "price": null,
+  "lat": 37.849751,
+  "lng": 27.837346,
+  "note": null
+ },
+ {
+  "name": "Özge Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.828332,
+  "lng": 27.832623,
+  "note": null
+ },
+ {
+  "name": "Meltem Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.841896,
+  "lng": 27.814738,
+  "note": null
+ },
+ {
+  "name": "Safa Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.851636,
+  "lng": 27.810324,
+  "note": null
+ },
+ {
+  "name": "Doğa Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.849374,
+  "lng": 27.816028,
+  "note": null
+ },
+ {
+  "name": "İdil Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.855451,
+  "lng": 27.829885,
+  "note": null
+ },
+ {
+  "name": "Kemer Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.851433,
+  "lng": 27.830444,
+  "note": null
+ },
+ {
+  "name": "Mimar Sinan Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.853347,
+  "lng": 27.813588,
+  "note": null
+ },
+ {
+  "name": "Neva Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.851427,
+  "lng": 27.816148,
+  "note": null
+ },
+ {
+  "name": "Ege Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.856551,
+  "lng": 27.826926,
+  "note": null
+ },
+ {
+  "name": "Lokman Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.823927,
+  "lng": 27.873655,
+  "note": null
+ },
+ {
+  "name": "Gülistan Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.818289,
+  "lng": 27.834984,
+  "note": null
+ },
+ {
+  "name": "Melek Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.822997,
+  "lng": 27.854307,
+  "note": null
+ },
+ {
+  "name": "Çeştepe Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.826094,
+  "lng": 27.850839,
+  "note": null
+ },
+ {
+  "name": "Umut Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.818752,
+  "lng": 27.83176,
+  "note": null
+ },
+ {
+  "name": "Yaşar Özge Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.819619,
+  "lng": 27.829789,
+  "note": null
+ },
+ {
+  "name": "Sude Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.838134,
+  "lng": 27.81197,
+  "note": null
+ },
+ {
+  "name": "Tümay Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.833426,
+  "lng": 27.801895,
+  "note": null
+ },
+ {
+  "name": "Hisar Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.851254,
+  "lng": 27.816586,
+  "note": null
+ },
+ {
+  "name": "Meriçli Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.85327,
+  "lng": 27.817617,
+  "note": null
+ },
+ {
+  "name": "Umay Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.857766,
+  "lng": 27.823436,
+  "note": null
+ },
+ {
+  "name": "Aslıgül Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.82912,
+  "lng": 27.827626,
+  "note": null
+ },
+ {
+  "name": "Pehlivan Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.851654,
+  "lng": 27.830242,
+  "note": null
+ },
+ {
+  "name": "Güneş Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.839287,
+  "lng": 27.8456,
+  "note": null
+ },
+ {
+  "name": "Temizer Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.839731,
+  "lng": 27.845569,
+  "note": null
+ },
+ {
+  "name": "Kurtulmuş Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.841699,
+  "lng": 27.839356,
+  "note": null
+ },
+ {
+  "name": "TELEFON BORSASI",
+  "kind": "lezzet",
+  "category": "teknoloji",
+  "price": null,
+  "lat": 37.844532,
+  "lng": 27.844414,
+  "note": null
+ },
+ {
+  "name": "Özlem Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.843991,
+  "lng": 27.829087,
+  "note": null
+ },
+ {
+  "name": "Abacı Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.843414,
+  "lng": 27.826327,
+  "note": null
+ },
+ {
+  "name": "Paşa Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.841915,
+  "lng": 27.82317,
+  "note": null
+ },
+ {
+  "name": "Güney Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.839079,
+  "lng": 27.840472,
+  "note": null
+ },
+ {
+  "name": "Karabulut Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.842499,
+  "lng": 27.839674,
+  "note": null
+ },
+ {
+  "name": "Yağmur Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.842599,
+  "lng": 27.840722,
+  "note": null
+ },
+ {
+  "name": "Yılmaz Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.842967,
+  "lng": 27.844332,
+  "note": null
+ },
+ {
+  "name": "Beyza Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.842915,
+  "lng": 27.832839,
+  "note": null
+ },
+ {
+  "name": "Atasoy Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.84355,
+  "lng": 27.828069,
+  "note": null
+ },
+ {
+  "name": "Naz Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.842772,
+  "lng": 27.823986,
+  "note": null
+ },
+ {
+  "name": "Yeni Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.836154,
+  "lng": 27.837822,
+  "note": null
+ },
+ {
+  "name": "İlke Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.831878,
+  "lng": 27.845268,
+  "note": null
+ },
+ {
+  "name": "Zafer Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.834642,
+  "lng": 27.846728,
+  "note": null
+ },
+ {
+  "name": "Yıldız Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.83325,
+  "lng": 27.851211,
+  "note": null
+ },
+ {
+  "name": "Güven Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.841034,
+  "lng": 27.839042,
+  "note": null
+ },
+ {
+  "name": "İbn-i Sina Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.841176,
+  "lng": 27.839079,
+  "note": null
+ },
+ {
+  "name": "Demir Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.841312,
+  "lng": 27.839141,
+  "note": null
+ },
+ {
+  "name": "Çolakoğlu Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.841832,
+  "lng": 27.839399,
+  "note": null
+ },
+ {
+  "name": "Giray Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.841949,
+  "lng": 27.839464,
+  "note": null
+ },
+ {
+  "name": "Kozdibi Eczanesi",
+  "kind": "lezzet",
+  "category": "eczane",
+  "price": null,
+  "lat": 37.843446,
+  "lng": 27.840788,
+  "note": null
+ },
+ {
+  "name": "Aperatifin Elli Tonu",
+  "kind": "lezzet",
+  "category": "doner",
+  "price": null,
+  "lat": 37.845237,
+  "lng": 27.845508,
+  "note": null
+ },
+ {
+  "name": "Cadde Pide",
+  "kind": "lezzet",
+  "category": "tost",
+  "price": null,
+  "lat": 37.847989,
+  "lng": 27.85312,
+  "note": null
+ },
+ {
+  "name": "ADÜ Kırtasiye",
+  "kind": "lezzet",
+  "category": "kirtasiye",
+  "price": null,
+  "lat": 37.848006,
+  "lng": 27.852871,
+  "note": null
+ },
+ {
+  "name": "XİR Döner",
+  "kind": "lezzet",
+  "category": "doner",
+  "price": null,
+  "lat": 37.848003,
+  "lng": 27.852682,
+  "note": null
+ },
+ {
+  "name": "Kumrucu İbo",
+  "kind": "lezzet",
+  "category": "tost",
+  "price": null,
+  "lat": 37.848064,
+  "lng": 27.852152,
+  "note": null
+ },
+ {
+  "name": "OBA Pastaneleri",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": null,
+  "lat": 37.847887,
+  "lng": 27.852109,
+  "note": null
+ },
+ {
+  "name": "Battalbey Çiğ Köfte",
+  "kind": "lezzet",
+  "category": "tost",
+  "price": null,
+  "lat": 37.847841,
+  "lng": 27.852788,
+  "note": null
+ },
+ {
+  "name": "Pekdemir Market",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.847828,
+  "lng": 27.853578,
+  "note": null
+ },
+ {
+  "name": "FC Döner",
+  "kind": "lezzet",
+  "category": "doner",
+  "price": null,
+  "lat": 37.847831,
+  "lng": 27.853807,
+  "note": null
+ },
+ {
+  "name": "Dönermeister",
+  "kind": "lezzet",
+  "category": "doner",
+  "price": null,
+  "lat": 37.847839,
+  "lng": 27.85401,
+  "note": null
+ },
+ {
+  "name": "Cadde Plus Cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.848019,
+  "lng": 27.853736,
+  "note": null
+ },
+ {
+  "name": "Paribu Cineverse",
+  "kind": "lezzet",
+  "category": "sinema",
+  "price": null,
+  "lat": 37.845746,
+  "lng": 27.860721,
+  "note": null
+ },
+ {
+  "name": "Pide by Pide",
+  "kind": "lezzet",
+  "category": "tost",
+  "price": null,
+  "lat": 37.845975,
+  "lng": 27.861582,
+  "note": null
+ },
+ {
+  "name": "HD İskender",
+  "kind": "lezzet",
+  "category": "doner",
+  "price": null,
+  "lat": 37.845415,
+  "lng": 27.860933,
+  "note": null
+ },
+ {
+  "name": "D&R",
+  "kind": "lezzet",
+  "category": "kirtasiye",
+  "price": null,
+  "lat": 37.84696,
+  "lng": 27.861289,
+  "note": null
+ },
+ {
+  "name": "Toyota Plaza Parmaksızlar",
+  "kind": "lezzet",
+  "category": "otogaleri",
+  "price": null,
+  "lat": 37.841629,
+  "lng": 27.831324,
+  "note": null
+ },
+ {
+  "name": "Donas Aydın",
+  "kind": "lezzet",
+  "category": "doner",
+  "price": null,
+  "lat": 37.84147,
+  "lng": 27.844645,
+  "note": null
+ },
+ {
+  "name": "Koza Coffee Shop",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.838776,
+  "lng": 27.844208,
+  "note": null
+ },
+ {
+  "name": "Başdaş",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.857502,
+  "lng": 27.823427,
+  "note": null
+ },
+ {
+  "name": "Pesto Makarna Aydın",
+  "kind": "lezzet",
+  "category": "tost",
+  "price": null,
+  "lat": 37.848784,
+  "lng": 27.848673,
+  "note": null
+ },
+ {
+  "name": "Zenit Optik",
+  "kind": "lezzet",
+  "category": "optik",
+  "price": null,
+  "lat": 37.847836,
+  "lng": 27.858394,
+  "note": null
+ },
+ {
+  "name": "Mey Fırın Kafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.84788,
+  "lng": 27.857443,
+  "note": null
+ },
+ {
+  "name": "Cajun Corner",
+  "kind": "lezzet",
+  "category": "tost",
+  "price": null,
+  "lat": 37.84787,
+  "lng": 27.857252,
+  "note": null
+ },
+ {
+  "name": "Daniel’s Coffee",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.847871,
+  "lng": 27.85705,
+  "note": null
+ },
+ {
+  "name": "İnek Burger",
+  "kind": "lezzet",
+  "category": "tost",
+  "price": null,
+  "lat": 37.847863,
+  "lng": 27.856678,
+  "note": null
+ },
+ {
+  "name": "Romesta Coffee Co.",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.848078,
+  "lng": 27.85707,
+  "note": null
+ },
+ {
+  "name": "Riziko Coffee & Game",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.848078,
+  "lng": 27.856915,
+  "note": null
+ },
+ {
+  "name": "Pablo Artisan Coffee",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.84808,
+  "lng": 27.856761,
+  "note": null
+ },
+ {
+  "name": "Okeyf",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.848073,
+  "lng": 27.856464,
+  "note": null
+ },
+ {
+  "name": "Okey Garden",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.848081,
+  "lng": 27.856299,
+  "note": null
+ },
+ {
+  "name": "Babilon Coffee",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.848077,
+  "lng": 27.856606,
+  "note": null
+ },
+ {
+  "name": "Yemen Kahvesi",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.848047,
+  "lng": 27.855884,
+  "note": null
+ },
+ {
+  "name": "Troy Apple Store",
+  "kind": "lezzet",
+  "category": "teknoloji",
+  "price": null,
+  "lat": 37.846976,
+  "lng": 27.861221,
+  "note": null
+ },
+ {
+  "name": "Arby's",
+  "kind": "lezzet",
+  "category": "tost",
+  "price": null,
+  "lat": 37.845645,
+  "lng": 27.860724,
+  "note": null
+ },
+ {
+  "name": "Sbarro",
+  "kind": "lezzet",
+  "category": "tost",
+  "price": null,
+  "lat": 37.84596,
+  "lng": 27.860786,
+  "note": null
+ },
+ {
+  "name": "Dürümle",
+  "kind": "lezzet",
+  "category": "doner",
+  "price": null,
+  "lat": 37.8453,
+  "lng": 27.861481,
+  "note": null
+ },
+ {
+  "name": "Baydöner",
+  "kind": "lezzet",
+  "category": "doner",
+  "price": null,
+  "lat": 37.846104,
+  "lng": 27.860913,
+  "note": null
+ },
+ {
+  "name": "Kahve Dünyası",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.846069,
+  "lng": 27.860846,
+  "note": null
+ },
+ {
+  "name": "Pidem",
+  "kind": "lezzet",
+  "category": "tost",
+  "price": null,
+  "lat": 37.845413,
+  "lng": 27.861165,
+  "note": null
+ },
+ {
+  "name": "Koton",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.845954,
+  "lng": 27.861055,
+  "note": null
+ },
+ {
+  "name": "Gar Park",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.848052,
+  "lng": 27.84325,
+  "note": null
+ },
+ {
+  "name": "Brew Mood",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.855888,
+  "lng": 27.858167,
+  "note": null
+ },
+ {
+  "name": "Mackbear",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.855911,
+  "lng": 27.857718,
+  "note": null
+ },
+ {
+  "name": "Ege Kuruyemiş",
+  "kind": "lezzet",
+  "category": "kuruyemis",
+  "price": null,
+  "lat": 37.845938,
+  "lng": 27.843721,
+  "note": null
+ },
+ {
+  "name": "Maydonoz Döner",
+  "kind": "lezzet",
+  "category": "doner",
+  "price": null,
+  "lat": 37.845877,
+  "lng": 27.843738,
+  "note": null
+ },
+ {
+  "name": "Relax Mode",
+  "kind": "lezzet",
+  "category": "giyim",
+  "price": null,
+  "lat": 37.845255,
+  "lng": 27.843898,
+  "note": null
+ },
+ {
+  "name": "Adnan Menderes diş üniversitesi ( ADÜ )",
+  "kind": "lezzet",
+  "category": "dishekimi",
+  "price": null,
+  "lat": 37.84821,
+  "lng": 27.834834,
+  "note": null
+ },
+ {
+  "name": "File",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.830872,
+  "lng": 27.849897,
+  "note": null
+ },
+ {
+  "name": "Aydın Devlet Hastanesi",
+  "kind": "lezzet",
+  "category": "klinik",
+  "price": null,
+  "lat": 37.848678,
+  "lng": 27.836766,
+  "note": null
+ },
+ {
+  "name": "Adnan Menderes Üniversitesi Hastanesi",
+  "kind": "lezzet",
+  "category": "klinik",
+  "price": null,
+  "lat": 37.848219,
+  "lng": 27.834833,
+  "note": null
+ },
+ {
+  "name": "Kipa AVM",
+  "kind": "lezzet",
+  "category": "market",
+  "price": null,
+  "lat": 37.846435,
+  "lng": 27.839245,
+  "note": null
+ },
+ {
+  "name": "Tralleis Antik Tiyatro",
+  "kind": "lezzet",
+  "category": "sinema",
+  "price": null,
+  "lat": 37.867569,
+  "lng": 27.843889,
+  "note": null
+ },
+ {
+  "name": "Açık Hava Tiyatrosu",
+  "kind": "lezzet",
+  "category": "sinema",
+  "price": null,
+  "lat": 37.855168,
+  "lng": 27.844985,
+  "note": null
+ },
+ {
+  "name": "Aydın Kadın Doğum ve Çocuk Hastalıkları Hastanesi",
+  "kind": "lezzet",
+  "category": "klinik",
+  "price": null,
+  "lat": 37.842171,
+  "lng": 27.832198,
+  "note": null
+ },
+ {
+  "name": "Çok Amaçlı Salon (ÇAS)",
+  "kind": "lezzet",
+  "category": "sinema",
+  "price": null,
+  "lat": 37.859792,
+  "lng": 27.823554,
+  "note": null
+ },
+ {
+  "name": "Kantin",
+  "kind": "lezzet",
+  "category": "kafe",
+  "price": null,
+  "lat": 37.859616,
+  "lng": 27.822862,
+  "note": null
+ },
+ {
+  "name": "Şükran Güngör Gösteri Merkezi",
+  "kind": "lezzet",
+  "category": "sinema",
+  "price": null,
+  "lat": 37.837263,
+  "lng": 27.837503,
+  "note": null
+ },
+ {
+  "name": "Aydın Şehir Hastanesi",
+  "kind": "lezzet",
+  "category": "klinik",
+  "price": null,
+  "lat": 37.832963,
+  "lng": 27.788117,
+  "note": null
+ },
+ {
+  "name": "Aydın Atatürk Devlet Hastanesi",
+  "kind": "lezzet",
+  "category": "klinik",
+  "price": null,
+  "lat": 37.840333,
+  "lng": 27.839798,
+  "note": null
+ },
+ {
+  "name": "Karadeniz Fırını",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": null,
+  "lat": 37.836817,
+  "lng": 27.8293,
+  "note": null
+ },
+ {
+  "name": "Poyraz",
+  "kind": "lezzet",
+  "category": "otogaleri",
+  "price": null,
+  "lat": 37.800812,
+  "lng": 27.839794,
+  "note": null
+ },
+ {
+  "name": "Aydın Adnan Menderes Üniversitesi Hastanesi",
+  "kind": "lezzet",
+  "category": "klinik",
+  "price": null,
+  "lat": 37.854285,
+  "lng": 27.859736,
+  "note": null
+ }
+]

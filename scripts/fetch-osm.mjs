@@ -23,8 +23,9 @@ const CITY_BBOXES = {
     "36.80,28.20,36.90,28.35", // Marmaris
   ],
   Aydın: [
+    "37.66,27.19,37.78,27.40", // Davutlar–Güzelçamlı sahili (Kuşadası güneyi)
+    "37.78,27.20,37.92,27.35", // Kuşadası merkez (genişletildi)
     "37.78,27.78,37.92,27.92", // Efeler
-    "37.82,27.20,37.92,27.32", // Kuşadası
   ],
   Manisa: ["38.56,27.36,38.68,27.50"],
   Denizli: ["37.72,29.00,37.85,29.20"],
@@ -136,10 +137,22 @@ async function overpass(bbox) {
   return null;
 }
 
-const PER_CATEGORY_PER_CITY = 25; // kategori başına şehir başına makul üst sınır
+// Hedefli mod: `node scripts/fetch-osm.mjs Aydın data/seed-aydin.json`
+// → yalnız o şehir, daha yüksek kategori tavanı, özel çıktı dosyası.
+const cityFilter = process.argv[2] || null;
+const outPath = process.argv[3] || "data/seed-places.json";
+const PER_CATEGORY_PER_CITY = cityFilter ? 60 : 25; // kategori başına şehir başına üst sınır
 const out = [];
 
-for (const [city, boxes] of Object.entries(CITY_BBOXES)) {
+const targets = cityFilter
+  ? Object.entries(CITY_BBOXES).filter(([c]) => c === cityFilter)
+  : Object.entries(CITY_BBOXES);
+if (cityFilter && targets.length === 0) {
+  console.error(`Şehir bulunamadı: ${cityFilter} — mevcut: ${Object.keys(CITY_BBOXES).join(", ")}`);
+  process.exit(1);
+}
+
+for (const [city, boxes] of targets) {
   const seen = new Set();
   const byCat = {};
   let cityCount = 0;
@@ -179,8 +192,8 @@ for (const [city, boxes] of Object.entries(CITY_BBOXES)) {
 }
 
 fs.mkdirSync("data", { recursive: true });
-fs.writeFileSync("data/seed-places.json", JSON.stringify(out, null, 1));
+fs.writeFileSync(outPath, JSON.stringify(out, null, 1));
 const catCounts = {};
 for (const p of out) catCounts[p.category] = (catCounts[p.category] ?? 0) + 1;
-console.log(`\nTOPLAM ${out.length} gerçek mekan → data/seed-places.json`);
+console.log(`\nTOPLAM ${out.length} gerçek mekan → ${outPath}`);
 console.log("Kategori dağılımı:", catCounts);
