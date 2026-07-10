@@ -14,9 +14,27 @@ type Props = {
   pinKind: PinKind;
   onClose: () => void;
   onCreated: (id: string, earned: number) => void;
+  onPickExisting: (id: string) => void;
 };
 
-export default function NewPinSheet({ coords, pinKind, onClose, onCreated }: Props) {
+type NameMatch = {
+  id: string;
+  name: string;
+  category: string;
+  price: number | null;
+  price_item: string | null;
+  lat: number;
+  lng: number;
+};
+
+// Kaba mesafe (metre) — yakınlık etiketi için.
+function distMeters(a: { lat: number; lng: number }, b: { lat: number; lng: number }) {
+  const dLat = (a.lat - b.lat) * 111000;
+  const dLng = (a.lng - b.lng) * 111000 * Math.cos((a.lat * Math.PI) / 180);
+  return Math.round(Math.sqrt(dLat * dLat + dLng * dLng));
+}
+
+export default function NewPinSheet({ coords, pinKind, onClose, onCreated, onPickExisting }: Props) {
   const meta = kindMeta(pinKind);
   const groups = useMemo(() => groupsForKind(pinKind), [pinKind]);
   const grouped = hasGroups(pinKind);
@@ -34,6 +52,11 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated }: Pro
   const fileRef = useRef<HTMLInputElement>(null);
   const [photoName, setPhotoName] = useState("");
 
+  // Mekan adı autocomplete — yakındaki mevcut pinler ("zaten burada var mı?")
+  const [nameMatches, setNameMatches] = useState<NameMatch[]>([]);
+  const [showMatches, setShowMatches] = useState(true);
+  const nameTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   useEffect(() => {
     if (coords) {
       const gs = groupsForKind(pinKind);
@@ -47,9 +70,31 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated }: Pro
       setNote("");
       setError("");
       setPhotoName("");
+      setNameMatches([]);
+      setShowMatches(true);
       if (fileRef.current) fileRef.current.value = "";
     }
   }, [coords, pinKind]);
+
+  // Ad yazıldıkça yakındaki eşleşen mekanları getir (debounce'lu).
+  useEffect(() => {
+    if (nameTimer.current) clearTimeout(nameTimer.current);
+    const query = name.trim();
+    if (!coords || !showMatches || query.length < 2) {
+      setNameMatches([]);
+      return;
+    }
+    nameTimer.current = setTimeout(() => {
+      const u = `/api/search?q=${encodeURIComponent(query)}&lat=${coords.lat}&lng=${coords.lng}`;
+      fetch(u)
+        .then((r) => r.json())
+        .then((d: { results?: NameMatch[] }) => setNameMatches(d.results ?? []))
+        .catch(() => setNameMatches([]));
+    }, 220);
+    return () => {
+      if (nameTimer.current) clearTimeout(nameTimer.current);
+    };
+  }, [name, coords, showMatches]);
 
   const suggestions = itemSuggestionsFor(category);
   const priceRequired = meta.hasPrice && !noPrice;
@@ -173,11 +218,46 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated }: Pro
 
           <input
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => {
+              setName(e.target.value);
+              setShowMatches(true);
+            }}
             maxLength={80}
             placeholder={meta.namePlaceholder}
             className="sticker-flat mt-3 w-full px-3 py-2.5 text-[15px] outline-none focus:border-tomato bg-cream"
           />
+
+          {/* Yakındaki mevcut mekanlar — mükerrer pini önle, fiyat eklemeye yönlendir */}
+          {showMatches && nameMatches.length > 0 && (
+            <div className="sticker-flat mt-1.5 overflow-hidden bg-cream p-0">
+              <p className="border-b border-line px-3 py-1.5 text-[11px] font-bold opacity-55">
+                Zaten burada mı? Var olana fiyat ekle 👇
+              </p>
+              {nameMatches.map((m) => {
+                const d = coords ? distMeters(coords, m) : null;
+                return (
+                  <button
+                    key={m.id}
+                    onClick={() => onPickExisting(m.id)}
+                    className="flex w-full items-center gap-2.5 border-b border-line px-3 py-2 text-left last:border-0 active:bg-paper"
+                  >
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm font-bold">{m.name}</span>
+                      <span className="text-[11px] opacity-55">
+                        {d != null && (d < 1000 ? `${d} m` : `${(d / 1000).toFixed(1)} km`)}
+                        {m.price != null
+                          ? ` · ₺${m.price.toLocaleString("tr-TR")}${m.price_item ? " " + m.price_item : ""}`
+                          : " · henüz fiyat yok"}
+                      </span>
+                    </span>
+                    <span className="display shrink-0 text-xs font-extrabold text-teal">
+                      Aç →
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
 
           {/* Gruplu kind: önce grup, sonra alt kategori */}
           {grouped && (

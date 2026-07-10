@@ -404,15 +404,36 @@ export default function MapApp({
     refreshMe();
   };
 
+  // flyTo, rAF kısıtlanınca (arka plan sekmesi / güç tasarrufu modu) sessizce
+  // donar ve harita hiç kımıldamaz. Kısa süre sonra kamera hiç oynamadıysa
+  // jumpTo ile garanti zıpla — "şehir seçince ışınlanmıyor" bunu çözer.
+  const flyOrJump = (opts: maplibregl.FlyToOptions & { center: [number, number] }) => {
+    const map = mapRef.current;
+    if (!map) return;
+    const start = map.getCenter();
+    map.flyTo(opts);
+    setTimeout(() => {
+      const c = map.getCenter();
+      const moved =
+        Math.abs(c.lng - start.lng) > 1e-4 || Math.abs(c.lat - start.lat) > 1e-4;
+      if (!moved) map.jumpTo({ center: opts.center, zoom: opts.zoom });
+    }, 400);
+  };
+
   const gotoResult = (r: SearchResult) => {
     setSearchOpen(false);
-    mapRef.current?.flyTo({ center: [r.lng, r.lat], zoom: 16 });
+    flyOrJump({ center: [r.lng, r.lat], zoom: 16 });
     setTimeout(() => setSheet({ kind: "pin", id: r.id }), 400);
+  };
+
+  // Yeni pin formundan "zaten var olan mekan" seçilince: mükerrer açma, o pini aç.
+  const openExistingPin = (id: string) => {
+    setSheet({ kind: "pin", id });
   };
 
   const gotoCity = (center: [number, number]) => {
     setSearchOpen(false);
-    mapRef.current?.flyTo({ center, zoom: 12.5 });
+    flyOrJump({ center, zoom: 12.5 });
   };
 
   const logout = async () => {
@@ -599,6 +620,7 @@ export default function MapApp({
         pinKind={sheet.kind === "new" ? sheet.pinKind : "lezzet"}
         onClose={() => setSheet({ kind: "none" })}
         onCreated={onPinCreated}
+        onPickExisting={openExistingPin}
       />
       <ProfileSheet
         open={sheet.kind === "profile"}
