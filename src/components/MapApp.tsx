@@ -76,6 +76,32 @@ export default function MapApp({
     setToast({ msg, key: Date.now() });
   }, []);
 
+  // Geri tuşu (TWA/Android): sheet açıkken geri = sheet'i kapat, uygulamadan çıkma.
+  // Overlay açılınca 1 history girdisi it; popstate gelince overlay'leri kapat.
+  const anyOverlayOpen = sheet.kind !== "none" || searchOpen || authOpen || placing;
+  const overlayOpenRef = useRef(anyOverlayOpen);
+  overlayOpenRef.current = anyOverlayOpen;
+  const pushedRef = useRef(false);
+  useEffect(() => {
+    if (anyOverlayOpen && !pushedRef.current) {
+      history.pushState({ pinleOverlay: 1 }, "");
+      pushedRef.current = true;
+    }
+  }, [anyOverlayOpen]);
+  useEffect(() => {
+    const onPop = () => {
+      pushedRef.current = false;
+      if (overlayOpenRef.current) {
+        setSheet({ kind: "none" });
+        setSearchOpen(false);
+        setAuthOpen(false);
+        setPlacing(false);
+      }
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
   const refreshMe = useCallback(() => {
     fetch("/api/me")
       .then((r) => r.json())

@@ -242,6 +242,51 @@ export function groupForCategory(kind: PinKind, categoryId: string): CategoryGro
   return CATEGORY_GROUPS[kind]?.find((g) => g.categories.some((c) => c.id === categoryId));
 }
 
+// Fiyat kalemi ("ne için?") hızlı önerileri — kategoriye göre. Serbest metin her
+// zaman mümkün; çipler yalnızca yazmayı hızlandırır. Ürün VE hizmet örnekleri.
+export const ITEM_SUGGESTIONS: Record<string, string[]> = {
+  doner: ["Döner dürüm", "Yarım ekmek döner", "Tombik", "İskender"],
+  kebap: ["Adana dürüm", "Porsiyon kebap", "Köfte porsiyon", "Kanat porsiyon"],
+  lokanta: ["4 çeşit menü", "Sulu yemek + pilav", "Tabldot", "Ev yemeği porsiyon"],
+  kahvalti: ["Serpme kahvaltı (kişi)", "Kahvaltı tabağı", "Menemen", "Simit + çay"],
+  pide: ["Kıymalı pide", "Kaşarlı pide", "Lahmacun"],
+  cigkofte: ["Çiğ köfte dürüm", "Kilo çiğ köfte"],
+  tost: ["Karışık tost", "Ayvalık tostu", "Islak burger", "Sandviç"],
+  kokorec: ["Yarım ekmek kokoreç", "Midye tava", "Midye dolma (adet)"],
+  balik: ["Balık ekmek", "Porsiyon balık", "Kalamar", "Hamsi tava"],
+  corba: ["Mercimek çorbası", "Kelle paça", "İşkembe"],
+  tatli: ["Künefe", "Baklava porsiyon", "Sütlaç", "Waffle"],
+  dondurma: ["Külahta 2 top", "Kilo dondurma"],
+  kafe: ["Filtre kahve", "Latte", "Çay", "Limonata", "Cheesecake dilim"],
+  caybahce: ["Çay", "Semaver (kişi)", "Gözleme"],
+  kahveci: ["Türk kahvesi", "Filtre kahve"],
+  bar: ["Bira (50cl)", "Kokteyl", "Kadeh şarap"],
+  meyhane: ["Rakı (kadeh)", "Meze tabağı", "Fiks menü (kişi)"],
+  "ickili-restoran": ["Fiks menü (kişi)", "Ana yemek", "Kadeh şarap"],
+  "gece-kulubu": ["Giriş ücreti", "İçecek"],
+  nargile: ["Nargile", "Çay"],
+  firin: ["Ekmek", "Simit", "Poğaça", "Börek (kilo)"],
+  market: ["Su (5L)", "Ekmek", "Süt (1L)"],
+  benzinlik: ["Benzin (litre)", "Motorin (litre)", "LPG (litre)"],
+  otopark: ["Saatlik", "Günlük"],
+  kuafor: ["Saç kesimi", "Sakal", "Saç + sakal"],
+  guzellik: ["Manikür", "Ağda", "Cilt bakımı"],
+  spor: ["Aylık üyelik", "Günlük giriş"],
+  park: ["Şezlong (günlük)", "Kano kiralama (1 saat)", "Bisiklet kiralama (1 saat)"],
+  diger: ["1 saat kiralama", "Günlük kiralama", "Giriş ücreti", "Servis ücreti"],
+};
+// Kategoriye özel öneri yoksa genel kalıplar (hizmetler dahil)
+export const GENERIC_ITEM_SUGGESTIONS = [
+  "Porsiyon",
+  "Adet",
+  "1 saat kiralama",
+  "Günlük",
+  "Servis ücreti",
+];
+export function itemSuggestionsFor(categoryId: string): string[] {
+  return ITEM_SUGGESTIONS[categoryId] ?? GENERIC_ITEM_SUGGESTIONS;
+}
+
 // Fiyatın anlamlı olduğu gruplar: yeme-içme (bir öğün/kahve/içki fiyatı). Market,
 // hizmet, sağlık, oto, gezi vb. tek "fiyat" taşımaz → "₺?" daveti/kartı gösterilmez.
 const PRICEABLE_GROUPS = new Set(["g-yeme", "g-kafe", "g-bar"]);

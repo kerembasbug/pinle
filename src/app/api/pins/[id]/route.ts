@@ -10,10 +10,12 @@ export async function GET(
   const me = await getUserIfExists();
   const pin = db()
     .prepare(
-      `SELECT p.id, p.user_id, p.name, p.kind, p.category, p.price, p.price_item, p.note, p.photo, p.lat, p.lng, p.created_at,
+      `SELECT p.id, p.user_id, p.name, p.kind, p.category, p.price, p.price_item, p.price_updated_at,
+        p.note, p.photo, p.lat, p.lng, p.created_at,
         u.name AS author,
         COALESCE((SELECT COUNT(*) FROM votes v WHERE v.pin_id = p.id AND v.value = 1), 0) AS confirms,
-        COALESCE((SELECT COUNT(*) FROM votes v WHERE v.pin_id = p.id AND v.value = -1), 0) AS outdated
+        COALESCE((SELECT COUNT(*) FROM votes v WHERE v.pin_id = p.id AND v.value = -1), 0) AS outdated,
+        COALESCE((SELECT COUNT(*) FROM thanks t WHERE t.pin_id = p.id), 0) AS thanks
        FROM pins p JOIN users u ON u.id = p.user_id
        WHERE p.id = ? AND p.status = 'active'`
     )
@@ -34,15 +36,19 @@ export async function GET(
   }));
 
   let myVote = 0;
+  let myThanks = false;
   if (me) {
     const v = db()
       .prepare("SELECT value FROM votes WHERE pin_id = ? AND user_id = ?")
       .get(id, me.id) as { value: number } | undefined;
     myVote = v?.value ?? 0;
+    myThanks = !!db()
+      .prepare("SELECT 1 FROM thanks WHERE pin_id = ? AND user_id = ?")
+      .get(id, me.id);
   }
 
   const isMine = me?.id === pin.user_id;
   const authorId = authorIdFor(pin.user_id as string);
   delete pin.user_id;
-  return Response.json({ pin: { ...pin, isMine, authorId }, comments, myVote });
+  return Response.json({ pin: { ...pin, isMine, authorId }, comments, myVote, myThanks });
 }

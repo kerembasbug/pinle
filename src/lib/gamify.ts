@@ -7,6 +7,8 @@ export const POINTS = {
   PIN_CONFIRMED: 5, // pin sahibine, pini ilk kez doğrulandığında
   COMMENT: 3,
   PRICE: 5, // mevcut bir pine fiyat ekleme/güncelleme (fiyat-öncelikli çekirdek veri)
+  PRICE_FIRST_BONUS: 5, // pini "fiyat açan" ilk kişiye ek bonus (₺? avcılığı)
+  THANKS_OWNER: 2, // pinine teşekkür edilen sahibe (dopamin + kalite sinyali)
 } as const;
 
 export type Badge = {

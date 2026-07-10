@@ -5,24 +5,28 @@ import { POINTS } from "@/lib/gamify";
 
 // Mevcut bir pine güncel fiyat bildir. Fiyatsız OSM mekanlarını topluluk
 // böyle doldurur — çıkıp aynı mekanı yeniden pinlemeye gerek kalmaz.
-// Fiyat hep bir "kalem" (ne için) ile: mekan çıplak rakamla fiyatlanmasın.
+// Fiyat hep bir "kalem" (ne için) ile ve BİRİM fiyata normalize edilir:
+// "2 × Balık ekmek = 550₺" → adet 275₺ (fiyat/performans kıyaslanabilir olsun).
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
   const user = await getOrCreateUser();
-  const { price, item } = (await request.json().catch(() => ({}))) as {
-    price?: number;
+  const { price, item, qty } = (await request.json().catch(() => ({}))) as {
+    price?: number; // TOPLAM ödenen
     item?: string;
+    qty?: number; // adet/porsiyon (varsayılan 1)
   };
 
   if (typeof price !== "number" || !Number.isFinite(price) || price < 1 || price > 100000) {
     return Response.json({ error: "Geçerli bir fiyat gir (1–100000 ₺)" }, { status: 400 });
   }
-  const value = Math.round(price * 100) / 100; // en fazla 2 ondalık
+  const n = Number.isInteger(qty) && (qty as number) >= 1 && (qty as number) <= 20 ? (qty as number) : 1;
+  const total = Math.round(price * 100) / 100;
+  const unit = Math.round((total / n) * 100) / 100; // birim fiyat — pinde bu tutulur
   const label = (item ?? "").trim().slice(0, 40);
-  if (!label) return Response.json({ error: "Ne için? (örn. Döner)" }, { status: 400 });
+  if (!label) return Response.json({ error: "Ne için? (örn. Balık ekmek)" }, { status: 400 });
   if (!isClean(label)) return Response.json({ error: "Uygunsuz metin" }, { status: 400 });
 
   const d = db();
@@ -35,15 +39,15 @@ export async function POST(
     return Response.json({ error: "Günlük fiyat bildirimi limitine ulaştın" }, { status: 429 });
   }
 
-  const changed = pin.price !== value;
+  const firstPrice = pin.price == null; // pini "fiyat açan" kişi — bonus
+  const changed = pin.price !== unit;
 
-  d.prepare("INSERT INTO price_reports (pin_id, user_id, price, item) VALUES (?, ?, ?, ?)").run(
-    id,
-    user.id,
-    value,
-    label
-  );
-  d.prepare("UPDATE pins SET price = ?, price_item = ? WHERE id = ?").run(value, label, id);
+  d.prepare(
+    "INSERT INTO price_reports (pin_id, user_id, price, item, qty, total) VALUES (?, ?, ?, ?, ?, ?)"
+  ).run(id, user.id, unit, label, n, total);
+  d.prepare(
+    "UPDATE pins SET price = ?, price_item = ?, price_updated_at = datetime('now') WHERE id = ?"
+  ).run(unit, label, id);
 
   // Fiyat değiştiyse oylar artık eski fiyatı doğruluyordu → sıfırla (oylar hep
   // GÜNCEL fiyatı doğrular; "hâlâ bu fiyat" anlamı korunur).
@@ -51,7 +55,12 @@ export async function POST(
     d.prepare("DELETE FROM votes WHERE pin_id = ?").run(id);
   }
 
+  let earned = POINTS.PRICE;
   awardPoints(user.id, POINTS.PRICE, "price");
+  if (firstPrice) {
+    awardPoints(user.id, POINTS.PRICE_FIRST_BONUS, "price_first");
+    earned += POINTS.PRICE_FIRST_BONUS;
+  }
 
   const counts = d
     .prepare(
@@ -63,10 +72,13 @@ export async function POST(
     .get(id) as { confirms: number; outdated: number };
 
   return Response.json({
-    price: value,
+    price: unit,
     price_item: label,
+    qty: n,
+    total,
+    firstPrice,
     changed,
-    earned: POINTS.PRICE,
+    earned,
     confirms: counts.confirms,
     outdated: counts.outdated,
     myVote: changed ? 0 : undefined,

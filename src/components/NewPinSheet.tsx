@@ -2,10 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
-  categoryById,
   groupsForKind,
   hasGroups,
-  isPriceable,
+  itemSuggestionsFor,
   kindMeta,
   type PinKind,
 } from "@/lib/categories";
@@ -27,6 +26,8 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated }: Pro
   const [category, setCategory] = useState(groups[0].categories[0].id);
   const [price, setPrice] = useState("");
   const [priceItem, setPriceItem] = useState("");
+  const [qty, setQty] = useState(1);
+  const [noPrice, setNoPrice] = useState(false); // "fiyatı şu an bilmiyorum" kaçışı
   const [note, setNote] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -41,6 +42,8 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated }: Pro
       setCategory(gs[0].categories[0].id);
       setPrice("");
       setPriceItem("");
+      setQty(1);
+      setNoPrice(false);
       setNote("");
       setError("");
       setPhotoName("");
@@ -48,16 +51,25 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated }: Pro
     }
   }, [coords, pinKind]);
 
+  const suggestions = itemSuggestionsFor(category);
+  const priceRequired = meta.hasPrice && !noPrice;
+  const priceOk = !priceRequired || (price.trim() !== "" && priceItem.trim() !== "");
+
   const submit = async () => {
     if (!coords || busy) return;
     setError("");
+    if (priceRequired && !priceOk) {
+      setError("Fiyat ve ne için olduğunu gir — Pinle'nin kalbi bu. (Bilmiyorsan 'şu an bilmiyorum'u işaretle)");
+      return;
+    }
     setBusy(true);
     const fd = new FormData();
     fd.set("name", name);
     fd.set("kind", pinKind);
     fd.set("category", category);
-    fd.set("price", meta.hasPrice ? price : "");
-    fd.set("price_item", meta.hasPrice ? priceItem : "");
+    fd.set("price", meta.hasPrice && !noPrice ? price : "");
+    fd.set("price_item", meta.hasPrice && !noPrice ? priceItem : "");
+    fd.set("price_qty", String(qty));
     fd.set("note", note);
     fd.set("lat", String(coords.lat));
     fd.set("lng", String(coords.lng));
@@ -79,6 +91,93 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated }: Pro
         <div className="overflow-y-auto px-4 pb-[calc(env(safe-area-inset-bottom,0px)+16px)]">
           <h2 className="pt-1 text-xl font-extrabold">{meta.formTitle}</h2>
           <p className="text-xs opacity-60">{meta.formHint}</p>
+
+          {/* 💰 FİYAT ÖNCE — uygulamanın kalbi, ayrı ve baskın tasarım */}
+          {meta.hasPrice && (
+            <div className="sticker mt-3 border-tomato bg-[#fdeee7] p-3">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-extrabold text-tomato">💰 Ne aldın, kaça?</p>
+                <label className="flex items-center gap-1 text-[11px] opacity-60">
+                  <input
+                    type="checkbox"
+                    checked={noPrice}
+                    onChange={(e) => setNoPrice(e.target.checked)}
+                  />
+                  şu an bilmiyorum
+                </label>
+              </div>
+              {!noPrice && (
+                <>
+                  <div className="mt-2 flex gap-1.5 overflow-x-auto pb-0.5 [scrollbar-width:none]">
+                    {suggestions.map((s) => (
+                      <button
+                        key={s}
+                        onClick={() => setPriceItem(s)}
+                        className={`btn shrink-0 px-2.5 py-1 text-[12px] ${
+                          priceItem === s ? "btn-teal" : "btn-cream"
+                        }`}
+                      >
+                        {s}
+                      </button>
+                    ))}
+                  </div>
+                  <input
+                    value={priceItem}
+                    onChange={(e) => setPriceItem(e.target.value)}
+                    maxLength={40}
+                    placeholder="Ürün/hizmet (örn. Balık ekmek, 1 saat kano)"
+                    className="sticker-flat mt-2 w-full bg-cream px-3 py-2.5 text-[15px] outline-none focus:border-tomato"
+                  />
+                  <div className="mt-2 flex gap-2">
+                    <div className="sticker-flat flex items-center bg-cream">
+                      <button
+                        onClick={() => setQty((q) => Math.max(1, q - 1))}
+                        className="px-2.5 py-2.5 text-lg font-bold opacity-60"
+                        aria-label="Adet azalt"
+                      >
+                        −
+                      </button>
+                      <span className="min-w-8 text-center text-sm font-extrabold">{qty}×</span>
+                      <button
+                        onClick={() => setQty((q) => Math.min(20, q + 1))}
+                        className="px-2.5 py-2.5 text-lg font-bold opacity-60"
+                        aria-label="Adet artır"
+                      >
+                        +
+                      </button>
+                    </div>
+                    <div className="sticker-flat flex flex-1 items-center bg-cream focus-within:border-tomato">
+                      <span className="display pl-3 text-lg font-bold text-tomato">₺</span>
+                      <input
+                        value={price}
+                        onChange={(e) => setPrice(e.target.value.replace(/[^\d.,]/g, ""))}
+                        inputMode="decimal"
+                        placeholder={qty > 1 ? "toplam ödenen" : "fiyat"}
+                        className="w-full bg-transparent px-2 py-2.5 text-[15px] outline-none"
+                      />
+                    </div>
+                  </div>
+                  {qty > 1 && price && (
+                    <p className="mt-1 text-xs opacity-60">
+                      Tanesi ≈ ₺
+                      {(
+                        Math.round((Number(price.replace(",", ".")) / qty) * 100) / 100
+                      ).toLocaleString("tr-TR")}{" "}
+                      olarak kaydedilir
+                    </p>
+                  )}
+                </>
+              )}
+            </div>
+          )}
+
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            maxLength={80}
+            placeholder={meta.namePlaceholder}
+            className="sticker-flat mt-3 w-full px-3 py-2.5 text-[15px] outline-none focus:border-tomato bg-cream"
+          />
 
           {/* Gruplu kind: önce grup, sonra alt kategori */}
           {grouped && (
@@ -113,40 +212,14 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated }: Pro
             ))}
           </div>
 
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            maxLength={80}
-            placeholder={meta.namePlaceholder}
-            className="sticker-flat mt-3 w-full px-3 py-2.5 text-[15px] outline-none focus:border-tomato bg-cream"
-          />
-          {meta.hasPrice && isPriceable(pinKind, category) && (
-            <input
-              value={priceItem}
-              onChange={(e) => setPriceItem(e.target.value)}
-              maxLength={40}
-              placeholder={`Fiyat ne için? (örn. ${categoryById(category).label})`}
-              className="sticker-flat mt-2 w-full px-3 py-2.5 text-[15px] outline-none focus:border-tomato bg-cream"
-            />
-          )}
           <div className="mt-2 flex gap-2">
-            {meta.hasPrice && (
-              <div className="sticker-flat flex flex-1 items-center bg-cream focus-within:border-tomato">
-                <span className="display pl-3 text-lg font-bold text-tomato">₺</span>
-                <input
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value.replace(/[^\d.,]/g, ""))}
-                  inputMode="decimal"
-                  placeholder="Fiyat (ops.)"
-                  className="w-full bg-transparent px-2 py-2.5 text-[15px] outline-none"
-                />
-              </div>
-            )}
             <button
               onClick={() => fileRef.current?.click()}
-              className={`btn px-3 py-2 text-sm ${photoName ? "btn-teal" : "btn-cream"} ${meta.hasPrice ? "" : "flex-1"}`}
+              className={`btn flex-1 px-3 py-2 text-sm ${photoName ? "btn-teal" : "btn-cream"}`}
             >
-              {photoName ? "📷 Fotoğraf eklendi ✓" : "📷 Fotoğraf ekle (+5 puan)"}
+              {photoName
+                ? "📷 Fotoğraf eklendi ✓"
+                : "📷 Ürünün/fiyat etiketinin fotoğrafı (+5 puan)"}
             </button>
             <input
               ref={fileRef}
@@ -173,7 +246,7 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated }: Pro
             </button>
             <button
               onClick={submit}
-              disabled={busy || name.trim().length < 2}
+              disabled={busy || name.trim().length < 2 || !priceOk}
               className="btn btn-tomato flex-[2] py-3"
             >
               {busy ? "Pinleniyor…" : "Pinle! (+10 puan)"}

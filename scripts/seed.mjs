@@ -27,8 +27,8 @@ function ensureUser(name) {
 }
 
 const insertPin = db.prepare(
-  `INSERT INTO pins (id, user_id, name, kind, category, price, price_item, note, lat, lng, created_at)
-   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now', ?))`
+  `INSERT INTO pins (id, user_id, name, kind, category, price, price_item, price_updated_at, note, lat, lng, created_at)
+   VALUES (?, ?, ?, ?, ?, ?, ?, CASE WHEN ? IS NOT NULL THEN datetime('now') END, ?, ?, ?, datetime('now', ?))`
 );
 const insertVote = db.prepare(
   "INSERT OR IGNORE INTO votes (pin_id, user_id, value) VALUES (?, ?, ?)"
@@ -74,7 +74,7 @@ if (inputPath) {
     "SELECT 1 FROM price_reports WHERE pin_id = ? LIMIT 1"
   );
   const updatePrice = db.prepare(
-    "UPDATE pins SET price = ?, price_item = ?, note = COALESCE(?, note) WHERE id = ?"
+    "UPDATE pins SET price = ?, price_item = ?, price_updated_at = datetime('now'), note = COALESCE(?, note) WHERE id = ?"
   );
   let added = 0;
   let priced = 0;
@@ -98,7 +98,7 @@ if (inputPath) {
       }
       insertPin.run(
         randomUUID(), teamId, r.name, r.kind ?? "lezzet", r.category ?? "diger",
-        r.price ?? null, r.price_item ?? null, r.note ?? null, r.lat, r.lng, "-0 day"
+        r.price ?? null, r.price_item ?? null, r.price ?? null, r.note ?? null, r.lat, r.lng, "-0 day"
       );
       added++;
     }
@@ -139,7 +139,7 @@ db.transaction(() => {
     if (pinExists(r.name, r.lat)) return;
     const id = randomUUID();
     const owner = userIds[i % userIds.length];
-    insertPin.run(id, owner, r.name, r.kind, r.category, r.price, r.note, r.lat, r.lng, `-${(i % 6) + 1} day`);
+    insertPin.run(id, owner, r.name, r.kind, r.category, r.price, null, r.price, r.note, r.lat, r.lng, `-${(i % 6) + 1} day`);
     award.run(10, owner);
     logEvent.run(owner, 10, "pin");
     for (const v of userIds.filter((u) => u !== owner).slice(0, Math.floor(Math.random() * 4))) {

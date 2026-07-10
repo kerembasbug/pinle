@@ -75,9 +75,18 @@ function migrate(d: Database.Database) {
       user_id TEXT NOT NULL REFERENCES users(id),
       price REAL NOT NULL,
       item TEXT,
+      qty INTEGER NOT NULL DEFAULT 1,
+      total REAL,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
     CREATE INDEX IF NOT EXISTS idx_pricerep_pin ON price_reports(pin_id, created_at);
+
+    CREATE TABLE IF NOT EXISTS thanks (
+      pin_id TEXT NOT NULL REFERENCES pins(id),
+      user_id TEXT NOT NULL REFERENCES users(id),
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      PRIMARY KEY (pin_id, user_id)
+    );
 
     CREATE TABLE IF NOT EXISTS points_events (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -127,9 +136,19 @@ function migrate(d: Database.Database) {
   if (!pinCols.some((c) => c.name === "price_item")) {
     d.exec("ALTER TABLE pins ADD COLUMN price_item TEXT");
   }
+  // Fiyat güncelliği takibi: son fiyat ne zaman girildi/güncellendi
+  if (!pinCols.some((c) => c.name === "price_updated_at")) {
+    d.exec("ALTER TABLE pins ADD COLUMN price_updated_at TEXT");
+    // mevcut fiyatlı pinler için makul başlangıç: pinin oluşturulma tarihi
+    d.exec("UPDATE pins SET price_updated_at = created_at WHERE price IS NOT NULL");
+  }
   const priceRepCols = d.prepare("PRAGMA table_info(price_reports)").all() as { name: string }[];
   if (priceRepCols.length && !priceRepCols.some((c) => c.name === "item")) {
     d.exec("ALTER TABLE price_reports ADD COLUMN item TEXT");
+  }
+  if (priceRepCols.length && !priceRepCols.some((c) => c.name === "qty")) {
+    d.exec("ALTER TABLE price_reports ADD COLUMN qty INTEGER NOT NULL DEFAULT 1");
+    d.exec("ALTER TABLE price_reports ADD COLUMN total REAL");
   }
 
   // İlçe/şehri atanmamış pinleri doldur (seed dahil her açılışta idempotent)

@@ -21,6 +21,7 @@ export type PinDetail = {
   category: string;
   price: number | null;
   price_item: string | null;
+  price_updated_at: string | null;
   note: string | null;
   photo: string | null;
   lat: number;
@@ -30,6 +31,7 @@ export type PinDetail = {
   authorId: string;
   confirms: number;
   outdated: number;
+  thanks: number;
   isMine: boolean;
 };
 

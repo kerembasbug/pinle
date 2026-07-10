@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { db, awardPoints } from "@/lib/db";
 import { getOrCreateUser } from "@/lib/identity";
-import { isValidKind, categoryInKind, kindMeta, categoryById, isPriceable } from "@/lib/categories";
+import { isValidKind, categoryInKind, kindMeta } from "@/lib/categories";
 import { nearestPlace } from "@/lib/districts";
 import { isClean, withinRateLimit } from "@/lib/moderation";
 import { POINTS } from "@/lib/gamify";
@@ -103,14 +103,20 @@ export async function POST(request: NextRequest) {
     if (Number.isNaN(price) || price < 0 || price > 100000) {
       return Response.json({ error: "Geçersiz fiyat" }, { status: 400 });
     }
+    // Adet/porsiyon normalizasyonu: "2 balık ekmek 550" → tanesi 275 tutulur
+    const qtyRaw = Number(String(form.get("price_qty") ?? "1"));
+    const qty = Number.isInteger(qtyRaw) && qtyRaw >= 1 && qtyRaw <= 20 ? qtyRaw : 1;
+    if (qty > 1) price = Math.round((price / qty) * 100) / 100;
   }
-  // Fiyat varsa "ne için" etiketi: verilmişse onu, yoksa kategori adını kullan
-  // (örn. döner kategorisi → "Döner"). Fiyat yoksa etiket de yok.
+  // Fiyat varsa "ne için" etiketi ZORUNLU — fiyat hep bir ürün/hizmete bağlı
+  // (mekan çıplak rakamla fiyatlanmaz; kategori adı ürün değildir).
   let priceItem: string | null = null;
-  if (price != null) {
-    priceItem = priceItemRaw || (isPriceable(kind, category) ? categoryById(category).label : "");
-    priceItem = priceItem || null;
-    if (priceItem && !isClean(priceItem)) {
+  if (price != null && price > 0) {
+    priceItem = priceItemRaw || null;
+    if (!priceItem) {
+      return Response.json({ error: "Fiyat ne için? (örn. Balık ekmek)" }, { status: 400 });
+    }
+    if (!isClean(priceItem)) {
       return Response.json({ error: "Metin uygunsuz ifade içeriyor" }, { status: 400 });
     }
   }
@@ -134,13 +140,14 @@ export async function POST(request: NextRequest) {
   const place = nearestPlace(lat, lng);
   db()
     .prepare(
-      `INSERT INTO pins (id, user_id, name, kind, category, district, city, price, price_item, note, photo, lat, lng)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO pins (id, user_id, name, kind, category, district, city, price, price_item,
+        price_updated_at, note, photo, lat, lng)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CASE WHEN ? IS NOT NULL THEN datetime('now') END, ?, ?, ?, ?)`
     )
     .run(
       id, user.id, name, kind, category,
       place?.district ?? "-", place?.city ?? "-",
-      price, priceItem, note || null, photoName, lat, lng
+      price, priceItem, price, note || null, photoName, lat, lng
     );
 
   const earned = POINTS.PIN + (photoName ? POINTS.PIN_PHOTO_BONUS : 0);

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { categoryById, isPriceable, kindMeta, type PinKind } from "@/lib/categories";
+import { categoryById, isPriceable, itemSuggestionsFor, kindMeta, type PinKind } from "@/lib/categories";
 import type { Comment, PinDetail } from "@/lib/types";
 import { formatPrice, timeAgo } from "@/lib/types";
 import { blockAuthor, getBlocked } from "@/lib/blocklist";
@@ -13,14 +13,40 @@ type Props = {
   onChanged: () => void;
 };
 
+// Dopamin patlaması: kart üzerinde yükselen emoji konfetisi (saf CSS animasyon)
+function EmojiBurst({ seed }: { seed: number }) {
+  if (!seed) return null;
+  const emojis = ["🎉", "✨", "🏷️", "💛", "🙌", "⭐"];
+  return (
+    <div key={seed} className="burst-layer" aria-hidden>
+      {Array.from({ length: 10 }).map((_, i) => (
+        <span
+          key={i}
+          className="burst-emoji"
+          style={{
+            left: `${8 + ((i * 83) % 84)}%`,
+            animationDelay: `${(i % 5) * 60}ms`,
+            fontSize: `${16 + ((i * 7) % 14)}px`,
+          }}
+        >
+          {emojis[i % emojis.length]}
+        </span>
+      ))}
+    </div>
+  );
+}
+
 export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) {
   const [pin, setPin] = useState<PinDetail | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const [myVote, setMyVote] = useState(0);
+  const [myThanks, setMyThanks] = useState(false);
   const [text, setText] = useState("");
   const [priceInput, setPriceInput] = useState("");
   const [itemInput, setItemInput] = useState("");
+  const [qty, setQty] = useState(1);
   const [editingPrice, setEditingPrice] = useState(false);
+  const [burst, setBurst] = useState(0);
   const [busy, setBusy] = useState(false);
   const loadedFor = useRef<string | null>(null);
 
@@ -29,7 +55,9 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
     loadedFor.current = pinId;
     setPin(null);
     setPriceInput("");
+    setQty(1);
     setEditingPrice(false);
+    setBurst(0);
     fetch(`/api/pins/${pinId}`)
       .then((r) => (r.ok ? r.json() : Promise.reject()))
       .then((data) => {
@@ -37,12 +65,10 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
         setPin(data.pin);
         setComments(data.comments);
         setMyVote(data.myVote);
-        // Ürün etiketini ön-doldur: mevcut değer ya da kategori adı (örn. "Döner")
-        const p = data.pin;
-        setItemInput(
-          p.price_item ??
-            (isPriceable(p.kind, p.category) ? categoryById(p.category).label : "")
-        );
+        setMyThanks(!!data.myThanks);
+        // Mevcut kalem varsa ön-doldur; yoksa BOŞ bırak (kategori adı değil —
+        // "Esnaf Lokantası" bir ürün değildir; öneri çipleri yol gösterir).
+        setItemInput(data.pin.price_item ?? "");
       })
       .catch(() => {
         onToast("Pin yüklenemedi");
@@ -50,6 +76,8 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pinId]);
+
+  const pop = () => setBurst(Date.now());
 
   const vote = async (value: 1 | -1) => {
     if (!pin || busy) return;
@@ -64,8 +92,26 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
     if (!res.ok) return onToast(data.error ?? "Olmadı");
     setPin({ ...pin, confirms: data.confirms, outdated: data.outdated });
     setMyVote(data.myVote);
-    if (data.earned > 0) onToast(`+${data.earned} puan! 🗳️`);
+    if (data.earned > 0) {
+      onToast(`+${data.earned} puan! 🗳️`);
+      pop();
+    }
     onChanged();
+  };
+
+  const thank = async () => {
+    if (!pin || busy || myThanks) return;
+    setBusy(true);
+    const res = await fetch(`/api/pins/${pin.id}/thanks`, { method: "POST" });
+    const data = await res.json();
+    setBusy(false);
+    if (!res.ok) return onToast(data.error ?? "Olmadı");
+    setMyThanks(true);
+    setPin({ ...pin, thanks: data.thanks });
+    if (data.isNew) {
+      onToast("Teşekkürün pinleyene iletildi 🙏");
+      pop();
+    }
   };
 
   const sendComment = async () => {
@@ -91,12 +137,12 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
       return onToast("Geçerli bir fiyat gir (₺)");
     }
     const item = itemInput.trim();
-    if (!item) return onToast("Ne için? (örn. Döner)");
+    if (!item) return onToast("Ne aldın? (örn. Balık ekmek)");
     setBusy(true);
     const res = await fetch(`/api/pins/${pin.id}/price`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ price: val, item }),
+      body: JSON.stringify({ price: val, item, qty }),
     });
     const data = await res.json();
     setBusy(false);
@@ -105,13 +151,18 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
       ...pin,
       price: data.price,
       price_item: data.price_item,
+      price_updated_at: new Date().toISOString().slice(0, 19).replace("T", " "),
       confirms: data.confirms,
       outdated: data.outdated,
     });
     if (data.myVote !== undefined) setMyVote(data.myVote);
     setPriceInput("");
+    setQty(1);
     setEditingPrice(false);
-    onToast(`+${data.earned} puan · fiyat kaydedildi 🏷️`);
+    const unitInfo =
+      data.qty > 1 ? `${data.qty} adet ₺${data.total} → tanesi ₺${data.price} · ` : "";
+    onToast(`${unitInfo}+${data.earned} puan! ${data.firstPrice ? "İlk fiyatı sen açtın 🔓" : "🏷️"}`);
+    pop();
     onChanged();
   };
 
@@ -128,7 +179,7 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
   };
 
   const report = async () => {
-    if (!pin || !confirm("Bu pini uygunsuz/yanlış olarak bildirmek istiyor musun?")) return;
+    if (!pin || !confirm("Bu pini uygunsuz/yanlış/kapanmış olarak bildirmek istiyor musun?")) return;
     const res = await fetch(`/api/pins/${pin.id}/report`, { method: "POST" });
     if (res.ok) {
       onToast("Bildirildi, teşekkürler 🙏");
@@ -150,20 +201,54 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
   const meta = pin ? kindMeta(pin.kind) : null;
   const price = pin ? formatPrice(pin.price) : null;
   const priceable = pin ? isPriceable(pin.kind as PinKind, pin.category) : false; // yeme-içme
+  const canPrice = pin?.kind === "lezzet"; // her mekana fiyat girilebilir (hizmetler dahil)
   const needsPrice = priceable && pin?.price == null; // fiyatsız yemek pini → oylama anlamsız
+  const suggestions = pin ? itemSuggestionsFor(pin.category) : [];
   const blocked = getBlocked();
   const visibleComments = comments.filter((c) => !blocked.has(c.authorId));
 
   const priceEditor = (
     <div className="flex flex-col gap-2">
+      {/* Öneri çipleri — yazmayı hızlandırır, serbest metin her zaman mümkün */}
+      <div className="flex gap-1.5 overflow-x-auto pb-0.5 [scrollbar-width:none]">
+        {suggestions.map((s) => (
+          <button
+            key={s}
+            onClick={() => setItemInput(s)}
+            className={`btn shrink-0 px-2.5 py-1 text-[12px] ${
+              itemInput === s ? "btn-teal" : "btn-cream"
+            }`}
+          >
+            {s}
+          </button>
+        ))}
+      </div>
       <input
         value={itemInput}
         onChange={(e) => setItemInput(e.target.value)}
         maxLength={40}
-        placeholder="Ne için? (örn. Döner, Kahvaltı tabağı)"
+        placeholder="Ne aldın? (örn. Balık ekmek, 1 saat kano)"
         className="sticker-flat bg-cream px-3 py-2 text-sm outline-none focus:border-tomato"
       />
       <div className="flex gap-2">
+        {/* Adet/porsiyon — "2 balık ekmek 550₺" → tanesi 275₺ normalize edilir */}
+        <div className="sticker-flat flex items-center bg-cream">
+          <button
+            onClick={() => setQty((q) => Math.max(1, q - 1))}
+            className="px-2.5 py-2.5 text-lg font-bold opacity-60"
+            aria-label="Adet azalt"
+          >
+            −
+          </button>
+          <span className="min-w-8 text-center text-sm font-extrabold">{qty}×</span>
+          <button
+            onClick={() => setQty((q) => Math.min(20, q + 1))}
+            className="px-2.5 py-2.5 text-lg font-bold opacity-60"
+            aria-label="Adet artır"
+          >
+            +
+          </button>
+        </div>
         <div className="sticker-flat flex flex-1 items-center gap-1 bg-cream px-3">
           <span className="text-lg font-bold text-tomato">₺</span>
           <input
@@ -172,7 +257,7 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
             onKeyDown={(e) => e.key === "Enter" && submitPrice()}
             inputMode="decimal"
             maxLength={8}
-            placeholder="örn. 120"
+            placeholder={qty > 1 ? "toplam ödenen" : "fiyat"}
             className="w-full bg-transparent py-2.5 text-sm outline-none"
           />
         </div>
@@ -184,6 +269,16 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
           Kaydet
         </button>
       </div>
+      {qty > 1 && priceInput && (
+        <p className="text-xs opacity-60">
+          Tanesi ≈ ₺
+          {(
+            Math.round((Number(priceInput.replace(",", ".").replace(/[^\d.]/g, "")) / qty) * 100) /
+            100
+          ).toLocaleString("tr-TR")}{" "}
+          olarak kaydedilir
+        </p>
+      )}
     </div>
   );
 
@@ -195,7 +290,8 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
         {!pin ? (
           <div className="p-8 text-center text-sm opacity-60">Yükleniyor…</div>
         ) : (
-          <div className="overflow-y-auto px-4 pb-[calc(env(safe-area-inset-bottom,0px)+16px)]">
+          <div className="relative overflow-y-auto px-4 pb-[calc(env(safe-area-inset-bottom,0px)+16px)]">
+            <EmojiBurst seed={burst} />
             <div className="flex items-start gap-3 pt-2">
               <div className="sticker-flat flex h-12 w-12 shrink-0 items-center justify-center text-2xl bg-paper">
                 {cat!.emoji}
@@ -212,6 +308,9 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
                     <div className="text-[10px] font-bold opacity-60">{pin.price_item}</div>
                   )}
                   <div className="display text-2xl font-extrabold text-tomato">{price}</div>
+                  {pin.price_updated_at && (
+                    <div className="text-[10px] opacity-50">🕒 {timeAgo(pin.price_updated_at)}</div>
+                  )}
                 </div>
               )}
             </div>
@@ -232,7 +331,7 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
               <div className="mt-4 sticker-flat bg-cream p-3">
                 <p className="text-sm font-extrabold">💰 Fiyatı biliyor musun?</p>
                 <p className="mb-2 text-xs opacity-60">
-                  Ekle, mahalle görsün. <span className="font-bold text-tomato">+5 puan</span> —
+                  İlk fiyatı açan <span className="font-bold text-tomato">+10 puan</span> kapar —
                   çıkıp yeniden pinlemene gerek yok.
                 </p>
                 {priceEditor}
@@ -261,8 +360,8 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
                 {pin.isMine && (
                   <p className="mt-1.5 text-center text-xs opacity-50">Kendi pinini oylayamazsın</p>
                 )}
-                {/* Fiyatlı yemek pini — güncel fiyatı bildir */}
-                {priceable &&
+                {/* Fiyat gir/güncelle — hizmetler dahil tüm mekanlarda */}
+                {canPrice &&
                   (editingPrice ? (
                     <div className="mt-2">{priceEditor}</div>
                   ) : (
@@ -270,18 +369,30 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
                       onClick={() => setEditingPrice(true)}
                       className="mt-2 text-xs underline opacity-50"
                     >
-                      💸 Fiyat değişti mi? Güncelle
+                      💸 {pin.price == null ? "Fiyat ekle (ürün/hizmet)" : "Fiyat değişti mi? Güncelle"}
                     </button>
                   ))}
               </>
             )}
 
             <div className="mt-3 flex items-center gap-2">
+              {!pin.isMine && (
+                <button
+                  onClick={thank}
+                  disabled={myThanks}
+                  className={`btn flex-1 py-2 text-sm ${myThanks ? "btn-teal" : "btn-cream"}`}
+                >
+                  🙏 {myThanks ? "Teşekkür ettin" : "Teşekkür et"}
+                  {pin.thanks > 0 ? ` (${pin.thanks})` : ""}
+                </button>
+              )}
               <button onClick={share} className="btn btn-mustard flex-1 py-2 text-sm">
                 Paylaş 📤
               </button>
+            </div>
+            <div className="mt-2 flex items-center justify-end gap-2">
               <button onClick={report} className="text-xs underline opacity-50 px-2">
-                Bildir
+                Bildir / Kapanmış
               </button>
               {!pin.isMine && (
                 <button onClick={block} className="text-xs underline opacity-50 px-2">
