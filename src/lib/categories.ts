@@ -245,8 +245,11 @@ export function groupForCategory(kind: PinKind, categoryId: string): CategoryGro
 // Fiyatın anlamlı olduğu gruplar: yeme-içme (bir öğün/kahve/içki fiyatı). Market,
 // hizmet, sağlık, oto, gezi vb. tek "fiyat" taşımaz → "₺?" daveti/kartı gösterilmez.
 const PRICEABLE_GROUPS = new Set(["g-yeme", "g-kafe", "g-bar"]);
+// Grup dışı istisnalar: kanonik tek fiyatı olan kategoriler (ekmek fiyatı gibi).
+const PRICEABLE_CATEGORIES = new Set(["firin"]);
 export function isPriceable(kind: PinKind, categoryId: string): boolean {
   if (kind !== "lezzet") return false;
+  if (PRICEABLE_CATEGORIES.has(categoryId)) return true;
   const g = groupForCategory(kind, categoryId);
   return g ? PRICEABLE_GROUPS.has(g.id) : false;
 }

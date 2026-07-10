@@ -3,54 +3,720 @@
   "name": "Destan Halk Lokantası",
   "kind": "lezzet",
   "category": "lokanta",
-  "price": 40,
+  "price": 100,
+  "price_item": "4 çeşit menü",
   "lat": 40.990888,
   "lng": 29.02662,
-  "note": "Belediye Kent Lokantası — 4 çeşit menü (çorba+ana yemek+pilav+cacık+ekmek). İstanbulkart ile 35₺."
+  "note": "Belediye Kent Lokantası — 4 çeşit menü (çorba+ana yemek+pilav/makarna+tatlı/meyve). İstanbulkart ile 90₺. (Nis 2026)"
+ },
+ {
+  "name": "İBB Tuzla Kent Lokantası",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": 100,
+  "price_item": "4 çeşit menü",
+  "lat": 40.819546,
+  "lng": 29.305449,
+  "note": "Belediye Kent Lokantası — 4 çeşit menü (çorba+ana yemek+pilav/makarna+tatlı/meyve). İstanbulkart ile 90₺. (Nis 2026)"
+ },
+ {
+  "name": "İstanbul Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 41.015753,
+  "lng": 28.931761,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "İstanbul Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 41.014786,
+  "lng": 28.928014,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "İstanbul Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 41.005347,
+  "lng": 28.625667,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "İstanbul Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 40.992687,
+  "lng": 29.127856,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "İstanbul Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 41.095843,
+  "lng": 28.905481,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "İstanbul Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 41.023242,
+  "lng": 29.184377,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 41.034775,
+  "lng": 28.790595,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 41.041289,
+  "lng": 28.786761,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "İstanbul Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 40.946751,
+  "lng": 29.118126,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 41.036708,
+  "lng": 28.794301,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "İstanbul Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 40.993928,
+  "lng": 28.92465,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "İstanbul Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 41.027568,
+  "lng": 28.955122,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "İstanbul Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 41.02505,
+  "lng": 28.948387,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "İstanbul Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 41.024767,
+  "lng": 28.942714,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "İstanbul Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 41.003141,
+  "lng": 28.927348,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "İstanbul Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 41.000252,
+  "lng": 28.924275,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "İstanbul Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 41.004559,
+  "lng": 28.93141,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "İstanbul Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 41.011105,
+  "lng": 28.961207,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "İstanbul Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 41.028288,
+  "lng": 28.937782,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "İstanbul Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 41.009376,
+  "lng": 28.928177,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "İstanbul Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 41.009638,
+  "lng": 28.931125,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 40.963391,
+  "lng": 29.089836,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "İstanbul Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 40.937685,
+  "lng": 29.212782,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
+ },
+ {
+  "name": "İstanbul Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek",
+  "lat": 40.965998,
+  "lng": 29.265449,
+  "note": "İstanbul Halk Ekmek büfesi — normal/kepekli ekmek 12,50₺ (resmi tarife, 4 May 2026)."
  },
  {
   "name": "kent lokantası",
   "kind": "lezzet",
   "category": "lokanta",
   "price": 50,
+  "price_item": "4 çeşit menü",
   "lat": 38.297502,
   "lng": 27.168067,
-  "note": "İzmir BB Kent Lokantası — 4 çeşit menü. Bazı şubelerde 25₺."
+  "note": "İzmir BB Kent Lokantası — 4 çeşit menü. Yamanlar ve Levent Mah. şubelerinde 25₺. (2026)"
  },
  {
   "name": "Kemeraltı Kent Lokantası",
   "kind": "lezzet",
   "category": "lokanta",
   "price": 50,
+  "price_item": "4 çeşit menü",
   "lat": 38.419435,
   "lng": 27.133516,
-  "note": "İzmir BB Kent Lokantası — 4 çeşit menü. Bazı şubelerde 25₺."
+  "note": "İzmir BB Kent Lokantası — 4 çeşit menü. Yamanlar ve Levent Mah. şubelerinde 25₺. (2026)"
  },
  {
   "name": "İzmir Büyükşehir Belediyesi Kent Lokantası",
   "kind": "lezzet",
   "category": "lokanta",
   "price": 50,
+  "price_item": "4 çeşit menü",
   "lat": 38.488011,
   "lng": 27.07561,
-  "note": "İzmir BB Kent Lokantası — 4 çeşit menü. Bazı şubelerde 25₺."
+  "note": "İzmir BB Kent Lokantası — 4 çeşit menü. Yamanlar ve Levent Mah. şubelerinde 25₺. (2026)"
  },
  {
   "name": "Kent Lokantası",
   "kind": "lezzet",
   "category": "lokanta",
   "price": 50,
+  "price_item": "4 çeşit menü",
   "lat": 38.508886,
   "lng": 27.037514,
-  "note": "İzmir BB Kent Lokantası — 4 çeşit menü. Bazı şubelerde 25₺."
+  "note": "İzmir BB Kent Lokantası — 4 çeşit menü. Yamanlar ve Levent Mah. şubelerinde 25₺. (2026)"
  },
  {
   "name": "Ahi Kent Lokantası",
   "kind": "lezzet",
   "category": "lokanta",
   "price": 75,
+  "price_item": "4 çeşit menü",
   "lat": 39.947861,
   "lng": 32.661375,
-  "note": "Belediye Kent Lokantası — 4 çeşit menü."
+  "note": "Belediye Kent Lokantası — 4 çeşit sulu yemek, su+ekmek ücretsiz. (Ağu 2025)"
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.922667,
+  "lng": 32.870808,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.919056,
+  "lng": 32.876035,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.910889,
+  "lng": 32.878616,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.912256,
+  "lng": 32.870569,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.991858,
+  "lng": 32.830543,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.993593,
+  "lng": 32.819435,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.972632,
+  "lng": 32.81622,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.915659,
+  "lng": 32.827747,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Ankara Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.915675,
+  "lng": 32.827789,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.995656,
+  "lng": 32.810989,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.982738,
+  "lng": 32.819726,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.993655,
+  "lng": 32.800122,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Ankara Halk Ekmek Büfesi",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.966913,
+  "lng": 32.731821,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Ankara Halk Ekmek Büfesi",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.968478,
+  "lng": 32.726473,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Ankara Halk Ekmek Büfesi",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.970686,
+  "lng": 32.745957,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.99846,
+  "lng": 32.810322,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 40.009493,
+  "lng": 32.902024,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.974498,
+  "lng": 32.829943,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.970678,
+  "lng": 32.861743,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk Ekmek Büfesi",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.9719,
+  "lng": 32.888383,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.953358,
+  "lng": 32.792803,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 40.003525,
+  "lng": 32.90531,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.95157,
+  "lng": 32.577418,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk Ekmek Büfe",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.88166,
+  "lng": 32.835684,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.967059,
+  "lng": 32.789825,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Ankara Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.957799,
+  "lng": 32.724015,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.957894,
+  "lng": 32.734925,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Etimesgut Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.973305,
+  "lng": 32.649209,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Ankara Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.980461,
+  "lng": 32.649213,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Ankara Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.984987,
+  "lng": 32.644925,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Etimesgut Belediyesi Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.978466,
+  "lng": 32.610218,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Ankara Büyükşehir Belediyesi Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.984684,
+  "lng": 32.628759,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Etimesgut Belediyesi Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.977636,
+  "lng": 32.645935,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Ankara Halk Ekmek Büfesi",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.968755,
+  "lng": 32.726836,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Ankara Halk Ekmek Büfesi",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.97086,
+  "lng": 32.705294,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Ankara Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.957566,
+  "lng": 32.816727,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Ankara Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.964583,
+  "lng": 32.776643,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "İstanbul Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.885075,
+  "lng": 32.818039,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.951315,
+  "lng": 32.633027,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Ankara Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.994277,
+  "lng": 32.851853,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
+ },
+ {
+  "name": "Halk Ekmek",
+  "kind": "lezzet",
+  "category": "firin",
+  "price": 12.5,
+  "price_item": "Ekmek (250g)",
+  "lat": 39.947493,
+  "lng": 32.657677,
+  "note": "Ankara Halk Ekmek — normal ekmek 250g 12,50₺, simit 14₺ (resmi fiyat listesi)."
  }
 ]

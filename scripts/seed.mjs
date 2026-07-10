@@ -27,8 +27,8 @@ function ensureUser(name) {
 }
 
 const insertPin = db.prepare(
-  `INSERT INTO pins (id, user_id, name, kind, category, price, note, lat, lng, created_at)
-   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now', ?))`
+  `INSERT INTO pins (id, user_id, name, kind, category, price, price_item, note, lat, lng, created_at)
+   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now', ?))`
 );
 const insertVote = db.prepare(
   "INSERT OR IGNORE INTO votes (pin_id, user_id, value) VALUES (?, ?, ?)"
@@ -68,9 +68,14 @@ if (inputPath) {
 
   const teamId = ensureUser("Pinle Ekibi 📌");
   const findPin = db.prepare(
-    "SELECT id, price FROM pins WHERE name = ? AND ABS(lat - ?) < 1e-4 LIMIT 1"
+    "SELECT id, user_id, price, price_item FROM pins WHERE name = ? AND ABS(lat - ?) < 1e-4 LIMIT 1"
   );
-  const updatePrice = db.prepare("UPDATE pins SET price = ?, note = COALESCE(?, note) WHERE id = ?");
+  const hasCommunityPrice = db.prepare(
+    "SELECT 1 FROM price_reports WHERE pin_id = ? LIMIT 1"
+  );
+  const updatePrice = db.prepare(
+    "UPDATE pins SET price = ?, price_item = ?, note = COALESCE(?, note) WHERE id = ?"
+  );
   let added = 0;
   let priced = 0;
   db.transaction(() => {
@@ -78,16 +83,22 @@ if (inputPath) {
       if (!r.name || !r.lat || !r.lng) continue;
       const existing = findPin.get(r.name, r.lat);
       if (existing) {
-        // Fiyatlı seed: mevcut pinin fiyatı boşsa doldur (eski fiyatsız seed'i güncelle)
-        if (r.price != null && existing.price == null) {
-          updatePrice.run(r.price, r.note ?? null, existing.id);
+        // Fiyatlı seed güncellemesi — YALNIZ ekip pinlerinde ve topluluk fiyat
+        // bildirimi yoksa (topluluğun girdiği güncel fiyatın üzerine yazma!).
+        const teamOwned = existing.user_id === teamId;
+        const untouched = !hasCommunityPrice.get(existing.id);
+        const differs =
+          existing.price !== (r.price ?? null) ||
+          (existing.price_item ?? null) !== (r.price_item ?? null);
+        if (r.price != null && teamOwned && untouched && differs) {
+          updatePrice.run(r.price, r.price_item ?? null, r.note ?? null, existing.id);
           priced++;
         }
         continue;
       }
       insertPin.run(
         randomUUID(), teamId, r.name, r.kind ?? "lezzet", r.category ?? "diger",
-        r.price ?? null, r.note ?? null, r.lat, r.lng, "-0 day"
+        r.price ?? null, r.price_item ?? null, r.note ?? null, r.lat, r.lng, "-0 day"
       );
       added++;
     }
