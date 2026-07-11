@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { jsonLdSafe } from "@/lib/jsonld";
 import Link from "next/link";
 import { db } from "@/lib/db";
 import { CITIES } from "@/lib/cities";
@@ -68,7 +69,7 @@ export default function PricesPage() {
 
   return (
     <main className="paper-grain mx-auto flex min-h-dvh max-w-2xl flex-col gap-5 p-6">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLdSafe(jsonLd) }} />
 
       <nav className="flex items-center gap-1.5 text-sm">
         <Link href="/" className="flex items-center gap-1.5">

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { jsonLdSafe } from "@/lib/jsonld";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CITIES, cityBySlug, cityCatCombos, cityPins, cityStats } from "@/lib/cities";
@@ -78,7 +79,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
     <main className="paper-grain mx-auto flex min-h-dvh max-w-2xl flex-col gap-5 p-6">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdSafe(jsonLd) }}
       />
 
       <nav className="flex items-center gap-1.5 text-sm">

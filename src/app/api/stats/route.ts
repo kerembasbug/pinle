@@ -1,13 +1,22 @@
 import { NextRequest } from "next/server";
+import { timingSafeEqual } from "node:crypto";
 import { db } from "@/lib/db";
 
 // Basit iç analytics — KPI takibi için. PINLE_ADMIN_TOKEN env değişkeniyle korunur.
 // Kullanım: GET /api/stats?token=<PINLE_ADMIN_TOKEN>
 
+// Sabit-zamanlı token karşılaştırması (timing attack yüzeyini kapatır).
+function tokenOk(given: string | null, expected: string | undefined): boolean {
+  if (!expected || !given) return false;
+  const a = Buffer.from(given);
+  const b = Buffer.from(expected);
+  if (a.length !== b.length) return false;
+  return timingSafeEqual(a, b);
+}
+
 export async function GET(request: NextRequest) {
   const token = request.nextUrl.searchParams.get("token");
-  const expected = process.env.PINLE_ADMIN_TOKEN;
-  if (!expected || token !== expected) {
+  if (!tokenOk(token, process.env.PINLE_ADMIN_TOKEN)) {
     return Response.json({ error: "Yetkisiz" }, { status: 401 });
   }
 

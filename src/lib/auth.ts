@@ -1,14 +1,24 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { db } from "./db";
 
-const SECRET = process.env.AUTH_SECRET ?? "dev-insecure-secret-change-me";
+// Prod'da AUTH_SECRET ZORUNLU — eksikse sabit fallback ile token sahteciliği
+// (herkesçe bilinen secret → hesap ele geçirme) mümkün olurdu. Kontrol LAZY:
+// build sırasında değil, token üretilirken/doğrulanırken çalışır.
+function secret(): string {
+  const s = process.env.AUTH_SECRET;
+  if (s) return s;
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("AUTH_SECRET production'da zorunlu (64-hex bir değer ayarla)");
+  }
+  return "dev-insecure-secret-change-me";
+}
 
 // ---------- Sihirli link token'ı (durum bilgisiz, HMAC imzalı) ----------
 function b64url(s: string): string {
   return Buffer.from(s).toString("base64url");
 }
 function sign(payload: string): string {
-  return createHmac("sha256", SECRET).update(payload).digest("base64url");
+  return createHmac("sha256", secret()).update(payload).digest("base64url");
 }
 
 /** email için 20 dk geçerli imzalı token üretir. */
