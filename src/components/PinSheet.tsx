@@ -132,6 +132,7 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
     setComments((c) => [...c, data.comment]);
     setText("");
     onToast(`+${data.earned} puan! 💬`);
+    onChanged(); // puan çipi anında güncellensin (dopamin tam anında) + marker yorum sayacı
   };
 
   const submitPrice = async () => {

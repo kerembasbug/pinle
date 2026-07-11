@@ -238,7 +238,9 @@ export default function MapApp({
         continue;
       }
       const el = document.createElement("div");
-      el.className = "pin-marker" + (p.verified ? " verified" : "") + (p.deal ? " has-deal" : "");
+      el.className =
+        "pin-marker fresh" + (p.verified ? " verified" : "") + (p.deal ? " has-deal" : "");
+      setTimeout(() => el.classList.remove("fresh"), 600); // doğuş animasyonu bir kez
       const price = formatPrice(typeof p.price === "number" ? p.price : null);
       const icon = VOTE_ICON[p.kind as string] ?? "✓";
       const priceItem = typeof p.price_item === "string" ? p.price_item.slice(0, 12) : "";
@@ -505,8 +507,9 @@ export default function MapApp({
             <span className="opacity-60">Ara / şehir seç…</span>
           </button>
           <button
+            key={me?.points ?? -1} // puan değişince remount → nabız animasyonu oynar
             onClick={() => setSheet({ kind: "profile" })}
-            className="btn btn-mustard pointer-events-auto px-3 py-1.5 text-sm"
+            className="btn btn-mustard points-pop pointer-events-auto px-3 py-1.5 text-sm"
           >
             ⭐ {me ? me.points : "—"}
           </button>
@@ -654,6 +657,24 @@ export default function MapApp({
       {toast && (
         <div key={toast.key} className="toast">
           {toast.msg}
+        </div>
+      )}
+      {/* Puan kazandıran toast'larda mini konfeti — dopamin */}
+      {toast && toast.msg.includes("puan") && (
+        <div key={`b${toast.key}`} className="toast-burst" aria-hidden>
+          {Array.from({ length: 8 }).map((_, i) => (
+            <span
+              key={i}
+              className="burst-emoji"
+              style={{
+                left: `${10 + ((i * 61) % 80)}%`,
+                animationDelay: `${(i % 4) * 70}ms`,
+                fontSize: `${14 + ((i * 5) % 12)}px`,
+              }}
+            >
+              {["⭐", "🎉", "✨", "💛"][i % 4]}
+            </span>
+          ))}
         </div>
       )}
     </div>
