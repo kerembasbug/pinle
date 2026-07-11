@@ -30,6 +30,7 @@ export type PinDetail = {
   lng: number;
   created_at: string;
   author: string;
+  author_avatar: string | null;
   authorId: string;
   confirms: number;
   outdated: number;
@@ -41,6 +42,7 @@ export type Comment = {
   id: string;
   body: string;
   author: string;
+  avatar?: string | null;
   authorId: string;
   created_at: string;
 };
@@ -53,6 +55,7 @@ export type Me = {
   weeklyRank: number | null;
   isMuhtar: boolean;
   email: string | null;
+  avatar: string | null;
   badges: { id: string; label: string; emoji: string; earned: boolean; progress: string }[];
   refCode: string;
   invitedCount: number;

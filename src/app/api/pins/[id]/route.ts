@@ -12,7 +12,7 @@ export async function GET(
     .prepare(
       `SELECT p.id, p.user_id, p.name, p.kind, p.category, p.price, p.price_item, p.price_updated_at,
         p.price_valid_until, p.note, p.photo, p.lat, p.lng, p.created_at,
-        u.name AS author,
+        u.name AS author, u.avatar AS author_avatar,
         COALESCE((SELECT COUNT(*) FROM votes v WHERE v.pin_id = p.id AND v.value = 1), 0) AS confirms,
         COALESCE((SELECT COUNT(*) FROM votes v WHERE v.pin_id = p.id AND v.value = -1), 0) AS outdated,
         COALESCE((SELECT COUNT(*) FROM thanks t WHERE t.pin_id = p.id), 0) AS thanks
@@ -25,7 +25,7 @@ export async function GET(
 
   const commentRows = db()
     .prepare(
-      `SELECT c.id, c.user_id, c.body, c.created_at, u.name AS author
+      `SELECT c.id, c.user_id, c.body, c.created_at, u.name AS author, u.avatar
        FROM comments c JOIN users u ON u.id = c.user_id
        WHERE c.pin_id = ? ORDER BY c.created_at ASC LIMIT 100`
     )

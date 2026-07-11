@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 export const metadata = { title: "Liderlik Tablosu — Pinle" };
 export const dynamic = "force-dynamic";
 
-type Row = { name: string; points: number; pins: number };
+type Row = { name: string; avatar: string | null; points: number; pins: number };
 
 const MEDALS = ["🥇", "🥈", "🥉"];
 
@@ -24,6 +24,9 @@ function Board({ title, rows, crown }: { title: string; rows: Row[]; crown?: boo
             }`}
           >
             <span className="w-8 text-center text-lg font-extrabold">{MEDALS[i] ?? i + 1}</span>
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-ink bg-paper text-lg">
+              {r.avatar ?? "🐾"}
+            </span>
             <div className="flex-1">
               <p className="text-sm font-bold">
                 {r.name}
@@ -107,14 +110,14 @@ export default function Leaderboard() {
     .all() as DistrictRow[];
   const allTime = d
     .prepare(
-      `SELECT u.name, u.points,
+      `SELECT u.name, u.avatar, u.points,
         (SELECT COUNT(*) FROM pins p WHERE p.user_id = u.id AND p.status = 'active') AS pins
        FROM users u WHERE u.points > 0 ORDER BY u.points DESC LIMIT 20`
     )
     .all() as Row[];
   const weekly = d
     .prepare(
-      `SELECT u.name, SUM(e.points) AS points,
+      `SELECT u.name, u.avatar, SUM(e.points) AS points,
         (SELECT COUNT(*) FROM pins p WHERE p.user_id = u.id AND p.status = 'active'
           AND p.created_at > datetime('now', '-7 day')) AS pins
        FROM points_events e JOIN users u ON u.id = e.user_id

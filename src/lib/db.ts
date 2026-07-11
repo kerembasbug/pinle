@@ -120,6 +120,10 @@ function migrate(d: Database.Database) {
   if (!userCols.some((c) => c.name === "referred_by")) {
     d.exec("ALTER TABLE users ADD COLUMN referred_by TEXT");
   }
+  // Emoji avatar (sabit listeden seçilir — lib/avatars.ts)
+  if (!userCols.some((c) => c.name === "avatar")) {
+    d.exec("ALTER TABLE users ADD COLUMN avatar TEXT");
+  }
   d.exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_users_email ON users(email) WHERE email IS NOT NULL");
   d.exec(
     "CREATE UNIQUE INDEX IF NOT EXISTS idx_users_google ON users(google_sub) WHERE google_sub IS NOT NULL"

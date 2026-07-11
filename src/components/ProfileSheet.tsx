@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
+import { AVATARS } from "@/lib/avatars";
 import type { Me } from "@/lib/types";
 
 type Props = {
@@ -10,9 +12,24 @@ type Props = {
   onOpenAuth: () => void;
   onLogout: () => void;
   onToast: (msg: string) => void;
+  onChanged: () => void;
 };
 
-export default function ProfileSheet({ open, me, onClose, onOpenAuth, onLogout, onToast }: Props) {
+export default function ProfileSheet({ open, me, onClose, onOpenAuth, onLogout, onToast, onChanged }: Props) {
+  const [picking, setPicking] = useState(false);
+
+  const pickAvatar = async (a: string) => {
+    const res = await fetch("/api/profile", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ avatar: a }),
+    });
+    if (res.ok) {
+      setPicking(false);
+      onToast(`Avatarın ${a} oldu!`);
+      onChanged();
+    }
+  };
   // Davet linki paylaş: Web Share varsa native sheet, yoksa panoya kopyala.
   const invite = async () => {
     if (!me) return;
@@ -34,9 +51,16 @@ export default function ProfileSheet({ open, me, onClose, onOpenAuth, onLogout, 
           {me && (
             <>
               <div className="flex items-center gap-3 pt-2">
-                <div className="sticker-flat flex h-14 w-14 items-center justify-center bg-mustard text-3xl">
-                  {me.isMuhtar ? "👑" : "🐾"}
-                </div>
+                <button
+                  onClick={() => setPicking((v) => !v)}
+                  className="sticker-flat relative flex h-14 w-14 items-center justify-center bg-mustard text-3xl"
+                  aria-label="Avatar seç"
+                >
+                  {me.avatar ?? (me.isMuhtar ? "👑" : "🐾")}
+                  <span className="absolute -bottom-1.5 -right-1.5 grid h-5 w-5 place-items-center rounded-full border-2 border-ink bg-cream text-[10px]">
+                    ✏️
+                  </span>
+                </button>
                 <div>
                   <h2 className="text-lg font-extrabold leading-tight">{me.name}</h2>
                   <p className="text-sm opacity-70">
@@ -53,6 +77,26 @@ export default function ProfileSheet({ open, me, onClose, onOpenAuth, onLogout, 
                   )}
                 </div>
               </div>
+
+              {/* Avatar seçici — sabit emoji listesi */}
+              {picking && (
+                <div className="sticker-flat mt-3 bg-cream p-2.5">
+                  <p className="mb-1.5 text-xs font-bold opacity-60">Avatarını seç 👇</p>
+                  <div className="grid grid-cols-8 gap-1">
+                    {AVATARS.map((a) => (
+                      <button
+                        key={a}
+                        onClick={() => pickAvatar(a)}
+                        className={`grid h-9 w-9 place-items-center rounded-xl text-xl ${
+                          me.avatar === a ? "border-2 border-tomato bg-paper" : "active:bg-paper"
+                        }`}
+                      >
+                        {a}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <h3 className="mt-4 text-sm font-bold opacity-70">Rozetler</h3>
               <div className="mt-2 flex flex-col gap-2">

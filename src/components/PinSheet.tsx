@@ -326,7 +326,8 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
               <div className="min-w-0 flex-1">
                 <h2 className="text-xl font-extrabold leading-tight">{pin.name}</h2>
                 <p className="text-xs opacity-60">
-                  {cat!.label} · {pin.author} · {timeAgo(pin.created_at)}
+                  {cat!.label} · {pin.author_avatar ? `${pin.author_avatar} ` : ""}
+                  {pin.author} · {timeAgo(pin.created_at)}
                 </p>
               </div>
               {price && (
@@ -453,6 +454,7 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
               {visibleComments.map((c) => (
                 <div key={c.id} className="sticker-flat px-3 py-2">
                   <p className="text-[10px] font-bold text-teal">
+                    {c.avatar ? `${c.avatar} ` : ""}
                     {c.author} <span className="font-normal opacity-50">· {timeAgo(c.created_at)}</span>
                   </p>
                   <p className="text-sm">{c.body}</p>

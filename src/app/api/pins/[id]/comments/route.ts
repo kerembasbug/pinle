@@ -37,9 +37,10 @@ export async function POST(
     text
   );
   awardPoints(user.id, POINTS.COMMENT, "comment");
+  const av = (d.prepare("SELECT avatar FROM users WHERE id = ?").get(user.id) as { avatar: string | null })?.avatar ?? null;
 
   return Response.json(
-    { comment: { id: commentId, body: text, author: user.name, created_at: new Date().toISOString() }, earned: POINTS.COMMENT },
+    { comment: { id: commentId, body: text, author: user.name, avatar: av, created_at: new Date().toISOString() }, earned: POINTS.COMMENT },
     { status: 201 }
   );
 }

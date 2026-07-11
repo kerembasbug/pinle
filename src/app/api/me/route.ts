@@ -7,9 +7,10 @@ export async function GET() {
   const user = await getOrCreateUser();
   const d = db();
   recordVisit(user.id);
-  const urow = d.prepare("SELECT points, email FROM users WHERE id = ?").get(user.id) as {
+  const urow = d.prepare("SELECT points, email, avatar FROM users WHERE id = ?").get(user.id) as {
     points: number;
     email: string | null;
+    avatar: string | null;
   };
   const points = urow.points;
   const pinCount = (
@@ -53,6 +54,7 @@ export async function GET() {
     weeklyRank,
     isMuhtar: weeklyRank === 1,
     email: urow.email,
+    avatar: urow.avatar,
     badges: badgesFor(user.id),
     refCode: authorIdFor(user.id),
     invitedCount,

@@ -626,6 +626,7 @@ export default function MapApp({
         }}
         onLogout={logout}
         onToast={showToast}
+        onChanged={refreshMe}
       />
       <AuthSheet
         open={authOpen}
