@@ -1,4 +1,4 @@
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { createHmac, createHash, timingSafeEqual } from "node:crypto";
 import { db } from "./db";
 
 // Prod'da AUTH_SECRET ZORUNLU — eksikse sabit fallback ile token sahteciliği
@@ -28,7 +28,11 @@ export function makeEmailToken(email: string): string {
   return `${payload}.${sign(payload)}`;
 }
 
-/** token'ı doğrular, geçerliyse e-postayı döner. */
+/**
+ * token'ı doğrular, geçerliyse e-postayı döner. TEK KULLANIMLIK: doğrulanan
+ * token used_tokens'a yazılır; ikinci kullanım (sızmış link, tekrar tıklama)
+ * reddedilir. Süresi geçmiş kayıtlar temizlenir.
+ */
 export function verifyEmailToken(token: string): string | null {
   const parts = token.split(".");
   if (parts.length !== 3) return null;
@@ -37,7 +41,16 @@ export function verifyEmailToken(token: string): string | null {
   const expected = sign(payload);
   if (sig.length !== expected.length) return null;
   if (!timingSafeEqual(Buffer.from(sig), Buffer.from(expected))) return null;
-  if (Date.now() > Number(expStr)) return null;
+  const exp = Number(expStr);
+  if (Date.now() > exp) return null;
+
+  const d = db();
+  const th = createHash("sha256").update(token).digest("hex");
+  d.prepare("DELETE FROM used_tokens WHERE expires_at < ?").run(Date.now());
+  const dup = d.prepare("SELECT 1 FROM used_tokens WHERE token_hash = ?").get(th);
+  if (dup) return null; // zaten kullanılmış
+  d.prepare("INSERT OR IGNORE INTO used_tokens (token_hash, expires_at) VALUES (?, ?)").run(th, exp);
+
   try {
     return Buffer.from(emailB64, "base64url").toString("utf8");
   } catch {

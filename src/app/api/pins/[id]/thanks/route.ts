@@ -1,6 +1,7 @@
 import { db, awardPoints } from "@/lib/db";
 import { overloadGuard } from "@/lib/flags";
 import { getOrCreateUser } from "@/lib/identity";
+import { withinRateLimit } from "@/lib/moderation";
 import { POINTS } from "@/lib/gamify";
 
 // "🙏 Teşekkür" — hafif, tek dokunuş takdir. Pinleyene puan + dopamin;
@@ -13,6 +14,9 @@ export async function POST(
   if (__g) return __g;
   const { id } = await params;
   const user = await getOrCreateUser();
+  if (!withinRateLimit(user.id, "thanks")) {
+    return Response.json({ error: "Çok fazla teşekkür, biraz bekle" }, { status: 429 });
+  }
 
   const d = db();
   const pin = d

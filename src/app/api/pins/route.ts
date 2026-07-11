@@ -163,9 +163,22 @@ export async function POST(request: NextRequest) {
     if (photo.size > MAX_PHOTO_BYTES) {
       return Response.json({ error: "Fotoğraf en fazla 4MB olabilir" }, { status: 400 });
     }
+    // Magic-byte doğrulaması: Content-Type spoof edilebilir; gerçek dosya
+    // imzasını kontrol et (JPEG FFD8FF, PNG 89504E47, WebP RIFF….WEBP).
+    const buf = Buffer.from(await photo.arrayBuffer());
+    const isJpg = buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff;
+    const isPng =
+      buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47;
+    const isWebp =
+      buf.length > 12 &&
+      buf.toString("ascii", 0, 4) === "RIFF" &&
+      buf.toString("ascii", 8, 12) === "WEBP";
+    if (!(isJpg || isPng || isWebp)) {
+      return Response.json({ error: "Geçersiz görsel dosyası" }, { status: 400 });
+    }
     fs.mkdirSync(UPLOAD_DIR, { recursive: true });
     photoName = `${crypto.randomUUID()}.${ext}`;
-    fs.writeFileSync(path.join(UPLOAD_DIR, photoName), Buffer.from(await photo.arrayBuffer()));
+    fs.writeFileSync(path.join(UPLOAD_DIR, photoName), buf);
   }
 
   const id = crypto.randomUUID();

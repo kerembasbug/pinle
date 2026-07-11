@@ -156,6 +156,20 @@ function migrate(d: Database.Database) {
   if (!pinCols.some((c) => c.name === "price_valid_until")) {
     d.exec("ALTER TABLE pins ADD COLUMN price_valid_until TEXT");
   }
+  // reports: IP hash (çerez-sıfırlama ile tek kişinin pin gizletmesini önlemek
+  // için gizleme eşiği FARKLI IP sayısına bakar).
+  const reportCols = d.prepare("PRAGMA table_info(reports)").all() as { name: string }[];
+  if (reportCols.length && !reportCols.some((c) => c.name === "ip_hash")) {
+    d.exec("ALTER TABLE reports ADD COLUMN ip_hash TEXT");
+  }
+  // Magic-link token'larını tek kullanımlık yapmak için kullanılmış token kaydı.
+  d.exec(`
+    CREATE TABLE IF NOT EXISTS used_tokens (
+      token_hash TEXT PRIMARY KEY,
+      expires_at INTEGER NOT NULL
+    );
+  `);
+
   const priceRepCols = d.prepare("PRAGMA table_info(price_reports)").all() as { name: string }[];
   if (priceRepCols.length && !priceRepCols.some((c) => c.name === "item")) {
     d.exec("ALTER TABLE price_reports ADD COLUMN item TEXT");
