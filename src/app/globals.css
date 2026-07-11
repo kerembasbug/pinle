@@ -83,11 +83,14 @@ h1, h2, h3, .display {
   flex-direction: column;
   align-items: center;
   cursor: pointer;
+  /* DİKKAT: kök elemana transform/transition koyma — MapLibre marker konumunu
+     inline transform ile her karede günceller; transition araya girince pinler
+     zoom/pan sırasında "yüzer". Hover efekti çocuk .bubble üzerinde. */
+}
+.pin-marker:hover .bubble { transform: scale(1.12); }
+.pin-marker .bubble {
   transform-origin: bottom center;
   transition: transform 120ms ease;
-}
-.pin-marker:hover { transform: scale(1.12); }
-.pin-marker .bubble {
   display: flex;
   align-items: center;
   gap: 3px;

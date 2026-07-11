@@ -61,6 +61,10 @@ export default function MapApp({
   const categoriesRef = useRef<string>(initialType ? categoryFilterIds(initialType).join(",") : "");
   const kindRef = useRef<PinKind>("lezzet");
   const dealsRef = useRef(false); // yalnızca aktif indirim/kampanya pinleri
+  // Pinlerin GERÇEK koordinatları (API'den). querySourceFeatures tile ızgarasına
+  // yuvarlanmış geometri döndürür — düşük zoomda yüzlerce metre kayar. DOM
+  // marker'ları daima buradaki hassas koordinatla konumlanır.
+  const pinCoordsRef = useRef<Map<string, [number, number]>>(new Map());
 
   const [sheet, setSheet] = useState<SheetState>(
     initialPinId ? { kind: "pin", id: initialPinId } : { kind: "none" }
@@ -181,6 +185,7 @@ export default function MapApp({
         const src = map.getSource("pins") as maplibregl.GeoJSONSource | undefined;
         if (!src) return;
         const blocked = getBlocked();
+        for (const p of pins) pinCoordsRef.current.set(p.id, [p.lng, p.lat]);
         const features = pins
           .filter((p) => !blocked.has(p.authorId))
           .map((p) => ({
@@ -217,7 +222,16 @@ export default function MapApp({
       const id = p.id as string;
       if (seen.has(id)) continue;
       seen.add(id);
-      if (markers.has(id)) continue;
+      // Hassas koordinat: API'den gelen gerçek konum; tile geometrisi yalnızca
+      // yedek (düşük zoomda tile yuvarlaması pinleri kaydırır).
+      const exact =
+        pinCoordsRef.current.get(id) ??
+        ((f.geometry as GeoJSON.Point).coordinates as [number, number]);
+      const existing = markers.get(id);
+      if (existing) {
+        existing.setLngLat(exact); // önceden yuvarlanmış konumla oluşmuşsa düzelt
+        continue;
+      }
       const el = document.createElement("div");
       el.className = "pin-marker" + (p.verified ? " verified" : "") + (p.deal ? " has-deal" : "");
       const price = formatPrice(typeof p.price === "number" ? p.price : null);
@@ -244,9 +258,8 @@ export default function MapApp({
         e.stopPropagation();
         setSheet({ kind: "pin", id });
       });
-      const coords = (f.geometry as GeoJSON.Point).coordinates as [number, number];
       const marker = new maplibregl.Marker({ element: el, anchor: "bottom" })
-        .setLngLat(coords)
+        .setLngLat(exact)
         .addTo(map);
       markers.set(id, marker);
     }
