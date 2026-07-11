@@ -1,4 +1,5 @@
 import { db, awardPoints } from "@/lib/db";
+import { overloadGuard } from "@/lib/flags";
 import { getOrCreateUser } from "@/lib/identity";
 import { POINTS } from "@/lib/gamify";
 
@@ -8,6 +9,8 @@ export async function POST(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const __g = overloadGuard();
+  if (__g) return __g;
   const { id } = await params;
   const user = await getOrCreateUser();
 

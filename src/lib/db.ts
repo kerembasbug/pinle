@@ -115,6 +115,11 @@ function migrate(d: Database.Database) {
   if (!userCols.some((c) => c.name === "linked_at")) {
     d.exec("ALTER TABLE users ADD COLUMN linked_at TEXT");
   }
+  // Davet zinciri: bu kullanıcıyı kim davet etti (users.id). Davet eden,
+  // davetli İLK pinini atınca puan kazanır (sahte ziyaret farm'ını önler).
+  if (!userCols.some((c) => c.name === "referred_by")) {
+    d.exec("ALTER TABLE users ADD COLUMN referred_by TEXT");
+  }
   d.exec("CREATE UNIQUE INDEX IF NOT EXISTS idx_users_email ON users(email) WHERE email IS NOT NULL");
   d.exec(
     "CREATE UNIQUE INDEX IF NOT EXISTS idx_users_google ON users(google_sub) WHERE google_sub IS NOT NULL"

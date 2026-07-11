@@ -1,4 +1,5 @@
 import { db } from "@/lib/db";
+import { overloadGuard } from "@/lib/flags";
 import { getOrCreateUser } from "@/lib/identity";
 import { withinRateLimit, REPORT_HIDE_THRESHOLD } from "@/lib/moderation";
 
@@ -6,6 +7,8 @@ export async function POST(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const __g = overloadGuard();
+  if (__g) return __g;
   const { id } = await params;
   const user = await getOrCreateUser();
   if (!withinRateLimit(user.id, "report")) {

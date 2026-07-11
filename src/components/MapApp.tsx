@@ -446,6 +446,26 @@ export default function MapApp({
     refreshMe();
   };
 
+  // Davet linkiyle geliş (?ref=KOD): yeni kullanıcıysa davet edeni bağla.
+  useEffect(() => {
+    const p = new URLSearchParams(window.location.search);
+    const ref = p.get("ref");
+    if (!ref) return;
+    fetch("/api/referral", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code: ref }),
+    })
+      .then((r) => r.json())
+      .then((d) => {
+        if (d.ok) showToast("🎉 Davetle geldin — ilk pinini at, ikiniz de puan kazanın!");
+      })
+      .catch(() => {});
+    p.delete("ref");
+    const rest = p.toString();
+    window.history.replaceState({}, "", window.location.pathname + (rest ? `?${rest}` : ""));
+  }, [showToast]);
+
   // E-posta linkinden dönüş (?auth=ok / expired)
   useEffect(() => {
     const p = new URLSearchParams(window.location.search);
@@ -596,6 +616,7 @@ export default function MapApp({
           setAuthOpen(true);
         }}
         onLogout={logout}
+        onToast={showToast}
       />
       <AuthSheet
         open={authOpen}

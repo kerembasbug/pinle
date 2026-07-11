@@ -1,7 +1,52 @@
 # Pinle — Launch & Viral Pazarlama Planı
 
-Strateji: **tek platform, üç kampanya dalgası.** Aynı pin+yorum+oylama çekirdeği üzerinde
-sırayla Ucuz Lezzet → Anı Haritası → Mahalle Sorun Haritası dalgaları.
+> Konum güncellemesi (2026-07-11): ürün artık **tam fiyat odaklı** — Anı/Sorun
+> katmanları kaldırıldı. Yeni kanca: "mahallenin ucuz lezzet + indirim haritası".
+
+## ⚡ 24 SAAT VİRAL SPRINT — yapıştırmaya hazır paket
+
+Üründe hazır olan viral çark: **?ref= davet linki** (Profil → 🎁 Arkadaşını davet et;
+davetlin ilk pinini atınca +15 puan) · pin linkleri OG önizlemeli · 🏷️ İndirimler
+filtresi · canlı mod 🔴. Sunucu koruması: PLAN-B.md (tek komutla readonly).
+
+**Saat 0-1 — WhatsApp (en yüksek dönüşüm, sıfır maliyet):**
+Kendi profil davet linkini al (Profil → 🎁) ve 5-10 gruba at:
+
+> Mahallendeki en ucuz döneri, çayı, berberi harita üstünde gösteren bir uygulama
+> buldum: pinle.app 📍 Fiyatları millet giriyor, "hâlâ bu fiyat/zamlandı" diye
+> oylanıyor. İndirimleri de 🏷️ filtresiyle kovalıyorsun. Kuşadası-Davutlar tarafı
+> bile dolu. Şuradan bak: [SENİN ?ref= LİNKİN]
+
+**Saat 1-3 — Twitter/X thread'i (kendi hesabından):**
+1/ Türkiye'nin "ucuz lezzet + indirim" haritasını yaptım: pinle.app
+Kayıt yok. Haritayı açıyorsun, mahallendeki gerçek fiyatları görüyorsun. 🧵
+2/ Nasıl çalışıyor: "2 balık ekmek 550₺" yazıyorsun → tanesi 275₺ diye kaydediyor.
+Fiyat eskiyince millet "zamlandı 📈" diye oyluyor. Enflasyonun sokak verisi.
+3/ 🏷️ İndirim modu: "bu fiyat 20 Temmuz'a kadar" diyebiliyorsun; süresi dolunca
+haritadan kendiliğinden düşüyor. Kampanya avcıları için.
+4/ İstanbul/Ankara/İzmir'de Halk Ekmek ve Kent Lokantası resmi fiyatlarıyla başladık;
+gerisini siz pinliyorsunuz. İlk pinini atana rozet + puan var. [ekran görüntüsü]
+
+**Saat 3-6 — Ekşi Sözlük:** "pinle" başlığı aç (yoksa) ya da "ucuz esnaf lokantaları"
+tarzı mevcut başlıklara doğal entry: uygulamayı öven değil, VERİYİ anlatan ton:
+"istanbul'da 100 tl'ye doyabildiğin yerlerin haritası çıkmış, millet fiyat giriyor..."
+
+**Saat 3-6 — Reddit:** r/Turkey + r/istanbul: "Made a free map of cheap eats in
+Turkey where locals report real prices" (İngilizce, self-post, yorumlara link).
+
+**Saat 6-12 — Yerel Facebook grupları:** "Kuşadası/Davutlar sakinleri", mahalle
+grupları — tatil bölgesi kancası: "sahildeki şezlong/kano fiyatlarını da giriyoruz".
+
+**Saat 12-24 — İlçe rekabeti postları:** /liderler ekran görüntüsüyle:
+"Kadıköy X pin, Beşiktaş Y. Beşiktaş uyuyor mu?" — her şehirde tekrarla.
+
+**Sprint boyunca:** PLAN-B.md'deki izleme döngüsünü açık tut; yanıt >2 sn olursa
+Kademe 1 (readonly). Her 2-3 saatte /api/stats?token=… ile KPI bak.
+
+---
+
+Strateji: **tek platform, fiyat odaklı tek dalga** (Anı/Sorun dalgaları üründen
+kaldırıldı — aşağıdaki eski dalga planı arşiv niteliğinde).
 
 ## Launch Öncesi Checklist
 

@@ -54,6 +54,8 @@ export type Me = {
   isMuhtar: boolean;
   email: string | null;
   badges: { id: string; label: string; emoji: string; earned: boolean; progress: string }[];
+  refCode: string;
+  invitedCount: number;
 };
 
 export function timeAgo(sqlite: string): string {

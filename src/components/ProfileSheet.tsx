@@ -9,9 +9,22 @@ type Props = {
   onClose: () => void;
   onOpenAuth: () => void;
   onLogout: () => void;
+  onToast: (msg: string) => void;
 };
 
-export default function ProfileSheet({ open, me, onClose, onOpenAuth, onLogout }: Props) {
+export default function ProfileSheet({ open, me, onClose, onOpenAuth, onLogout, onToast }: Props) {
+  // Davet linki paylaş: Web Share varsa native sheet, yoksa panoya kopyala.
+  const invite = async () => {
+    if (!me) return;
+    const url = `${location.origin}/?ref=${me.refCode}`;
+    const text = "Mahallendeki ucuz lezzetleri ve indirimleri haritada gör — Pinle'ye davetlisin 📍";
+    if (navigator.share) {
+      await navigator.share({ title: "Pinle", text, url }).catch(() => {});
+    } else {
+      await navigator.clipboard.writeText(`${text} ${url}`);
+      onToast("Davet linki kopyalandı 🔗");
+    }
+  };
   return (
     <>
       {open && <div className="fixed inset-0 z-20 bg-ink/20" onClick={onClose} />}
@@ -60,7 +73,15 @@ export default function ProfileSheet({ open, me, onClose, onOpenAuth, onLogout }
                 ))}
               </div>
 
-              <Link href="/liderler" className="btn btn-mustard mt-4 block py-3 text-center">
+              {/* 🎁 Davet çarkı — davetlin ilk pinini atınca +15 puan */}
+              <button onClick={invite} className="btn btn-tomato mt-4 w-full py-3">
+                🎁 Arkadaşını davet et {me.invitedCount > 0 ? `(${me.invitedCount} kişi geldi)` : "(+15 puan)"}
+              </button>
+              <p className="mt-1 text-center text-[11px] opacity-50">
+                Davet ettiğin kişi ilk pinini atınca +15 puan kazanırsın
+              </p>
+
+              <Link href="/liderler" className="btn btn-mustard mt-3 block py-3 text-center">
                 🏆 Liderlik Tablosu
               </Link>
 

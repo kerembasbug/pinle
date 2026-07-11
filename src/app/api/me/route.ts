@@ -1,6 +1,7 @@
 import { db, recordVisit } from "@/lib/db";
 import { getOrCreateUser } from "@/lib/identity";
 import { badgesFor } from "@/lib/gamify";
+import { authorIdFor } from "@/lib/authorId";
 
 export async function GET() {
   const user = await getOrCreateUser();
@@ -39,6 +40,11 @@ export async function GET() {
     weeklyRank = better + 1;
   }
 
+  // Davet çarkı: kodum (opak) + kaç kişi davet ettim
+  const invitedCount = (
+    d.prepare("SELECT COUNT(*) AS c FROM users WHERE referred_by = ?").get(user.id) as { c: number }
+  ).c;
+
   return Response.json({
     name: user.name,
     points,
@@ -48,5 +54,7 @@ export async function GET() {
     isMuhtar: weeklyRank === 1,
     email: urow.email,
     badges: badgesFor(user.id),
+    refCode: authorIdFor(user.id),
+    invitedCount,
   });
 }

@@ -9,6 +9,11 @@ import { isClean, withinRateLimit } from "@/lib/moderation";
 import { cleanValidUntil } from "@/lib/validity";
 import { POINTS } from "@/lib/gamify";
 import { authorIdFor } from "@/lib/authorId";
+import { overloadGuard } from "@/lib/flags";
+// Viral yük sigortası: aynı (kaba) bölge sorguları 15 sn hafızadan döner.
+// bbox 2 ondalığa GENİŞLETİLEREK yuvarlanır (superset — pin kaybolmaz, fazlası
+// zaten viewport dışında kalır). Kişiselleştirme yok → herkese aynı yanıt.
+import { cacheGet, cacheSet, cacheClear } from "@/lib/pinsCache";
 
 export async function GET(request: NextRequest) {
   const q = request.nextUrl.searchParams;
@@ -29,6 +34,15 @@ export async function GET(request: NextRequest) {
   if ([minLat, maxLat, minLng, maxLng].some(Number.isNaN)) {
     return Response.json({ error: "Geçersiz sınırlar" }, { status: 400 });
   }
+
+  // Kaba superset bbox → cache anahtarı (dışa doğru yuvarla: sonuç asla eksilmez)
+  const f = (v: number, up: boolean) => (up ? Math.ceil(v * 100) / 100 : Math.floor(v * 100) / 100);
+  const cMinLat = f(minLat, false), cMaxLat = f(maxLat, true);
+  const cMinLng = f(minLng, false), cMaxLng = f(maxLng, true);
+  const cacheKey = `${cMinLat},${cMaxLat},${cMinLng},${cMaxLng}|${kind}|${categories.join(",")}|${dealsOnly ? 1 : 0}`;
+  const headers = { "Content-Type": "application/json", "Cache-Control": "public, max-age=10" };
+  const hit = cacheGet(cacheKey);
+  if (hit) return new Response(hit, { headers });
 
   const catFilter =
     categories.length > 0 ? `AND p.category IN (${categories.map(() => "?").join(",")})` : "";
@@ -51,9 +65,10 @@ export async function GET(request: NextRequest) {
     ORDER BY p.created_at DESC
     LIMIT 400
   `;
+  // Sorgu KABA bbox ile çalışır (cache anahtarıyla birebir) — superset güvenli.
   const rows = db()
     .prepare(sql)
-    .all(minLat, maxLat, minLng, maxLng, kind, kind, ...categories) as Record<
+    .all(cMinLat, cMaxLat, cMinLng, cMaxLng, kind, kind, ...categories) as Record<
     string,
     unknown
   >[];
@@ -61,7 +76,9 @@ export async function GET(request: NextRequest) {
     ...p,
     authorId: authorIdFor(user_id as string),
   }));
-  return Response.json({ pins });
+  const body = JSON.stringify({ pins });
+  cacheSet(cacheKey, body);
+  return new Response(body, { headers });
 }
 
 const UPLOAD_DIR = path.join(process.cwd(), "data", "uploads");
@@ -73,6 +90,8 @@ const PHOTO_EXT: Record<string, string> = {
 };
 
 export async function POST(request: NextRequest) {
+  const guard = overloadGuard();
+  if (guard) return guard;
   const user = await getOrCreateUser();
   if (!withinRateLimit(user.id, "pin")) {
     return Response.json({ error: "Günlük pin limitine ulaştın, yarın devam!" }, { status: 429 });
@@ -163,6 +182,17 @@ export async function POST(request: NextRequest) {
 
   const earned = POINTS.PIN + (photoName ? POINTS.PIN_PHOTO_BONUS : 0);
   awardPoints(user.id, earned, "pin");
+  cacheClear(); // pinleyen kendi pinini anında görsün
+
+  // Davet ödülü: davetli İLK pinini attıysa davet edene puan (viral çark).
+  const meta2 = db()
+    .prepare(
+      "SELECT referred_by, (SELECT COUNT(*) FROM pins WHERE user_id = users.id) AS pc FROM users WHERE id = ?"
+    )
+    .get(user.id) as { referred_by: string | null; pc: number };
+  if (meta2?.referred_by && meta2.pc === 1) {
+    awardPoints(meta2.referred_by, POINTS.REFERRAL, "referral");
+  }
 
   return Response.json({ id, earned }, { status: 201 });
 }
