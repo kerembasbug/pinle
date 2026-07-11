@@ -6,6 +6,7 @@ import maplibregl from "maplibre-gl";
 import {
   PLACE_TYPES,
   categoryById,
+  categoryIcon,
   categoryInKind,
   categoryFilterIds,
   isPriceable,
@@ -194,6 +195,7 @@ export default function MapApp({
             properties: {
               id: p.id,
               emoji: categoryById(p.category).emoji,
+              category: p.category,
               price: p.price ?? null,
               kind: p.kind,
               confirms: p.confirms,
@@ -246,10 +248,11 @@ export default function MapApp({
               ? `<span class="price-missing">₺?</span>` // yeme-içme, fiyat bekliyor — dokun, ekle
               : "";
       const confirms = Number(p.confirms) || 0;
+      const catIco = categoryIcon(String(p.category ?? ""));
       el.innerHTML = `
         <div class="bubble${label ? "" : " bubble-mini"}">
           ${p.deal ? `<span class="deal-tag">🏷️</span>` : ""}
-          <span>${p.emoji}</span>
+          ${catIco ? `<img class="cat-ico" src="${catIco}" alt="">` : `<span>${p.emoji}</span>`}
           ${label}
           ${confirms > 0 ? `<span style="color:var(--teal)">${icon}${confirms}</span>` : ""}
         </div>
@@ -528,11 +531,17 @@ export default function MapApp({
             <button
               key={t.id}
               onClick={() => pickType(t.id)}
-              className={`btn shrink-0 px-3 py-1 text-[13px] ${
+              className={`btn flex shrink-0 items-center gap-1 px-2.5 py-1 text-[13px] ${
                 placeType === t.id ? "btn-tomato" : "btn-cream"
               }`}
             >
-              {t.emoji} {t.label}
+              {t.icon ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={t.icon} alt="" className="h-[18px] w-[18px]" />
+              ) : (
+                t.emoji
+              )}{" "}
+              {t.label}
             </button>
           ))}
         </div>

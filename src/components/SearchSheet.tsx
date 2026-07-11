@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { categoryById } from "@/lib/categories";
+import { categoryById, categoryIcon } from "@/lib/categories";
 import { formatPrice } from "@/lib/types";
 
 export type SearchResult = {
@@ -103,7 +103,12 @@ export default function SearchSheet({ open, onClose, onPickResult, onPickCity, o
                     onClick={() => onPickResult(r)}
                     className="sticker-flat flex items-center gap-3 bg-cream px-3 py-2 text-left"
                   >
-                    <span className="text-xl">{cat.emoji}</span>
+                    {categoryIcon(r.category) ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={categoryIcon(r.category)!} alt="" className="h-7 w-7 shrink-0" />
+                    ) : (
+                      <span className="text-xl">{cat.emoji}</span>
+                    )}
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-bold">{r.name}</p>
                       <p className="text-xs opacity-60">

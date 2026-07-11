@@ -10,7 +10,7 @@ import {
   CITYCAT_MIN_PINS,
   SEO_CATEGORIES,
 } from "@/lib/cities";
-import { categoryById } from "@/lib/categories";
+import { categoryById, categoryIcon } from "@/lib/categories";
 import { formatPrice } from "@/lib/types";
 
 export const revalidate = 900;
@@ -163,7 +163,12 @@ export default async function CityCatPage({
                   href={`/pin/${p.id}`}
                   className="sticker-flat flex items-center gap-3 p-3 transition-transform hover:-translate-y-0.5"
                 >
-                  <span className="text-2xl">{meta.emoji}</span>
+                  {categoryIcon(cat) ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={categoryIcon(cat)!} alt="" className="h-8 w-8 shrink-0" />
+                  ) : (
+                    <span className="text-2xl">{meta.emoji}</span>
+                  )}
                   <span className="min-w-0 flex-1">
                     <span className="block truncate font-bold">{p.name}</span>
                     <span className="block text-xs opacity-60">

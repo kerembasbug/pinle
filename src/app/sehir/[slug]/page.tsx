@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CITIES, cityBySlug, cityCatCombos, cityPins, cityStats } from "@/lib/cities";
-import { categoryById } from "@/lib/categories";
+import { categoryById, categoryIcon } from "@/lib/categories";
 import { formatPrice } from "@/lib/types";
 
 export const revalidate = 900; // 15 dk ISR — hızlı, taze yeterli
@@ -147,7 +147,12 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
                     href={`/pin/${p.id}`}
                     className="sticker-flat flex items-center gap-3 p-3 transition-transform hover:-translate-y-0.5"
                   >
-                    <span className="text-2xl">{cat.emoji}</span>
+                    {categoryIcon(p.category) ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={categoryIcon(p.category)!} alt="" className="h-8 w-8 shrink-0" />
+                    ) : (
+                      <span className="text-2xl">{cat.emoji}</span>
+                    )}
                     <span className="min-w-0 flex-1">
                       <span className="block truncate font-bold">{p.name}</span>
                       <span className="block text-xs opacity-60">

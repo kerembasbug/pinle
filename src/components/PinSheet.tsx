@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { categoryById, isPriceable, itemSuggestionsFor, kindMeta, type PinKind } from "@/lib/categories";
+import { categoryById, categoryIcon, isPriceable, itemSuggestionsFor, kindMeta, type PinKind } from "@/lib/categories";
 import type { Comment, PinDetail } from "@/lib/types";
 import { formatPrice, timeAgo } from "@/lib/types";
 import { validityLabel } from "@/lib/validity";
@@ -316,7 +316,12 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
             <EmojiBurst seed={burst} />
             <div className="flex items-start gap-3 pt-2">
               <div className="sticker-flat flex h-12 w-12 shrink-0 items-center justify-center text-2xl bg-paper">
-                {cat!.emoji}
+                {categoryIcon(pin.category) ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={categoryIcon(pin.category)!} alt="" className="h-9 w-9" />
+                ) : (
+                  cat!.emoji
+                )}
               </div>
               <div className="min-w-0 flex-1">
                 <h2 className="text-xl font-extrabold leading-tight">{pin.name}</h2>

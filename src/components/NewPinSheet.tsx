@@ -273,11 +273,17 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated, onPic
               <button
                 key={t.id}
                 onClick={() => setCategory(t.id)}
-                className={`btn px-3 py-1 text-[13px] ${
+                className={`btn flex items-center gap-1 px-2.5 py-1 text-[13px] ${
                   category === t.id ? "btn-tomato" : "btn-cream"
                 }`}
               >
-                {t.emoji} {t.label}
+                {t.icon ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={t.icon} alt="" className="h-[18px] w-[18px]" />
+                ) : (
+                  t.emoji
+                )}{" "}
+                {t.label}
               </button>
             ))}
           </div>

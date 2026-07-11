@@ -11,7 +11,7 @@ export type Category = {
   emoji: string;
 };
 
-export type PlaceType = Category & { priceable?: boolean };
+export type PlaceType = Category & { priceable?: boolean; icon?: string };
 
 export type KindMeta = {
   id: PinKind;
@@ -46,19 +46,19 @@ export const KINDS: KindMeta[] = [
 // priceable: çıplak fiyat/"₺?" daveti anlamlı mı (yeme-içme, market, oto). Diğer
 // tiplerde de fiyat girilir ama "₺?" nag'i gösterilmez.
 export const PLACE_TYPES: PlaceType[] = [
-  { id: "restoran", label: "Restoran / Lokanta", emoji: "🍽️", priceable: true },
-  { id: "doner", label: "Döner / Dürüm", emoji: "🥙", priceable: true },
-  { id: "kafe", label: "Kafe / Çay", emoji: "☕", priceable: true },
-  { id: "firin", label: "Fırın / Tatlı", emoji: "🍞", priceable: true },
-  { id: "bar", label: "Bar / Meyhane", emoji: "🍺", priceable: true },
-  { id: "beach", label: "Beach Club / Plaj", emoji: "🏖️", priceable: true },
-  { id: "market", label: "Market / Manav", emoji: "🛒", priceable: true },
-  { id: "kuafor", label: "Kuaför / Güzellik", emoji: "💈" },
-  { id: "hizmet", label: "Usta / Tamir", emoji: "🔧" },
-  { id: "saglik", label: "Eczane / Sağlık", emoji: "💊" },
-  { id: "oto", label: "Benzin / Oto", emoji: "⛽", priceable: true },
-  { id: "gezi", label: "Park / Gezi", emoji: "🌳" },
-  { id: "diger", label: "Diğer", emoji: "📍" },
+  { id: "restoran", label: "Restoran / Lokanta", emoji: "🍽️", priceable: true, icon: "/ui/restoran.png" },
+  { id: "doner", label: "Döner / Dürüm", emoji: "🥙", priceable: true, icon: "/ui/doner.png" },
+  { id: "kafe", label: "Kafe / Çay", emoji: "☕", priceable: true, icon: "/ui/kafe.png" },
+  { id: "firin", label: "Fırın / Tatlı", emoji: "🍞", priceable: true, icon: "/ui/firin.png" },
+  { id: "bar", label: "Bar / Meyhane", emoji: "🍺", priceable: true, icon: "/ui/bar.png" },
+  { id: "beach", label: "Beach Club / Plaj", emoji: "🏖️", priceable: true, icon: "/ui/beach.png" },
+  { id: "market", label: "Market / Manav", emoji: "🛒", priceable: true, icon: "/ui/market.png" },
+  { id: "kuafor", label: "Kuaför / Güzellik", emoji: "💈", icon: "/ui/kuafor.png" },
+  { id: "hizmet", label: "Usta / Tamir", emoji: "🔧", icon: "/ui/hizmet.png" },
+  { id: "saglik", label: "Eczane / Sağlık", emoji: "💊", icon: "/ui/saglik.png" },
+  { id: "oto", label: "Benzin / Oto", emoji: "⛽", priceable: true, icon: "/ui/oto.png" },
+  { id: "gezi", label: "Park / Gezi", emoji: "🌳", icon: "/ui/gezi.png" },
+  { id: "diger", label: "Diğer", emoji: "📍", icon: "/ui/diger.png" },
 ];
 
 // ---- Eski ince kategoriler (OSM seed & mevcut pinler & SEO). Görüntü için
@@ -157,6 +157,13 @@ export function categoryInKind(_kind: PinKind, categoryId: string): boolean {
 // Bir kategori/yer tipi hangi yer tipine ait? (legacy→type ya da kendisi)
 export function placeTypeIdOf(categoryId: string): string {
   return LEGACY_TO_TYPE[categoryId] ?? categoryId;
+}
+
+// Markaya özel UI ikonu (fal.ai seti) — legacy id'ler yer tipine çözülür.
+// null dönerse emoji fallback'i kullanılır.
+export function categoryIcon(categoryId: string): string | null {
+  const t = PLACE_TYPES.find((t) => t.id === placeTypeIdOf(categoryId));
+  return t?.icon ?? null;
 }
 
 // Harita filtresi: bir yer tipi seçilince o tipi + tüm eski alt id'lerini kapsa

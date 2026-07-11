@@ -105,6 +105,12 @@ h1, h2, h3, .display {
   white-space: nowrap;
 }
 .pin-marker .bubble .price { color: var(--tomato-dark); }
+/* Markaya özel kategori ikonu (fal.ai seti) — marker balonu içinde */
+.pin-marker .bubble .cat-ico {
+  width: 18px; height: 18px;
+  display: block;
+  flex-shrink: 0;
+}
 /* Fiyatı eksik yemek pini — mütevazı "₺?" daveti (katkı çağrısı) */
 .pin-marker .bubble .price-missing {
   color: var(--ink);

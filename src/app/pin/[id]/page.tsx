@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { categoryById } from "@/lib/categories";
+import { categoryById, categoryIcon } from "@/lib/categories";
 import { formatPrice, timeAgo } from "@/lib/types";
 import { validityLabel } from "@/lib/validity";
 import { getPin } from "@/lib/pins";
@@ -50,8 +50,13 @@ export default async function PinPage({ params }: { params: Promise<{ id: string
 
       <div className="sticker w-full max-w-sm p-5">
         <div className="flex items-start gap-3">
-          <div className="sticker-flat flex h-13 w-13 shrink-0 items-center justify-center p-2.5 text-3xl bg-paper">
-            {cat.emoji}
+          <div className="sticker-flat flex h-13 w-13 shrink-0 items-center justify-center p-2 text-3xl bg-paper">
+            {categoryIcon(pin.category) ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={categoryIcon(pin.category)!} alt={cat.label} className="h-10 w-10" />
+            ) : (
+              cat.emoji
+            )}
           </div>
           <div className="min-w-0 flex-1">
             <h1 className="text-2xl font-extrabold leading-tight">{pin.name}</h1>
