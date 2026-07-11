@@ -22,6 +22,7 @@ import type { SearchResult } from "./SearchSheet";
 // Sheet/overlay bileşenleri yalnızca etkileşimde açılır → ilk JS bundle'ından
 // çıkar (lazy-load). Kritik yol yalnızca harita + MapLibre olur.
 const PinSheet = dynamic(() => import("./PinSheet"), { ssr: false });
+const InstallPrompt = dynamic(() => import("./InstallPrompt"), { ssr: false });
 const NewPinSheet = dynamic(() => import("./NewPinSheet"), { ssr: false });
 const ProfileSheet = dynamic(() => import("./ProfileSheet"), { ssr: false });
 const SearchSheet = dynamic(() => import("./SearchSheet"), { ssr: false });
@@ -648,6 +649,7 @@ export default function MapApp({
       />
 
       <Onboarding />
+      <InstallPrompt onToast={showToast} />
 
       {toast && (
         <div key={toast.key} className="toast">
