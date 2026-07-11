@@ -14,11 +14,12 @@ export default async function Home({
       <MapApp initialPinId={pin} initialCenter={initialCenter} initialCategory={kategori} />
       {/* Taranabilir SEO içeriği + şehir sayfalarına iç link akışı (harita SPA'sı istemci tarafı) */}
       <section className="sr-only">
-        <h1>Pinle — Türkiye Ucuz Lezzet Haritası</h1>
+        <h1>Pinle — Kazık Yeme, Pinle. Olduğun Yerin Gerçek Fiyat Haritası</h1>
         <p>
-          Şehrindeki ucuz ve iyi yemek noktalarını haritada pinle, fiyatları doğrula, mahallenin
-          muhtarı ol. Esnaf lokantaları, dönerciler, kebapçılar, pideciler, kahvaltıcılar ve daha
-          fazlası — fiyatlarıyla birlikte, toplulukça güncel tutuluyor. Kayıt yok, anonim başla.
+          Nereye gidersen git — tatilde, yeni bir semtte, kendi mahallende — döner, çay, şezlong,
+          berber gerçekte kaça, oturmadan gör. Fiyatları oradakiler giriyor, &quot;hâlâ bu fiyat /
+          zamlandı&quot; oylarıyla oradakiler doğruluyor. Esnaf lokantasından beach club&apos;a
+          tüm fiyatlar haritada. Kayıt yok, anonim başla, fiyatı bilerek git.
         </p>
         <nav aria-label="Şehirler">
           <ul>

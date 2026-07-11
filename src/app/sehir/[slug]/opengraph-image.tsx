@@ -104,7 +104,7 @@ export default async function CityOgImage({ params }: { params: Promise<{ slug: 
         </div>
 
         <div style={{ fontSize: 26, color: "#fffdf7", opacity: 0.85, marginTop: 30 }}>
-          pinle.app · kayıt yok · fiyatları mahalle doğrular
+          pinle.app · Kazık yeme, Pinle. · kayıt yok
         </div>
       </div>
     ),

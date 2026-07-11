@@ -5,6 +5,8 @@
 
 ## ⚡ 24 SAAT VİRAL SPRINT — yapıştırmaya hazır paket
 
+> SLOGAN (2026-07-11): "Kazık yeme, Pinle." — ikincil: "Olduğun yerin gerçek fiyat haritası" / "Nereye gidersen git, fiyatı bilerek git." Tatil kampanyası: "Tatilde kazık yeme, Pinle."
+
 Üründe hazır olan viral çark: **?ref= davet linki** (Profil → 🎁 Arkadaşını davet et;
 davetlin ilk pinini atınca +15 puan) · pin linkleri OG önizlemeli · 🏷️ İndirimler
 filtresi · canlı mod 🔴. Sunucu koruması: PLAN-B.md (tek komutla readonly).

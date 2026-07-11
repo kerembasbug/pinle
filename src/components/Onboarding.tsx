@@ -40,9 +40,12 @@ export default function Onboarding() {
       <div className="sticker w-full max-w-sm p-5">
         <div className="flex items-center gap-2">
           <span className="text-2xl">📍</span>
-          <h2 className="display text-2xl font-extrabold text-tomato">Pinle&apos;ye hoş geldin</h2>
+          <h2 className="display text-2xl font-extrabold text-tomato">Kazık yeme, Pinle.</h2>
         </div>
-        <p className="mt-1 text-sm opacity-70">Şehrindeki ucuz ve iyi yerlerin haritası — ve haritayı sen dolduruyorsun.</p>
+        <p className="mt-1 text-sm opacity-70">
+          Olduğun yerin gerçek fiyat haritası — nereye gidersen git, fiyatı bilerek git.
+          Haritayı da sen dolduruyorsun.
+        </p>
 
         <div className="mt-4 flex flex-col gap-3">
           <div className="flex items-start gap-3">

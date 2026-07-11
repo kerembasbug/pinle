@@ -55,11 +55,11 @@ export default function OgImage() {
             padding: "40px 72px",
           }}
         >
-          <div style={{ fontSize: 54, fontWeight: 800, color: "#221b15" }}>
-            Ucuz Lezzet Haritası
+          <div style={{ fontSize: 58, fontWeight: 800, color: "#e8442e" }}>
+            Kazık yeme, Pinle.
           </div>
-          <div style={{ fontSize: 30, color: "#221b15", opacity: 0.7, marginTop: 10 }}>
-            Fiyatları pinle · doğrula · mahallenin muhtarı ol
+          <div style={{ fontSize: 30, color: "#221b15", opacity: 0.75, marginTop: 10 }}>
+            Olduğun yerin gerçek fiyat haritası
           </div>
 
           {pins > 0 && (
@@ -95,7 +95,7 @@ export default function OgImage() {
         </div>
 
         <div style={{ fontSize: 28, color: "#221b15", opacity: 0.55, marginTop: 30 }}>
-          pinle.app · kayıt yok, anonim başla
+          pinle.app · kayıt yok · fiyatı bilerek git
         </div>
       </div>
     ),

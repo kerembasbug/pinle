@@ -3,10 +3,10 @@ import type { MetadataRoute } from "next";
 export default function manifest(): MetadataRoute.Manifest {
   return {
     id: "/",
-    name: "Pinle — Ucuz Lezzet Haritası",
+    name: "Pinle — Kazık Yeme, Pinle.",
     short_name: "Pinle",
     description:
-      "Şehrindeki ucuz ve iyi yemek noktalarını pinle, fiyatları doğrula, mahallenin muhtarı ol.",
+      "Olduğun yerin gerçek fiyat haritası. Nereye gidersen git — döner, çay, şezlong, berber — gerçekte ne ödeniyor gör, fiyatı bilerek git.",
     start_url: "/",
     display: "standalone",
     orientation: "portrait",

@@ -54,7 +54,7 @@ Pinle: Ucuz Lezzet Haritası
 
 **Kısa açıklama** (≤80):
 ```
-Ucuz ve iyi yemek noktalarını pinle, fiyatları doğrula, mahalleni temsil et!
+Kazık yeme, Pinle. Olduğun yerin gerçek fiyat haritası — fiyatı bilerek git!
 ```
 
 **Uzun açıklama:**
