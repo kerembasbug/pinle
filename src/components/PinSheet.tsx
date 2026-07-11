@@ -6,6 +6,7 @@ import type { Comment, PinDetail } from "@/lib/types";
 import { formatPrice, timeAgo } from "@/lib/types";
 import { isStalePrice, validityLabel } from "@/lib/validity";
 import { blockAuthor, getBlocked } from "@/lib/blocklist";
+import { useItemSuggest } from "./useItemSuggest";
 
 type Props = {
   pinId: string | null;
@@ -208,7 +209,11 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
   const priceable = pin ? isPriceable(pin.kind as PinKind, pin.category) : false; // yeme-içme
   const canPrice = pin?.kind === "lezzet"; // her mekana fiyat girilebilir (hizmetler dahil)
   const needsPrice = priceable && pin?.price == null; // fiyatsız yemek pini → oylama anlamsız
-  const suggestions = pin ? itemSuggestionsFor(pin.category) : [];
+  // Çipler: topluluğun geçmiş girdileri (yazdıkça daralır) + statik öneriler
+  const learned = useItemSuggest(itemInput, pin?.category ?? "", !!pin && (needsPrice || editingPrice));
+  const suggestions = pin
+    ? Array.from(new Set([...learned, ...itemSuggestionsFor(pin.category)])).slice(0, 8)
+    : [];
   const blocked = getBlocked();
   const visibleComments = comments.filter((c) => !blocked.has(c.authorId));
 

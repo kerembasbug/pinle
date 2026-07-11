@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { PLACE_TYPES, itemSuggestionsFor, kindMeta, type PinKind } from "@/lib/categories";
+import { useItemSuggest } from "./useItemSuggest";
 
 type Props = {
   coords: { lat: number; lng: number } | null;
@@ -86,7 +87,9 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated, onPic
     };
   }, [name, coords, showMatches]);
 
-  const suggestions = itemSuggestionsFor(category);
+  // Çipler: topluluğun geçmiş girdileri (yazdıkça daralır) + statik öneriler
+  const learned = useItemSuggest(priceItem, category, coords != null && !noPrice);
+  const suggestions = Array.from(new Set([...learned, ...itemSuggestionsFor(category)])).slice(0, 8);
   const priceRequired = meta.hasPrice && !noPrice;
   const priceOk = !priceRequired || (price.trim() !== "" && priceItem.trim() !== "");
 
