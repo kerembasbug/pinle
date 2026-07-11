@@ -17,6 +17,8 @@ export async function GET(request: NextRequest) {
   const minLng = Number(q.get("minLng") ?? -180);
   const maxLng = Number(q.get("maxLng") ?? 180);
   const kind = q.get("kind") ?? "";
+  // `deals=1`: yalnızca geçerlilik tarihi bugünden ileri olan aktif indirim/kampanya pinleri
+  const dealsOnly = q.get("deals") === "1";
   // `categories`: virgülle ayrık liste (grup filtresi). Geriye uyumluluk için `category` de kabul.
   const catParam = q.get("categories") ?? q.get("category") ?? "";
   const categories = catParam
@@ -30,6 +32,9 @@ export async function GET(request: NextRequest) {
 
   const catFilter =
     categories.length > 0 ? `AND p.category IN (${categories.map(() => "?").join(",")})` : "";
+  const dealFilter = dealsOnly
+    ? "AND p.price_valid_until IS NOT NULL AND date(p.price_valid_until) >= date('now')"
+    : "";
   const sql = `
     SELECT p.id, p.user_id, p.name, p.kind, p.category, p.price, p.price_item, p.price_valid_until, p.lat, p.lng, p.created_at,
       COALESCE(SUM(CASE WHEN v.value = 1 THEN 1 END), 0) AS confirms,
@@ -41,6 +46,7 @@ export async function GET(request: NextRequest) {
       AND p.lat BETWEEN ? AND ? AND p.lng BETWEEN ? AND ?
       AND (? = '' OR p.kind = ?)
       ${catFilter}
+      ${dealFilter}
     GROUP BY p.id
     ORDER BY p.created_at DESC
     LIMIT 400

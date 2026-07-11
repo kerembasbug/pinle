@@ -60,12 +60,14 @@ export default function MapApp({
   // API'ye gidecek virgüllü kategori listesi (seçili yer tipinin genişletilmiş id'leri)
   const categoriesRef = useRef<string>(initialType ? categoryFilterIds(initialType).join(",") : "");
   const kindRef = useRef<PinKind>("lezzet");
+  const dealsRef = useRef(false); // yalnızca aktif indirim/kampanya pinleri
 
   const [sheet, setSheet] = useState<SheetState>(
     initialPinId ? { kind: "pin", id: initialPinId } : { kind: "none" }
   );
   const [placing, setPlacing] = useState(false);
   const [placeType, setPlaceType] = useState(initialType); // seçili yer tipi ("" = tümü)
+  const [dealsOnly, setDealsOnly] = useState(false); // 🏷️ İndirimler filtresi
   const [me, setMe] = useState<Me | null>(null);
   const [toast, setToast] = useState<{ msg: string; key: number } | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -171,6 +173,7 @@ export default function MapApp({
       maxLng: String(b.getEast()),
       kind: kindRef.current,
       categories: categoriesRef.current,
+      deals: dealsRef.current ? "1" : "",
     });
     fetch(`/api/pins?${params}`)
       .then((r) => r.json())
@@ -341,6 +344,16 @@ export default function MapApp({
     loadPins();
   };
 
+  // 🏷️ İndirimler: yalnızca geçerlilik tarihi bugünden ileri olan kampanya pinleri.
+  const toggleDeals = () => {
+    const next = !dealsOnly;
+    setDealsOnly(next);
+    dealsRef.current = next;
+    clearMarkers();
+    loadPins();
+    if (next) showToast("🏷️ Sadece aktif indirimler gösteriliyor");
+  };
+
   const locate = () => {
     if (!navigator.geolocation) return showToast("Konum desteklenmiyor 😕");
     showToast("Konumun bulunuyor…");
@@ -461,6 +474,15 @@ export default function MapApp({
         </div>
         {/* Yer tipi filtresi — tek seviye, kaydırılabilir tek satır */}
         <div className="mt-2 flex gap-1.5 overflow-x-auto pb-1 pointer-events-auto [-webkit-overflow-scrolling:touch] [scrollbar-width:none]">
+          <button
+            onClick={toggleDeals}
+            className={`btn shrink-0 px-3 py-1 text-[13px] ${
+              dealsOnly ? "btn-mustard" : "btn-cream"
+            }`}
+            aria-pressed={dealsOnly}
+          >
+            🏷️ İndirimler
+          </button>
           <button
             onClick={() => pickType("")}
             className={`btn shrink-0 px-3 py-1 text-[13px] ${
