@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { db, awardPoints } from "@/lib/db";
 import { getOrCreateUser } from "@/lib/identity";
-import { isValidKind, categoryInKind, kindMeta } from "@/lib/categories";
+import { isValidKind, categoryInKind, categoryById, kindMeta } from "@/lib/categories";
 import { nearestPlace } from "@/lib/districts";
 import { isClean, withinRateLimit } from "@/lib/moderation";
 import { cleanValidUntil } from "@/lib/validity";
@@ -111,8 +111,10 @@ export async function POST(request: NextRequest) {
   if (!isValidKind(kind)) {
     return Response.json({ error: "Geçersiz pin tipi" }, { status: 400 });
   }
-  if (name.length < 2 || name.length > 80) {
-    return Response.json({ error: "Başlık 2-80 karakter olmalı" }, { status: 400 });
+  // Ad OPSİYONEL: bilmiyorsan boş bırak → konum+tür'den otomatik üretilir
+  // (fiyat ve konum, addan daha değerli). Girildiyse 2-80 karakter.
+  if (name.length > 80 || (name.length > 0 && name.length < 2)) {
+    return Response.json({ error: "İsim 2-80 karakter olmalı" }, { status: 400 });
   }
   if (!categoryInKind(kind, category)) {
     return Response.json({ error: "Geçersiz kategori" }, { status: 400 });
@@ -168,6 +170,14 @@ export async function POST(request: NextRequest) {
 
   const id = crypto.randomUUID();
   const place = nearestPlace(lat, lng);
+  // Ad boşsa otomatik üret: "Döner / Dürüm · Kuşadası" (tür + semt) — kullanıcı
+  // adını bilmese de pin anlamlı görünür, sonradan düzeltilebilir.
+  const finalName =
+    name ||
+    `${categoryById(category).label}${place?.district && place.district !== "-" ? ` · ${place.district}` : ""}`.slice(
+      0,
+      80
+    );
   db()
     .prepare(
       `INSERT INTO pins (id, user_id, name, kind, category, district, city, price, price_item,
@@ -175,7 +185,7 @@ export async function POST(request: NextRequest) {
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CASE WHEN ? IS NOT NULL THEN datetime('now') END, ?, ?, ?, ?, ?)`
     )
     .run(
-      id, user.id, name, kind, category,
+      id, user.id, finalName, kind, category,
       place?.district ?? "-", place?.city ?? "-",
       price, priceItem, price, validUntil, note || null, photoName, lat, lng
     );

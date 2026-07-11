@@ -1,6 +1,43 @@
 import { db } from "@/lib/db";
-import { getUserIfExists } from "@/lib/identity";
+import { getUserIfExists, getOrCreateUser } from "@/lib/identity";
 import { authorIdFor } from "@/lib/authorId";
+import { isClean, withinRateLimit } from "@/lib/moderation";
+import { overloadGuard } from "@/lib/flags";
+import { cacheClear } from "@/lib/pinsCache";
+
+// Mekan adını düzelt — YALNIZ pin sahibi. Yanlış/eski/bilinmeyen ad girildiyse
+// sonradan doğru adı yazmak için (mükerrer pin açmaya gerek kalmaz).
+export async function PATCH(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const g = overloadGuard();
+  if (g) return g;
+  const { id } = await params;
+  const user = await getOrCreateUser();
+  if (!withinRateLimit(user.id, "comment")) {
+    return Response.json({ error: "Çok sık deniyorsun, biraz bekle" }, { status: 429 });
+  }
+  const { name } = (await request.json().catch(() => ({}))) as { name?: string };
+  const trimmed = (name ?? "").trim();
+  if (trimmed.length < 2 || trimmed.length > 80) {
+    return Response.json({ error: "İsim 2-80 karakter olmalı" }, { status: 400 });
+  }
+  if (!isClean(trimmed)) {
+    return Response.json({ error: "Metin uygunsuz ifade içeriyor" }, { status: 400 });
+  }
+  const d = db();
+  const pin = d
+    .prepare("SELECT user_id FROM pins WHERE id = ? AND status = 'active'")
+    .get(id) as { user_id: string } | undefined;
+  if (!pin) return Response.json({ error: "Pin bulunamadı" }, { status: 404 });
+  if (pin.user_id !== user.id) {
+    return Response.json({ error: "Sadece pini ekleyen adını düzeltebilir" }, { status: 403 });
+  }
+  d.prepare("UPDATE pins SET name = ? WHERE id = ?").run(trimmed, id);
+  cacheClear();
+  return Response.json({ ok: true, name: trimmed });
+}
 
 export async function GET(
   _request: Request,

@@ -49,6 +49,8 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
   const [qty, setQty] = useState(1);
   const [validInput, setValidInput] = useState(""); // opsiyonel geçerlilik tarihi
   const [editingPrice, setEditingPrice] = useState(false);
+  const [editingName, setEditingName] = useState(false);
+  const [nameInput, setNameInput] = useState("");
   const [burst, setBurst] = useState(0);
   const [busy, setBusy] = useState(false);
   const loadedFor = useRef<string | null>(null);
@@ -61,6 +63,7 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
     setQty(1);
     setValidInput("");
     setEditingPrice(false);
+    setEditingName(false);
     setBurst(0);
     fetch(`/api/pins/${pinId}`)
       .then((r) => (r.ok ? r.json() : Promise.reject()))
@@ -133,6 +136,25 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
     setText("");
     onToast(`+${data.earned} puan! 💬`);
     onChanged(); // puan çipi anında güncellensin (dopamin tam anında) + marker yorum sayacı
+  };
+
+  const saveName = async () => {
+    if (!pin || busy) return;
+    const v = nameInput.trim();
+    if (v.length < 2) return onToast("İsim en az 2 karakter");
+    setBusy(true);
+    const res = await fetch(`/api/pins/${pin.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: v }),
+    });
+    const data = await res.json();
+    setBusy(false);
+    if (!res.ok) return onToast(data.error ?? "Ad güncellenemedi");
+    setPin({ ...pin, name: data.name });
+    setEditingName(false);
+    onToast("Ad güncellendi ✏️");
+    onChanged();
   };
 
   const submitPrice = async () => {
@@ -330,7 +352,39 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
                 )}
               </div>
               <div className="min-w-0 flex-1">
-                <h2 className="text-xl font-extrabold leading-tight">{pin.name}</h2>
+                {editingName ? (
+                  <div className="flex items-center gap-1.5">
+                    <input
+                      value={nameInput}
+                      onChange={(e) => setNameInput(e.target.value)}
+                      onKeyDown={(e) => e.key === "Enter" && saveName()}
+                      maxLength={80}
+                      autoFocus
+                      placeholder="Doğru mekan adı"
+                      className="sticker-flat w-full bg-cream px-2 py-1 text-lg font-extrabold outline-none focus:border-tomato"
+                    />
+                    <button onClick={saveName} disabled={busy} className="btn btn-tomato px-3 py-1.5 text-sm">
+                      ✓
+                    </button>
+                  </div>
+                ) : (
+                  <h2 className="flex items-center gap-1.5 text-xl font-extrabold leading-tight">
+                    <span className="min-w-0 truncate">{pin.name}</span>
+                    {pin.isMine && (
+                      <button
+                        onClick={() => {
+                          setNameInput(pin.name);
+                          setEditingName(true);
+                        }}
+                        className="shrink-0 text-sm opacity-50 hover:opacity-100"
+                        aria-label="Adı düzelt"
+                        title="Adı düzelt"
+                      >
+                        ✏️
+                      </button>
+                    )}
+                  </h2>
+                )}
                 <p className="text-xs opacity-60">
                   {cat!.label} · {pin.author_avatar ? `${pin.author_avatar} ` : ""}
                   {pin.author} · {timeAgo(pin.created_at)}

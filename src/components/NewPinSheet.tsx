@@ -48,6 +48,8 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated, onPic
   const [nameMatches, setNameMatches] = useState<NameMatch[]>([]);
   const [showMatches, setShowMatches] = useState(true);
   const nameTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Açılışta konuma çÖk yakın pinler — mükerrer uyarısı (isimden bağımsız)
+  const [nearby, setNearby] = useState<NameMatch[]>([]);
 
   useEffect(() => {
     if (coords) {
@@ -63,7 +65,13 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated, onPic
       setPhotoName("");
       setNameMatches([]);
       setShowMatches(true);
+      setNearby([]);
       if (fileRef.current) fileRef.current.value = "";
+      // Açılışta bu noktaya çok yakın mevcut pinleri getir (mükerrer önleme)
+      fetch(`/api/search?near=1&lat=${coords.lat}&lng=${coords.lng}`)
+        .then((r) => r.json())
+        .then((d: { results?: NameMatch[] }) => setNearby(d.results ?? []))
+        .catch(() => setNearby([]));
     }
   }, [coords, pinKind]);
 
@@ -226,6 +234,34 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated, onPic
             </div>
           )}
 
+          {/* Açılışta çok yakın pin varsa uyar — yanlışlıkla mükerrer açılmasın */}
+          {nearby.length > 0 && (
+            <div className="sticker-flat mt-3 overflow-hidden border-mustard bg-[#fff7e6] p-0">
+              <p className="border-b border-line px-3 py-1.5 text-[11px] font-bold text-[#8a6508]">
+                ⚠️ Buraya çok yakın {nearby.length} pin var — aynı yer mi? Fiyat eklemek için dokun.
+              </p>
+              {nearby.slice(0, 3).map((m) => {
+                const d = coords ? distMeters(coords, m) : null;
+                return (
+                  <button
+                    key={m.id}
+                    onClick={() => onPickExisting(m.id)}
+                    className="flex w-full items-center gap-2.5 border-b border-line px-3 py-2 text-left last:border-0 active:bg-paper"
+                  >
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-sm font-bold">{m.name}</span>
+                      <span className="text-[11px] opacity-55">
+                        {d != null && (d < 1000 ? `${d} m` : `${(d / 1000).toFixed(1)} km`)}
+                        {m.price != null ? ` · ₺${m.price.toLocaleString("tr-TR")}` : " · fiyat yok"}
+                      </span>
+                    </span>
+                    <span className="display shrink-0 text-xs font-extrabold text-teal">Aç →</span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
           <input
             value={name}
             onChange={(e) => {
@@ -233,7 +269,7 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated, onPic
               setShowMatches(true);
             }}
             maxLength={80}
-            placeholder={meta.namePlaceholder}
+            placeholder="Mekan adı (bilmiyorsan boş bırak — semt + tür yazılır)"
             className="sticker-flat mt-3 w-full px-3 py-2.5 text-[15px] outline-none focus:border-tomato bg-cream"
           />
 
@@ -325,7 +361,7 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated, onPic
             </button>
             <button
               onClick={submit}
-              disabled={busy || name.trim().length < 2 || !priceOk}
+              disabled={busy || (name.trim().length > 0 && name.trim().length < 2) || !priceOk}
               className="btn btn-tomato flex-[2] py-3"
             >
               {busy ? "Pinleniyor…" : "Pinle! (+10 puan)"}
