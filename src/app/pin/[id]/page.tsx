@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { categoryById } from "@/lib/categories";
 import { formatPrice, timeAgo } from "@/lib/types";
+import { validityLabel } from "@/lib/validity";
 import { getPin } from "@/lib/pins";
 
 const CONFIRM_LABEL: Record<string, (n: number) => string> = {
@@ -69,6 +70,14 @@ export default async function PinPage({ params }: { params: Promise<{ id: string
             {price}
           </p>
         )}
+        {price &&
+          (() => {
+            const v = validityLabel(pin.price_valid_until);
+            if (v.kind === "none" || v.kind === "expired") return null;
+            return (
+              <p className="mt-1 text-sm font-bold text-teal">🏷️ {v.text}</p>
+            );
+          })()}
         {pin.note && <p className="mt-2 text-[15px]">{pin.note}</p>}
         {pin.photo && (
           // eslint-disable-next-line @next/next/no-img-element

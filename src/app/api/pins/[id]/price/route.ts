@@ -2,6 +2,7 @@ import { db, awardPoints } from "@/lib/db";
 import { getOrCreateUser } from "@/lib/identity";
 import { withinRateLimit, isClean } from "@/lib/moderation";
 import { POINTS } from "@/lib/gamify";
+import { cleanValidUntil } from "@/lib/validity";
 
 // Mevcut bir pine güncel fiyat bildir. Fiyatsız OSM mekanlarını topluluk
 // böyle doldurur — çıkıp aynı mekanı yeniden pinlemeye gerek kalmaz.
@@ -13,11 +14,15 @@ export async function POST(
 ) {
   const { id } = await params;
   const user = await getOrCreateUser();
-  const { price, item, qty } = (await request.json().catch(() => ({}))) as {
+  const { price, item, qty, validUntil } = (await request.json().catch(() => ({}))) as {
     price?: number; // TOPLAM ödenen
     item?: string;
     qty?: number; // adet/porsiyon (varsayılan 1)
+    validUntil?: string; // opsiyonel geçerlilik tarihi (YYYY-MM-DD)
   };
+
+  const valid = cleanValidUntil(validUntil);
+  if ("error" in valid) return Response.json({ error: valid.error }, { status: 400 });
 
   if (typeof price !== "number" || !Number.isFinite(price) || price < 1 || price > 100000) {
     return Response.json({ error: "Geçerli bir fiyat gir (1–100000 ₺)" }, { status: 400 });
@@ -46,8 +51,8 @@ export async function POST(
     "INSERT INTO price_reports (pin_id, user_id, price, item, qty, total) VALUES (?, ?, ?, ?, ?, ?)"
   ).run(id, user.id, unit, label, n, total);
   d.prepare(
-    "UPDATE pins SET price = ?, price_item = ?, price_updated_at = datetime('now') WHERE id = ?"
-  ).run(unit, label, id);
+    "UPDATE pins SET price = ?, price_item = ?, price_updated_at = datetime('now'), price_valid_until = ? WHERE id = ?"
+  ).run(unit, label, valid.value, id);
 
   // Fiyat değiştiyse oylar artık eski fiyatı doğruluyordu → sıfırla (oylar hep
   // GÜNCEL fiyatı doğrular; "hâlâ bu fiyat" anlamı korunur).
@@ -74,6 +79,7 @@ export async function POST(
   return Response.json({
     price: unit,
     price_item: label,
+    price_valid_until: valid.value,
     qty: n,
     total,
     firstPrice,

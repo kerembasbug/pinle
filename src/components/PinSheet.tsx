@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { categoryById, isPriceable, itemSuggestionsFor, kindMeta, type PinKind } from "@/lib/categories";
 import type { Comment, PinDetail } from "@/lib/types";
 import { formatPrice, timeAgo } from "@/lib/types";
+import { validityLabel } from "@/lib/validity";
 import { blockAuthor, getBlocked } from "@/lib/blocklist";
 
 type Props = {
@@ -45,6 +46,7 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
   const [priceInput, setPriceInput] = useState("");
   const [itemInput, setItemInput] = useState("");
   const [qty, setQty] = useState(1);
+  const [validInput, setValidInput] = useState(""); // opsiyonel geçerlilik tarihi
   const [editingPrice, setEditingPrice] = useState(false);
   const [burst, setBurst] = useState(0);
   const [busy, setBusy] = useState(false);
@@ -56,6 +58,7 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
     setPin(null);
     setPriceInput("");
     setQty(1);
+    setValidInput("");
     setEditingPrice(false);
     setBurst(0);
     fetch(`/api/pins/${pinId}`)
@@ -142,7 +145,7 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
     const res = await fetch(`/api/pins/${pin.id}/price`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ price: val, item, qty }),
+      body: JSON.stringify({ price: val, item, qty, validUntil: validInput || undefined }),
     });
     const data = await res.json();
     setBusy(false);
@@ -152,12 +155,14 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
       price: data.price,
       price_item: data.price_item,
       price_updated_at: new Date().toISOString().slice(0, 19).replace("T", " "),
+      price_valid_until: data.price_valid_until ?? null,
       confirms: data.confirms,
       outdated: data.outdated,
     });
     if (data.myVote !== undefined) setMyVote(data.myVote);
     setPriceInput("");
     setQty(1);
+    setValidInput("");
     setEditingPrice(false);
     const unitInfo =
       data.qty > 1 ? `${data.qty} adet ₺${data.total} → tanesi ₺${data.price} · ` : "";
@@ -279,6 +284,23 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
           olarak kaydedilir
         </p>
       )}
+      {/* Opsiyonel: fiyat/indirim geçerlilik tarihi (yerel kampanya avcılığı) */}
+      <label className="flex items-center gap-2 text-xs opacity-70">
+        <span className="shrink-0">📅 Şu tarihe kadar geçerli</span>
+        <input
+          type="date"
+          value={validInput}
+          min={new Date().toISOString().slice(0, 10)}
+          onChange={(e) => setValidInput(e.target.value)}
+          className="sticker-flat bg-cream px-2 py-1 text-xs outline-none"
+        />
+        {validInput && (
+          <button onClick={() => setValidInput("")} className="opacity-50">
+            ✕
+          </button>
+        )}
+      </label>
+      <p className="text-[10px] opacity-40">Bilmiyorsan boş bırak — eklenme tarihi görünür.</p>
     </div>
   );
 
@@ -308,9 +330,25 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
                     <div className="text-[10px] font-bold opacity-60">{pin.price_item}</div>
                   )}
                   <div className="display text-2xl font-extrabold text-tomato">{price}</div>
-                  {pin.price_updated_at && (
-                    <div className="text-[10px] opacity-50">🕒 {timeAgo(pin.price_updated_at)}</div>
-                  )}
+                  {(() => {
+                    const v = validityLabel(pin.price_valid_until);
+                    if (v.kind === "none") {
+                      return pin.price_updated_at ? (
+                        <div className="text-[10px] opacity-50">🕒 {timeAgo(pin.price_updated_at)}</div>
+                      ) : null;
+                    }
+                    const cls =
+                      v.kind === "expired"
+                        ? "text-ink/45"
+                        : v.kind === "today"
+                          ? "text-tomato"
+                          : "text-teal";
+                    return (
+                      <div className={`text-[10px] font-bold ${cls}`}>
+                        {v.kind === "expired" ? "⌛" : "🏷️"} {v.text}
+                      </div>
+                    );
+                  })()}
                 </div>
               )}
             </div>

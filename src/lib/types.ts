@@ -5,6 +5,7 @@ export type PinSummary = {
   category: string;
   price: number | null;
   price_item: string | null;
+  price_valid_until: string | null;
   lat: number;
   lng: number;
   created_at: string;
@@ -22,6 +23,7 @@ export type PinDetail = {
   price: number | null;
   price_item: string | null;
   price_updated_at: string | null;
+  price_valid_until: string | null;
   note: string | null;
   photo: string | null;
   lat: number;

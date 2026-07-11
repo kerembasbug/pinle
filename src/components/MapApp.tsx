@@ -14,6 +14,7 @@ import {
 } from "@/lib/categories";
 import type { Me, PinSummary } from "@/lib/types";
 import { formatPrice } from "@/lib/types";
+import { validityLabel } from "@/lib/validity";
 import { getBlocked } from "@/lib/blocklist";
 import type { SearchResult } from "./SearchSheet";
 
@@ -189,6 +190,7 @@ export default function MapApp({
               kind: p.kind,
               confirms: p.confirms,
               name: p.name,
+              deal: p.price_valid_until && validityLabel(p.price_valid_until).kind !== "expired" ? 1 : 0,
               verified: p.confirms >= 3 && p.confirms > p.outdated ? 1 : 0,
             },
           }));
@@ -214,7 +216,7 @@ export default function MapApp({
       seen.add(id);
       if (markers.has(id)) continue;
       const el = document.createElement("div");
-      el.className = "pin-marker" + (p.verified ? " verified" : "");
+      el.className = "pin-marker" + (p.verified ? " verified" : "") + (p.deal ? " has-deal" : "");
       const price = formatPrice(typeof p.price === "number" ? p.price : null);
       const icon = VOTE_ICON[p.kind as string] ?? "✓";
       const priceItem = typeof p.price_item === "string" ? p.price_item.slice(0, 12) : "";
@@ -229,6 +231,7 @@ export default function MapApp({
       const confirms = Number(p.confirms) || 0;
       el.innerHTML = `
         <div class="bubble${label ? "" : " bubble-mini"}">
+          ${p.deal ? `<span class="deal-tag">🏷️</span>` : ""}
           <span>${p.emoji}</span>
           ${label}
           ${confirms > 0 ? `<span style="color:var(--teal)">${icon}${confirms}</span>` : ""}

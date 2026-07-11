@@ -35,6 +35,7 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated, onPic
   const [price, setPrice] = useState("");
   const [priceItem, setPriceItem] = useState("");
   const [qty, setQty] = useState(1);
+  const [validUntil, setValidUntil] = useState(""); // opsiyonel geçerlilik tarihi
   const [noPrice, setNoPrice] = useState(false); // "fiyatı şu an bilmiyorum" kaçışı
   const [note, setNote] = useState("");
   const [error, setError] = useState("");
@@ -54,6 +55,7 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated, onPic
       setPrice("");
       setPriceItem("");
       setQty(1);
+      setValidUntil("");
       setNoPrice(false);
       setNote("");
       setError("");
@@ -103,6 +105,7 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated, onPic
     fd.set("price", meta.hasPrice && !noPrice ? price : "");
     fd.set("price_item", meta.hasPrice && !noPrice ? priceItem : "");
     fd.set("price_qty", String(qty));
+    fd.set("price_valid_until", meta.hasPrice && !noPrice ? validUntil : "");
     fd.set("note", note);
     fd.set("lat", String(coords.lat));
     fd.set("lng", String(coords.lng));
@@ -199,6 +202,22 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated, onPic
                       olarak kaydedilir
                     </p>
                   )}
+                  {/* İndirim/kampanya ise: opsiyonel geçerlilik tarihi */}
+                  <label className="mt-2 flex items-center gap-2 text-[12px] opacity-75">
+                    <span className="shrink-0">📅 İndirimse, şu tarihe kadar</span>
+                    <input
+                      type="date"
+                      value={validUntil}
+                      min={new Date().toISOString().slice(0, 10)}
+                      onChange={(e) => setValidUntil(e.target.value)}
+                      className="sticker-flat bg-cream px-2 py-1 text-[12px] outline-none"
+                    />
+                    {validUntil && (
+                      <button onClick={() => setValidUntil("")} className="opacity-50">
+                        ✕
+                      </button>
+                    )}
+                  </label>
                 </>
               )}
             </div>

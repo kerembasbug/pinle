@@ -112,6 +112,12 @@ h1, h2, h3, .display {
   font-size: 11px;
 }
 .pin-marker.verified .bubble { background: #e7f5f1; border-color: var(--teal); }
+/* İndirim/kampanya pini — altın kontur + etiket, haritada göze çarpsın */
+.pin-marker.has-deal .bubble {
+  border-color: var(--mustard);
+  box-shadow: 2px 2px 0 var(--mustard), 0 0 0 1px var(--ink);
+}
+.pin-marker .bubble .deal-tag { font-size: 12px; margin-right: -1px; }
 .pin-marker .bubble.bubble-mini { padding: 2px 6px; font-size: 15px; }
 .pin-marker .tip {
   width: 0; height: 0;

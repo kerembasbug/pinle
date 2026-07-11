@@ -142,6 +142,11 @@ function migrate(d: Database.Database) {
     // mevcut fiyatlı pinler için makul başlangıç: pinin oluşturulma tarihi
     d.exec("UPDATE pins SET price_updated_at = created_at WHERE price IS NOT NULL");
   }
+  // Opsiyonel fiyat/indirim geçerlilik tarihi (YYYY-MM-DD). Yerel kampanyaları
+  // kovalamak için: bilen girer, girmezse null → eklenme tarihi gösterilir.
+  if (!pinCols.some((c) => c.name === "price_valid_until")) {
+    d.exec("ALTER TABLE pins ADD COLUMN price_valid_until TEXT");
+  }
   const priceRepCols = d.prepare("PRAGMA table_info(price_reports)").all() as { name: string }[];
   if (priceRepCols.length && !priceRepCols.some((c) => c.name === "item")) {
     d.exec("ALTER TABLE price_reports ADD COLUMN item TEXT");
