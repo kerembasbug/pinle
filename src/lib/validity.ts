@@ -1,5 +1,17 @@
 // Fiyat/indirim geçerlilik tarihi yardımcıları (YYYY-MM-DD, yerel gün bazlı).
 
+// Fiyat "eskimiş" sayılma eşiği — kürasyon: bu yaştan büyük fiyatlar haritada
+// soluklaşır, pin detayında "hâlâ geçerli mi?" dürtmesi çıkar.
+export const STALE_PRICE_DAYS = 60;
+
+/** SQLite datetime ("YYYY-MM-DD HH:MM:SS", UTC) → fiyat eskimiş mi? */
+export function isStalePrice(updatedAt: string | null | undefined): boolean {
+  if (!updatedAt) return false;
+  const d = new Date(updatedAt.includes("T") ? updatedAt : updatedAt.replace(" ", "T") + "Z");
+  if (Number.isNaN(d.getTime())) return false;
+  return Date.now() - d.getTime() > STALE_PRICE_DAYS * 24 * 60 * 60 * 1000;
+}
+
 /**
  * Kullanıcıdan gelen geçerlilik tarihini doğrula/normalize et.
  * - boş/tanımsız → null (opsiyonel alan)

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { categoryById, categoryIcon, isPriceable, itemSuggestionsFor, kindMeta, type PinKind } from "@/lib/categories";
 import type { Comment, PinDetail } from "@/lib/types";
 import { formatPrice, timeAgo } from "@/lib/types";
-import { validityLabel } from "@/lib/validity";
+import { isStalePrice, validityLabel } from "@/lib/validity";
 import { blockAuthor, getBlocked } from "@/lib/blocklist";
 
 type Props = {
@@ -339,9 +339,15 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
                   {(() => {
                     const v = validityLabel(pin.price_valid_until);
                     if (v.kind === "none") {
-                      return pin.price_updated_at ? (
+                      if (!pin.price_updated_at) return null;
+                      // Kürasyon: eskimiş fiyat uyarısı — güncellemeye çağır
+                      return isStalePrice(pin.price_updated_at) ? (
+                        <div className="text-[10px] font-bold text-tomato">
+                          🕰️ {timeAgo(pin.price_updated_at)} — hâlâ geçerli mi?
+                        </div>
+                      ) : (
                         <div className="text-[10px] opacity-50">🕒 {timeAgo(pin.price_updated_at)}</div>
-                      ) : null;
+                      );
                     }
                     const cls =
                       v.kind === "expired"

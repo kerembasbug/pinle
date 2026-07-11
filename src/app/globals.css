@@ -111,6 +111,14 @@ h1, h2, h3, .display {
   display: block;
   flex-shrink: 0;
 }
+/* Eskimiş fiyat (60+ gün) — soluk: "bu rakama pek güvenme, doğrula/güncelle" */
+.pin-marker .bubble .price-stale {
+  color: var(--ink);
+  opacity: 0.45;
+  font-weight: 600;
+  text-decoration: underline dotted rgb(34 27 21 / 0.4);
+  text-underline-offset: 2px;
+}
 /* Fiyatı eksik yemek pini — mütevazı "₺?" daveti (katkı çağrısı) */
 .pin-marker .bubble .price-missing {
   color: var(--ink);

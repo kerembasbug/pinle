@@ -15,7 +15,7 @@ import {
 } from "@/lib/categories";
 import type { Me, PinSummary } from "@/lib/types";
 import { formatPrice } from "@/lib/types";
-import { validityLabel } from "@/lib/validity";
+import { isStalePrice, validityLabel } from "@/lib/validity";
 import { getBlocked } from "@/lib/blocklist";
 import type { SearchResult } from "./SearchSheet";
 
@@ -201,6 +201,8 @@ export default function MapApp({
               confirms: p.confirms,
               name: p.name,
               deal: p.price_valid_until && validityLabel(p.price_valid_until).kind !== "expired" ? 1 : 0,
+              // Kürasyon: 60+ gün önce girilmiş fiyat soluk gösterilir (aktif indirim hariç)
+              stale: p.price != null && !p.price_valid_until && isStalePrice(p.price_updated_at) ? 1 : 0,
               verified: p.confirms >= 3 && p.confirms > p.outdated ? 1 : 0,
             },
           }));
@@ -241,7 +243,7 @@ export default function MapApp({
       const priceItem = typeof p.price_item === "string" ? p.price_item.slice(0, 12) : "";
       const label =
         price != null
-          ? `<span class="price">${priceItem ? escapeHtml(priceItem) + " " : ""}${price}</span>`
+          ? `<span class="price${p.stale ? " price-stale" : ""}">${p.stale ? "🕰️ " : ""}${priceItem ? escapeHtml(priceItem) + " " : ""}${price}</span>`
           : p.kind === "ani"
             ? `<span>${escapeHtml(String(p.name).slice(0, 14))}</span>`
             : isPriceable(p.kind as PinKind, String(p.category))

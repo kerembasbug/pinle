@@ -6,6 +6,7 @@ export type PinSummary = {
   price: number | null;
   price_item: string | null;
   price_valid_until: string | null;
+  price_updated_at: string | null;
   lat: number;
   lng: number;
   created_at: string;

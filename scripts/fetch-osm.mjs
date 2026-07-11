@@ -169,6 +169,14 @@ for (const [city, boxes] of targets) {
       const lng = el.lon ?? el.center?.lon;
       if (!name || name.length < 3 || !lat || !lng) continue;
       if (CHAIN_RE.test(name)) continue;
+      // KÜRASYON: kapanmış/terk edilmiş yerleri alma (OSM işaretleri)
+      if (
+        tags.disused === "yes" ||
+        tags.abandoned === "yes" ||
+        tags["opening_hours"] === "closed" ||
+        Object.keys(tags).some((k) => k.startsWith("disused:") || k.startsWith("abandoned:") || k.startsWith("was:"))
+      )
+        continue;
       const category = mapCategory(tags);
       if (!category) continue;
       const key = (name + category).toLowerCase().replace(/\s+/g, " ");

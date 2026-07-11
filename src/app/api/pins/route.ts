@@ -50,7 +50,7 @@ export async function GET(request: NextRequest) {
     ? "AND p.price_valid_until IS NOT NULL AND date(p.price_valid_until) >= date('now')"
     : "";
   const sql = `
-    SELECT p.id, p.user_id, p.name, p.kind, p.category, p.price, p.price_item, p.price_valid_until, p.lat, p.lng, p.created_at,
+    SELECT p.id, p.user_id, p.name, p.kind, p.category, p.price, p.price_item, p.price_valid_until, p.price_updated_at, p.lat, p.lng, p.created_at,
       COALESCE(SUM(CASE WHEN v.value = 1 THEN 1 END), 0) AS confirms,
       COALESCE(SUM(CASE WHEN v.value = -1 THEN 1 END), 0) AS outdated,
       (SELECT COUNT(*) FROM comments c WHERE c.pin_id = p.id) AS comment_count
