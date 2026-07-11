@@ -60,9 +60,12 @@ export function cityPins(name: string, limit = 40): CityPin[] {
     .all(name, limit) as CityPin[];
 }
 
-// Programatik kategori×şehir sayfaları için hedeflenen yüksek-hacimli yeme-içme
-// kategorileri (categories.ts id'leriyle birebir). Aramaya uygun, ticari niyetli.
+// Programatik kategori×şehir sayfaları için hedeflenen long-tail niyetler.
+// İnce yeme-içme kategorileri (OSM verisi) + yer tipleri (yeni pinler):
+// "berber fiyatları izmir", "kuşadası şezlong fiyatı" gibi hizmet niyetleri
+// dahil. CITYCAT_MIN_PINS eşiği ince içerik üretimini zaten engelliyor.
 export const SEO_CATEGORIES = [
+  // yeme-içme (ince id'ler)
   "doner",
   "kebap",
   "lokanta",
@@ -76,6 +79,15 @@ export const SEO_CATEGORIES = [
   "tatli",
   "dondurma",
   "kafe",
+  // yer tipleri (yeni pin verisi biriktikçe sayfalar kendiliğinden açılır)
+  "restoran",
+  "firin",
+  "bar",
+  "beach",
+  "market",
+  "kuafor",
+  "hizmet",
+  "gezi",
 ] as const;
 
 // İnce içerik koruması: bu eşiğin altındaki kombinasyonlar için sayfa üretilmez.
@@ -92,6 +104,38 @@ export function cityCatPins(name: string, category: string, limit = 40): CityPin
         LIMIT ?`
     )
     .all(name, category, limit) as CityPin[];
+}
+
+export type CatPriceStats = {
+  count: number;
+  min: number;
+  max: number;
+  median: number;
+  cheapestName: string | null;
+  cheapestItem: string | null;
+};
+
+// Şehir×kategori canlı fiyat istatistiği — long-tail "X fiyatları ne kadar?"
+// sorusuna sayfada GERÇEK veriyle cevap vermek için (ISR ile tazelenir).
+export function cityCatPriceStats(name: string, category: string): CatPriceStats | null {
+  const rows = db()
+    .prepare(
+      `SELECT price, name AS pname, price_item FROM pins
+        WHERE status = 'active' AND city = ? AND category = ? AND price IS NOT NULL
+        ORDER BY price ASC`
+    )
+    .all(name, category) as { price: number; pname: string; price_item: string | null }[];
+  if (rows.length === 0) return null;
+  const prices = rows.map((r) => r.price);
+  const median = prices[Math.floor(prices.length / 2)];
+  return {
+    count: rows.length,
+    min: prices[0],
+    max: prices[prices.length - 1],
+    median,
+    cheapestName: rows[0].pname,
+    cheapestItem: rows[0].price_item,
+  };
 }
 
 export function cityCatCount(name: string, category: string): { pins: number; priced: number } {

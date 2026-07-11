@@ -24,9 +24,12 @@ export default async function Home({
           <ul>
             {CITIES.map((c) => (
               <li key={c.slug}>
-                <Link href={`/sehir/${c.slug}`}>{c.name} ucuz lezzet haritası</Link>
+                <Link href={`/sehir/${c.slug}`}>{c.name} ucuz yemek haritası — ucuza ne yenir</Link>
               </li>
             ))}
+            <li>
+              <Link href="/fiyatlar">Türkiye sokak fiyatları — döner, çay, ekmek ne kadar</Link>
+            </li>
             <li>
               <Link href="/liderler">Liderlik tablosu</Link>
             </li>

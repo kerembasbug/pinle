@@ -7,9 +7,12 @@ import {
   cityCatCombos,
   cityCatCount,
   cityCatPins,
+  cityCatPriceStats,
   CITYCAT_MIN_PINS,
   SEO_CATEGORIES,
 } from "@/lib/cities";
+import { intentFor, YEAR } from "@/lib/seoIntents";
+import { formatPrice as fmt } from "@/lib/types";
 import { categoryById, categoryIcon } from "@/lib/categories";
 import { formatPrice } from "@/lib/types";
 
@@ -36,9 +39,13 @@ export async function generateMetadata({
   const { slug, cat } = await params;
   const v = valid(slug, cat);
   if (!v) return { title: "Sayfa bulunamadı — Pinle" };
-  const label = categoryById(cat).label;
-  const title = `${v.city.name} ${label} — Ucuz ve İyi ${label} Noktaları | Pinle`;
-  const description = `${v.city.name}'da uygun fiyatlı ${label.toLowerCase()} arıyorsan doğru yerdesin. ${v.pins} nokta, fiyatları toplulukça doğrulanmış. Sen de bildiğin yeri pinle.`;
+  const { kw, what } = intentFor(cat);
+  const stats = cityCatPriceStats(v.city.name, cat);
+  // Long-tail niyet: "[şehir] [X] fiyatları [yıl]" + "en ucuz [X] ne kadar"
+  const title = `${v.city.name} ${kw} ${YEAR} — En Ucuzu Ne Kadar? | Pinle`;
+  const description = stats
+    ? `${v.city.name}'da ${what} fiyatları ${YEAR}: ${fmt(stats.min)}–${fmt(stats.max)} arası, ortanca ${fmt(stats.median)}. ${v.pins} nokta, fiyatlar mahalleli tarafından "hâlâ bu fiyat / zamlandı" oylarıyla güncel tutuluyor.`
+    : `${v.city.name}'da en ucuz ${what} nerede? ${v.pins} nokta haritada; fiyatları topluluk giriyor ve doğruluyor. Kayıt yok, anonim bak.`;
   return {
     title,
     description,
@@ -59,6 +66,8 @@ export default async function CityCatPage({
   const { city, pins: count, priced } = v;
   const meta = categoryById(cat);
   const label = meta.label;
+  const { kw, what } = intentFor(cat);
+  const stats = cityCatPriceStats(city.name, cat);
   const list = cityCatPins(city.name, cat, 40);
 
   // Çapraz link ağı: bu şehirdeki diğer kategoriler + bu kategorinin diğer şehirleri
@@ -127,12 +136,12 @@ export default async function CityCatPage({
 
       <header className="flex flex-col gap-2">
         <h1 className="text-3xl font-extrabold leading-tight">
-          {city.name}&apos;da Ucuz {label} {meta.emoji}
+          {city.name} {kw} {YEAR} {meta.emoji}
         </h1>
         <p className="text-[15px] leading-relaxed opacity-80">
-          {city.name}&apos;da uygun fiyatlı ve iyi {label.toLowerCase()} arayanlar için topluluk
-          haritası. Fiyatlar mahalleliler tarafından &quot;hâlâ bu fiyat / zamlandı&quot; oylarıyla
-          güncel tutulur. Kayıt yok; anonim başla, bildiğin yeri pinle.
+          {city.name}&apos;da en ucuz {what} nerede, kaç TL? Bu sayfadaki fiyatları mahalleli
+          giriyor ve &quot;hâlâ bu fiyat / zamlandı&quot; oylarıyla güncel tutuyor — menü değil,
+          sokakta ödenen gerçek rakamlar. Kayıt yok; anonim bak, bildiğin yeri pinle.
         </p>
       </header>
 
@@ -143,7 +152,34 @@ export default async function CityCatPage({
         {priced > 0 && (
           <span className="sticker-flat px-3 py-1.5 text-tomato">🏷️ {priced} fiyatlı</span>
         )}
+        {stats && (
+          <span className="sticker-flat px-3 py-1.5 text-teal">
+            Ortanca {fmt(stats.median)}
+          </span>
+        )}
       </div>
+
+      {/* Canlı fiyat özeti — "ne kadar?" niyetine sayfanın tepesinde net cevap */}
+      {stats && (
+        <section className="sticker-flat flex flex-col gap-1.5 p-4">
+          <h2 className="text-lg font-extrabold">
+            {city.name}&apos;da {what} ne kadar? ({YEAR})
+          </h2>
+          <p className="text-[15px] leading-relaxed">
+            Haritadaki {stats.count} fiyatlı noktaya göre {what} fiyatları{" "}
+            <b>{fmt(stats.min)} – {fmt(stats.max)}</b> arasında; ortanca{" "}
+            <b className="text-tomato">{fmt(stats.median)}</b>.
+            {stats.cheapestName && (
+              <>
+                {" "}Şu an en ucuzu <b>{stats.cheapestName}</b>
+                {stats.cheapestItem ? ` (${stats.cheapestItem} ${fmt(stats.min)})` : ` (${fmt(stats.min)})`}.
+              </>
+            )}{" "}
+            Fiyatlar topluluk doğrulamalı ve sürekli güncelleniyor — zamlanan fiyat
+            oylamayla düşürülür, eskiyen fiyat işaretlenir.
+          </p>
+        </section>
+      )}
 
       <Link
         href={`/?sehir=${city.slug}&kategori=${cat}`}
@@ -200,7 +236,7 @@ export default async function CityCatPage({
                   href={`/sehir/${city.slug}/${c}`}
                   className="btn btn-cream px-3 py-1.5 text-sm"
                 >
-                  {m.emoji} {m.label}
+                  {m.emoji} {intentFor(c).kw}
                 </Link>
               );
             })}
@@ -220,7 +256,7 @@ export default async function CityCatPage({
                   href={`/sehir/${cs}/${cat}`}
                   className="btn btn-cream px-3 py-1.5 text-sm"
                 >
-                  🏙️ {oc.name}
+                  🏙️ {oc.name} {kw.toLowerCase()}
                 </Link>
               );
             })}

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CITIES, cityBySlug, cityCatCombos, cityPins, cityStats } from "@/lib/cities";
 import { categoryById, categoryIcon } from "@/lib/categories";
+import { intentFor, YEAR } from "@/lib/seoIntents";
 import { formatPrice } from "@/lib/types";
 
 export const revalidate = 900; // 15 dk ISR — hızlı, taze yeterli
@@ -20,8 +21,9 @@ export async function generateMetadata({
   const city = cityBySlug(slug);
   if (!city) return { title: "Şehir bulunamadı — Pinle" };
   const { pins } = cityStats(city.name);
-  const title = `${city.name} Ucuz Lezzet Haritası — Uygun Fiyatlı Yerler | Pinle`;
-  const description = `${city.name}'da ucuz ve iyi yemek noktaları: esnaf lokantası, döner, kebap, kahvaltı ve daha fazlası. ${pins > 0 ? `${pins} nokta, ` : ""}fiyatları toplulukça doğrulanmış. Sen de pinle.`;
+  // Long-tail: "[şehir]'de ucuza ne yenir", "[şehir] ucuz yemek", "öğrenci dostu"
+  const title = `${city.name}'da Ucuza Ne Yenir? Ucuz Yemek & Fiyat Haritası ${YEAR} | Pinle`;
+  const description = `${city.name}'da ucuza doyabileceğin yerler: esnaf lokantası, döner, kahvaltı, çay bahçesi — öğrenci ve dar bütçe dostu. ${pins > 0 ? `${pins} nokta, ` : ""}sokakta ödenen gerçek fiyatlar, mahalleli doğrulamalı. Kayıt yok.`;
   return {
     title,
     description,
@@ -90,12 +92,13 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
 
       <header className="flex flex-col gap-2">
         <h1 className="text-3xl font-extrabold leading-tight">
-          {city.name} Ucuz Lezzet Haritası
+          {city.name}&apos;da Ucuza Ne Yenir? ({YEAR} Fiyat Haritası)
         </h1>
         <p className="text-[15px] leading-relaxed opacity-80">
-          {city.name}&apos;da uygun fiyatlı ve iyi yemek noktaları — esnaf lokantaları,
-          dönerciler, kebapçılar, kahvaltıcılar, tatlıcılar ve daha fazlası. Fiyatlar
-          mahalleliler tarafından &quot;hâlâ bu fiyat / zamlandı&quot; oylarıyla güncel tutulur.
+          {city.name}&apos;da ucuza doyabileceğin yerler: esnaf lokantaları, dönerciler,
+          kahvaltıcılar, çay bahçeleri — öğrenci ve dar bütçe dostu. Buradaki rakamlar menü
+          değil, sokakta gerçekten ödenen fiyatlar; mahalleli &quot;hâlâ bu fiyat / zamlandı&quot;
+          oylarıyla güncel tutuyor. Berber, market, şezlong gibi hizmet fiyatları da haritada.
           Kayıt yok; anonim başla, bildiğin ucuz yeri pinle.
         </p>
       </header>
@@ -126,7 +129,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
                   href={`/sehir/${city.slug}/${c}`}
                   className="btn btn-cream px-3 py-1.5 text-sm"
                 >
-                  {m.emoji} {m.label}
+                  {m.emoji} {city.name} {intentFor(c).kw}
                 </Link>
               );
             })}
@@ -184,6 +187,10 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
           .
         </p>
       )}
+
+      <Link href="/fiyatlar" className="sticker-flat p-3 text-sm font-bold">
+        🏷️ Türkiye sokak fiyatları endeksi — döner, çay, ekmek {YEAR}&apos;de ne kadar? →
+      </Link>
 
       <section className="mt-2 flex flex-col gap-2">
         <h2 className="text-lg font-extrabold">Diğer şehirler</h2>
