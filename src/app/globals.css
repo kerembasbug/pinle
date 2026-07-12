@@ -367,6 +367,60 @@ h1, h2, h3, .display {
   100% { opacity: 0; transform: translateX(-50%) translateY(-8px); }
 }
 
+/* Açılış splash'ı — ilk HTML'de render, saf CSS ile kendini kapatır (JS'siz,
+   flash yok). Harita arkada yüklenirken marka + slogan görünür. */
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--paper);
+  animation: splash-out 0.55s ease 1.15s forwards;
+}
+.splash .splash-pin {
+  font-size: 64px;
+  line-height: 1;
+  animation: splash-drop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.splash .splash-brand {
+  font-family: var(--font-baloo), system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 44px;
+  color: var(--tomato);
+  letter-spacing: -0.01em;
+  animation: splash-fade 0.5s ease 0.25s both;
+}
+.splash .splash-slogan {
+  font-family: var(--font-baloo), system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--ink);
+  opacity: 0.75;
+  animation: splash-fade 0.5s ease 0.45s both;
+}
+@keyframes splash-drop {
+  0% { transform: translateY(-40px) scale(0.7); opacity: 0; }
+  60% { transform: translateY(4px) scale(1.05); opacity: 1; }
+  100% { transform: translateY(0) scale(1); }
+}
+@keyframes splash-fade {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes splash-out {
+  to { opacity: 0; visibility: hidden; pointer-events: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .splash { animation: splash-out 0.3s ease 0.9s forwards; }
+  .splash .splash-pin,
+  .splash .splash-brand,
+  .splash .splash-slogan { animation: none; }
+}
+
 /* Kağıt dokusu — hafif grain */
 .paper-grain::before {
   content: "";

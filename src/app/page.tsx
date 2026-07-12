@@ -11,6 +11,22 @@ export default async function Home({
   const initialCenter = sehir ? cityBySlug(sehir)?.center : undefined;
   return (
     <>
+      {/* Açılış splash'ı — ilk HTML'de, saf CSS ile ~1.7sn'de kendini kapatır.
+          Harita arkada yüklenirken marka + slogan görünür (flash yok). */}
+      <div className="splash" aria-hidden>
+        <div className="splash-pin">📍</div>
+        <div className="splash-brand">Pinle</div>
+        <div className="splash-slogan">Kazık yeme, Pinle.</div>
+      </div>
+      {/* Failsafe: CSS animasyonu (eski tarayıcı/arka plan sekme) çalışmazsa bile
+          splash 2.6sn sonra kesin kalksın — uygulama asla bloklanmasın. */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html:
+            "setTimeout(function(){var s=document.querySelector('.splash');if(s){s.style.display='none'}},2600)",
+        }}
+      />
+
       <MapApp initialPinId={pin} initialCenter={initialCenter} initialCategory={kategori} />
       {/* Taranabilir SEO içeriği + şehir sayfalarına iç link akışı (harita SPA'sı istemci tarafı) */}
       <section className="sr-only">
