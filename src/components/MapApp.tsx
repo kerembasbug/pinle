@@ -401,6 +401,7 @@ export default function MapApp({
         } else {
           const el = document.createElement("div");
           el.className = "me-marker";
+          el.style.zIndex = "5"; // pin marker'larının üstünde kalsın (MapLibre ezmesin)
           el.title = "Profilim / puanlarım";
           el.setAttribute("role", "button");
           const mUrl = avatarUrl(meRef.current?.avatar);

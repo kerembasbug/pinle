@@ -150,6 +150,9 @@ h1, h2, h3, .display {
   width: 34px; height: 34px;
   display: grid; place-items: center;
   cursor: pointer;
+  /* Diğer pin marker'ları her idle'da yeniden eklenip DOM'da sonra geliyor;
+     me-marker'ı daima üstte tut (kendi konumun kaybolmasın). */
+  z-index: 5 !important;
 }
 .me-marker .me-dot {
   position: relative; z-index: 1;
