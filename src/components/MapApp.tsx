@@ -360,11 +360,24 @@ export default function MapApp({
       // İlk açılış: deep-link (şehir/pin) YOKSA GPS'ten konumlan. İzin verilirse
       // haritayı oraya taşı + kendi işaretini koy; reddedilirse sessizce varsayılan.
       if (!initialCenter && !initialPinId && navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (pos) => showMeAtRef.current?.([pos.coords.longitude, pos.coords.latitude], false),
-          () => {},
-          { enableHighAccuracy: true, timeout: 8000 }
-        );
+        const runAuto = () =>
+          navigator.geolocation.getCurrentPosition(
+            (pos) => showMeAtRef.current?.([pos.coords.longitude, pos.coords.latitude], false),
+            () => {}, // sessiz — açılışta rahatsız etme; kullanıcı 🧿 ile deneyebilir
+            { enableHighAccuracy: false, timeout: 10000, maximumAge: 120000 }
+          );
+        // İzin daha önce REDDEDİLMİŞSE tetikleme (boşuna hata + manuel butonu bozmaz).
+        // 'granted' → sessiz otomatik; 'prompt' → izin iste.
+        if (navigator.permissions?.query) {
+          navigator.permissions
+            .query({ name: "geolocation" })
+            .then((p) => {
+              if (p.state !== "denied") runAuto();
+            })
+            .catch(runAuto);
+        } else {
+          runAuto();
+        }
       }
     });
 
@@ -431,15 +444,25 @@ export default function MapApp({
   showMeAtRef.current = showMeAt;
 
   const locate = () => {
-    if (!navigator.geolocation) return showToast("Konum desteklenmiyor 😕");
+    if (!navigator.geolocation) return showToast("Konum bu cihazda desteklenmiyor 😕");
     showToast("Konumun bulunuyor…");
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         showMeAt([pos.coords.longitude, pos.coords.latitude], true);
         showToast("Buradasın 🧍");
       },
-      () => showToast("Konum alınamadı"),
-      { enableHighAccuracy: true, timeout: 10000 }
+      (err) => {
+        // Neden başarısız olduğunu net söyle — kullanıcı ne yapacağını bilsin
+        if (err.code === err.PERMISSION_DENIED) {
+          showToast("Konum izni kapalı — tarayıcı/telefon ayarından aç 📍");
+        } else if (err.code === err.TIMEOUT) {
+          showToast("Konum bulunamadı, tekrar dene (açık alanda daha hızlı)");
+        } else {
+          showToast("Konum alınamadı 😕");
+        }
+      },
+      // Kaba konum: mobilde çok daha hızlı & güvenilir; cache'li son konumu da kabul et
+      { enableHighAccuracy: false, timeout: 12000, maximumAge: 60000 }
     );
   };
 

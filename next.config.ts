@@ -28,6 +28,8 @@ const nextConfig: NextConfig = {
     const base = [
       { key: "X-Content-Type-Options", value: "nosniff" },
       { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+      // Konum bu origin'de açıkça izinli (bazı gömülü/edge bağlamlarında garanti)
+      { key: "Permissions-Policy", value: "geolocation=(self)" },
     ];
     return [
       {
