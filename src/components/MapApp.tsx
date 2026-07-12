@@ -70,6 +70,8 @@ export default function MapApp({
   // marker'ları daima buradaki hassas koordinatla konumlanır.
   const pinCoordsRef = useRef<Map<string, [number, number]>>(new Map());
   const lastPlaceRef = useRef<[number, number] | null>(null); // son yerleştirme konumu
+  // showMeAt'i harita 'load' closure'ından güncel çağırmak için (TDZ/bayat closure yok)
+  const showMeAtRef = useRef<((c: [number, number], animate: boolean) => void) | null>(null);
 
   const [sheet, setSheet] = useState<SheetState>(
     initialPinId ? { kind: "pin", id: initialPinId } : { kind: "none" }
@@ -354,6 +356,16 @@ export default function MapApp({
       map.on("idle", syncDomMarkers);
       map.on("moveend", loadPins);
       loadPins();
+
+      // İlk açılış: deep-link (şehir/pin) YOKSA GPS'ten konumlan. İzin verilirse
+      // haritayı oraya taşı + kendi işaretini koy; reddedilirse sessizce varsayılan.
+      if (!initialCenter && !initialPinId && navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => showMeAtRef.current?.([pos.coords.longitude, pos.coords.latitude], false),
+          () => {},
+          { enableHighAccuracy: true, timeout: 8000 }
+        );
+      }
     });
 
     refreshMe();
@@ -388,37 +400,42 @@ export default function MapApp({
     if (next) showToast("🏷️ Sadece aktif indirimler gösteriliyor");
   };
 
+  // Konumu haritada göster (me-marker + kamera). locate ve otomatik açılış paylaşır.
+  const showMeAt = (lngLat: [number, number], animate: boolean) => {
+    const map = mapRef.current;
+    if (!map) return;
+    if (meMarkerRef.current) {
+      meMarkerRef.current.setLngLat(lngLat);
+    } else {
+      const el = document.createElement("div");
+      el.className = "me-marker";
+      el.style.zIndex = "5"; // pin marker'larının üstünde kalsın (MapLibre ezmesin)
+      el.title = "Profilim / puanlarım";
+      el.setAttribute("role", "button");
+      const mUrl = avatarUrl(meRef.current?.avatar);
+      const mInner = mUrl
+        ? `<img class="me-av" src="${mUrl}" alt="">`
+        : meRef.current?.avatar ?? "🧍";
+      el.innerHTML = `<div class="me-pulse"></div><div class="me-dot">${mInner}</div><div class="me-star">⭐</div>`;
+      el.addEventListener("click", (e) => {
+        e.stopPropagation();
+        setSheet({ kind: "profile" });
+      });
+      meMarkerRef.current = new maplibregl.Marker({ element: el, anchor: "center" })
+        .setLngLat(lngLat)
+        .addTo(map);
+    }
+    if (animate) map.flyTo({ center: lngLat, zoom: 15 });
+    else map.jumpTo({ center: lngLat, zoom: 15 });
+  };
+  showMeAtRef.current = showMeAt;
+
   const locate = () => {
     if (!navigator.geolocation) return showToast("Konum desteklenmiyor 😕");
     showToast("Konumun bulunuyor…");
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        const map = mapRef.current;
-        if (!map) return;
-        const lngLat: [number, number] = [pos.coords.longitude, pos.coords.latitude];
-        if (meMarkerRef.current) {
-          meMarkerRef.current.setLngLat(lngLat);
-        } else {
-          const el = document.createElement("div");
-          el.className = "me-marker";
-          el.style.zIndex = "5"; // pin marker'larının üstünde kalsın (MapLibre ezmesin)
-          el.title = "Profilim / puanlarım";
-          el.setAttribute("role", "button");
-          const mUrl = avatarUrl(meRef.current?.avatar);
-          const mInner = mUrl
-            ? `<img class="me-av" src="${mUrl}" alt="">`
-            : meRef.current?.avatar ?? "🧍";
-          el.innerHTML = `<div class="me-pulse"></div><div class="me-dot">${mInner}</div><div class="me-star">⭐</div>`;
-          // Kendi konumuna dokununca profil/yıldız menüsü açılır
-          el.addEventListener("click", (e) => {
-            e.stopPropagation();
-            setSheet({ kind: "profile" });
-          });
-          meMarkerRef.current = new maplibregl.Marker({ element: el, anchor: "center" })
-            .setLngLat(lngLat)
-            .addTo(map);
-        }
-        map.flyTo({ center: lngLat, zoom: 15 });
+        showMeAt([pos.coords.longitude, pos.coords.latitude], true);
         showToast("Buradasın 🧍");
       },
       () => showToast("Konum alınamadı"),
