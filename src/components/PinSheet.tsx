@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { categoryById, categoryIcon, isPriceable, itemSuggestionsFor, kindMeta, type PinKind } from "@/lib/categories";
+import { PLACE_TYPES, categoryById, categoryIcon, isPriceable, itemSuggestionsFor, kindMeta, placeTypeIdOf, type PinKind } from "@/lib/categories";
 import type { Comment, PinDetail } from "@/lib/types";
 import { formatPrice, timeAgo } from "@/lib/types";
 import { isStalePrice, validityLabel } from "@/lib/validity";
@@ -53,6 +53,7 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
   const [editingPrice, setEditingPrice] = useState(false);
   const [editingName, setEditingName] = useState(false);
   const [nameInput, setNameInput] = useState("");
+  const [editingCat, setEditingCat] = useState(false);
   const [burst, setBurst] = useState(0);
   const [busy, setBusy] = useState(false);
   const loadedFor = useRef<string | null>(null);
@@ -66,6 +67,7 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
     setValidInput("");
     setEditingPrice(false);
     setEditingName(false);
+    setEditingCat(false);
     setBurst(0);
     fetch(`/api/pins/${pinId}`)
       .then((r) => (r.ok ? r.json() : Promise.reject()))
@@ -156,6 +158,27 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
     setPin({ ...pin, name: data.name });
     setEditingName(false);
     onToast("Ad güncellendi ✏️");
+    onChanged();
+  };
+
+  const saveCategory = async (categoryId: string) => {
+    if (!pin || busy) return;
+    if (placeTypeIdOf(pin.category) === categoryId) {
+      setEditingCat(false);
+      return;
+    }
+    setBusy(true);
+    const res = await fetch(`/api/pins/${pin.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ category: categoryId }),
+    });
+    const data = await res.json();
+    setBusy(false);
+    if (!res.ok) return onToast(data.error ?? "Tür güncellenemedi");
+    setPin({ ...pin, category: data.category });
+    setEditingCat(false);
+    onToast("Tür güncellendi ✏️");
     onChanged();
   };
 
@@ -388,46 +411,83 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
                     )}
                   </h2>
                 )}
-                <p className="flex items-center gap-1 text-xs opacity-60">
-                  <span>{cat!.label} ·</span>
+                <p className="flex flex-wrap items-center gap-1 text-xs opacity-60">
+                  <span>{cat!.label}</span>
+                  {pin.isMine && (
+                    <button
+                      onClick={() => setEditingCat((v) => !v)}
+                      className="text-[11px] underline decoration-dotted opacity-80"
+                      title="Türü değiştir"
+                    >
+                      değiştir
+                    </button>
+                  )}
+                  <span>·</span>
                   <Avatar value={pin.author_avatar} size={16} fallback="" />
                   <span>{pin.author} · {timeAgo(pin.created_at)}</span>
                 </p>
               </div>
-              {price && (
-                <div className="shrink-0 text-right">
+            </div>
+
+            {/* Tür (yer tipi) düzenleyici — yalnız sahibi */}
+            {editingCat && pin.isMine && (
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {PLACE_TYPES.map((t) => (
+                  <button
+                    key={t.id}
+                    onClick={() => saveCategory(t.id)}
+                    disabled={busy}
+                    className={`btn flex items-center gap-1 px-2.5 py-1 text-[13px] ${
+                      placeTypeIdOf(pin.category) === t.id ? "btn-tomato" : "btn-cream"
+                    }`}
+                  >
+                    {t.icon ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={t.icon} alt="" className="h-[18px] w-[18px]" />
+                    ) : (
+                      t.emoji
+                    )}{" "}
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {/* 💰 FİYAT HERO — pin açılınca ilk göze çarpan: ne + kaça */}
+            {price && (
+              <div className="mt-3 sticker flex items-center gap-3 border-tomato bg-[#fdeee7] p-3">
+                <div className="min-w-0 flex-1">
                   {pin.price_item && (
-                    <div className="text-[10px] font-bold opacity-60">{pin.price_item}</div>
+                    <div className="truncate text-[15px] font-extrabold leading-tight">
+                      {pin.price_item}
+                    </div>
                   )}
-                  <div className="display text-2xl font-extrabold text-tomato">{price}</div>
                   {(() => {
                     const v = validityLabel(pin.price_valid_until);
                     if (v.kind === "none") {
                       if (!pin.price_updated_at) return null;
-                      // Kürasyon: eskimiş fiyat uyarısı — güncellemeye çağır
                       return isStalePrice(pin.price_updated_at) ? (
-                        <div className="text-[10px] font-bold text-tomato">
+                        <div className="text-[11px] font-bold text-tomato">
                           🕰️ {timeAgo(pin.price_updated_at)} — hâlâ geçerli mi?
                         </div>
                       ) : (
-                        <div className="text-[10px] opacity-50">🕒 {timeAgo(pin.price_updated_at)}</div>
+                        <div className="text-[11px] opacity-55">🕒 {timeAgo(pin.price_updated_at)}</div>
                       );
                     }
                     const cls =
-                      v.kind === "expired"
-                        ? "text-ink/45"
-                        : v.kind === "today"
-                          ? "text-tomato"
-                          : "text-teal";
+                      v.kind === "expired" ? "text-ink/45" : v.kind === "today" ? "text-tomato" : "text-teal";
                     return (
-                      <div className={`text-[10px] font-bold ${cls}`}>
+                      <div className={`text-[11px] font-bold ${cls}`}>
                         {v.kind === "expired" ? "⌛" : "🏷️"} {v.text}
                       </div>
                     );
                   })()}
                 </div>
-              )}
-            </div>
+                <div className="display shrink-0 text-4xl font-extrabold leading-none text-tomato">
+                  {price}
+                </div>
+              </div>
+            )}
 
             {pin.note && <p className="mt-3 text-[15px] leading-snug">{pin.note}</p>}
             {pin.photo && (
