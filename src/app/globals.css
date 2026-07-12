@@ -144,12 +144,12 @@ h1, h2, h3, .display {
   margin-top: -1px;
 }
 
-/* Kullanıcının kendi konumu — "buradasın" işaretçisi */
+/* Kullanıcının kendi konumu — "buradasın" + profile kısayolu (tıklanabilir) */
 .me-marker {
   position: relative;
   width: 34px; height: 34px;
   display: grid; place-items: center;
-  pointer-events: none;
+  cursor: pointer;
 }
 .me-marker .me-dot {
   position: relative; z-index: 1;
@@ -160,6 +160,20 @@ h1, h2, h3, .display {
   border: 3px solid #fff;
   border-radius: 999px;
   box-shadow: 0 2px 6px rgb(34 27 21 / 0.35);
+  transition: transform 120ms ease;
+}
+.me-marker:hover .me-dot { transform: scale(1.1); }
+/* Profil olduğunu belli eden minik yıldız rozeti */
+.me-marker .me-star {
+  position: absolute; z-index: 2;
+  right: -3px; top: -3px;
+  width: 15px; height: 15px;
+  display: grid; place-items: center;
+  font-size: 9px; line-height: 1;
+  background: var(--mustard);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  pointer-events: none;
 }
 .me-marker .me-pulse {
   position: absolute; inset: 0;

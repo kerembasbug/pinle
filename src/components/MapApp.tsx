@@ -77,6 +77,14 @@ export default function MapApp({
   const [placeType, setPlaceType] = useState(initialType); // seçili yer tipi ("" = tümü)
   const [dealsOnly, setDealsOnly] = useState(false); // 🏷️ İndirimler filtresi
   const [me, setMe] = useState<Me | null>(null);
+  const meRef = useRef<Me | null>(null);
+  meRef.current = me;
+  // Avatar değişince kendi konum işaretini güncelle (locate closure'ı bayat kalmasın)
+  useEffect(() => {
+    const el = meMarkerRef.current?.getElement();
+    const dot = el?.querySelector<HTMLDivElement>(".me-dot");
+    if (dot) dot.textContent = me?.avatar ?? "🧍";
+  }, [me?.avatar]);
   const [toast, setToast] = useState<{ msg: string; key: number } | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
@@ -390,7 +398,16 @@ export default function MapApp({
         } else {
           const el = document.createElement("div");
           el.className = "me-marker";
-          el.innerHTML = `<div class="me-pulse"></div><div class="me-dot">🧍</div>`;
+          el.title = "Profilim / puanlarım";
+          el.setAttribute("role", "button");
+          el.innerHTML = `<div class="me-pulse"></div><div class="me-dot">${
+            meRef.current?.avatar ?? "🧍"
+          }</div><div class="me-star">⭐</div>`;
+          // Kendi konumuna dokununca profil/yıldız menüsü açılır
+          el.addEventListener("click", (e) => {
+            e.stopPropagation();
+            setSheet({ kind: "profile" });
+          });
           meMarkerRef.current = new maplibregl.Marker({ element: el, anchor: "center" })
             .setLngLat(lngLat)
             .addTo(map);
