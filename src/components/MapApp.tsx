@@ -17,6 +17,7 @@ import type { Me, PinSummary } from "@/lib/types";
 import { formatPrice } from "@/lib/types";
 import { isStalePrice, validityLabel } from "@/lib/validity";
 import { playPinSound } from "@/lib/sfx";
+import { avatarUrl } from "@/lib/avatars";
 import { getBlocked } from "@/lib/blocklist";
 import type { SearchResult } from "./SearchSheet";
 
@@ -83,7 +84,9 @@ export default function MapApp({
   useEffect(() => {
     const el = meMarkerRef.current?.getElement();
     const dot = el?.querySelector<HTMLDivElement>(".me-dot");
-    if (dot) dot.textContent = me?.avatar ?? "🧍";
+    if (!dot) return;
+    const url = avatarUrl(me?.avatar);
+    dot.innerHTML = url ? `<img class="me-av" src="${url}" alt="">` : me?.avatar ?? "🧍";
   }, [me?.avatar]);
   const [toast, setToast] = useState<{ msg: string; key: number } | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -400,9 +403,11 @@ export default function MapApp({
           el.className = "me-marker";
           el.title = "Profilim / puanlarım";
           el.setAttribute("role", "button");
-          el.innerHTML = `<div class="me-pulse"></div><div class="me-dot">${
-            meRef.current?.avatar ?? "🧍"
-          }</div><div class="me-star">⭐</div>`;
+          const mUrl = avatarUrl(meRef.current?.avatar);
+          const mInner = mUrl
+            ? `<img class="me-av" src="${mUrl}" alt="">`
+            : meRef.current?.avatar ?? "🧍";
+          el.innerHTML = `<div class="me-pulse"></div><div class="me-dot">${mInner}</div><div class="me-star">⭐</div>`;
           // Kendi konumuna dokununca profil/yıldız menüsü açılır
           el.addEventListener("click", (e) => {
             e.stopPropagation();

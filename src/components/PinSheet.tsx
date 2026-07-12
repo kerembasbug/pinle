@@ -6,6 +6,7 @@ import type { Comment, PinDetail } from "@/lib/types";
 import { formatPrice, timeAgo } from "@/lib/types";
 import { isStalePrice, validityLabel } from "@/lib/validity";
 import { playPinSound } from "@/lib/sfx";
+import { Avatar } from "./Avatar";
 import { blockAuthor, getBlocked } from "@/lib/blocklist";
 import { useItemSuggest } from "./useItemSuggest";
 
@@ -387,9 +388,10 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
                     )}
                   </h2>
                 )}
-                <p className="text-xs opacity-60">
-                  {cat!.label} · {pin.author_avatar ? `${pin.author_avatar} ` : ""}
-                  {pin.author} · {timeAgo(pin.created_at)}
+                <p className="flex items-center gap-1 text-xs opacity-60">
+                  <span>{cat!.label} ·</span>
+                  <Avatar value={pin.author_avatar} size={16} fallback="" />
+                  <span>{pin.author} · {timeAgo(pin.created_at)}</span>
                 </p>
               </div>
               {price && (
@@ -521,9 +523,9 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
               )}
               {visibleComments.map((c) => (
                 <div key={c.id} className="sticker-flat px-3 py-2">
-                  <p className="text-[10px] font-bold text-teal">
-                    {c.avatar ? `${c.avatar} ` : ""}
-                    {c.author} <span className="font-normal opacity-50">· {timeAgo(c.created_at)}</span>
+                  <p className="flex items-center gap-1 text-[10px] font-bold text-teal">
+                    <Avatar value={c.avatar} size={15} fallback="" />
+                    <span>{c.author} <span className="font-normal opacity-50">· {timeAgo(c.created_at)}</span></span>
                   </p>
                   <p className="text-sm">{c.body}</p>
                 </div>

@@ -163,6 +163,13 @@ h1, h2, h3, .display {
   transition: transform 120ms ease;
 }
 .me-marker:hover .me-dot { transform: scale(1.1); }
+.me-marker .me-dot .me-av {
+  width: 26px; height: 26px;
+  border-radius: 999px;
+  object-fit: cover;
+  display: block;
+}
+.me-marker .me-dot:has(.me-av) { background: #fff; padding: 0; }
 /* Profil olduğunu belli eden minik yıldız rozeti */
 .me-marker .me-star {
   position: absolute; z-index: 2;

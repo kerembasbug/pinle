@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { db } from "@/lib/db";
+import { Avatar } from "@/components/Avatar";
 
 export const metadata = { title: "Liderlik Tablosu — Pinle" };
 export const dynamic = "force-dynamic";
@@ -24,8 +25,8 @@ function Board({ title, rows, crown }: { title: string; rows: Row[]; crown?: boo
             }`}
           >
             <span className="w-8 text-center text-lg font-extrabold">{MEDALS[i] ?? i + 1}</span>
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-ink bg-paper text-lg">
-              {r.avatar ?? "🐾"}
+            <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-ink bg-paper">
+              <Avatar value={r.avatar} size={30} />
             </span>
             <div className="flex-1">
               <p className="text-sm font-bold">
