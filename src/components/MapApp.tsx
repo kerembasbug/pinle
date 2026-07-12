@@ -590,11 +590,31 @@ export default function MapApp({
         <div className="absolute bottom-0 right-0 z-20 flex flex-col items-end gap-2.5 p-4 pb-[calc(env(safe-area-inset-bottom,0px)+16px)]">
           <button
             onClick={() => setLiveMode((v) => !v)}
-            className={`btn h-11 w-11 text-lg ${liveMode ? "btn-tomato live-btn-on" : "btn-cream"}`}
-            aria-label="Canlı hareketler (son 1 saat)"
+            className={`btn grid h-11 w-11 place-items-center ${
+              liveMode ? "btn-tomato live-btn-on" : "btn-cream"
+            }`}
+            aria-label={liveMode ? "Canlı mod açık — kapat" : "Canlı hareketleri gör (son 1 saat)"}
             aria-pressed={liveMode}
+            title="Canlı hareketler (son 1 saat)"
           >
-            {liveMode ? "🔴" : "⚪"}
+            {/* Radar/nabız ikonu — açıkken dalgalar yayılır (harita ping'iyle aynı dil) */}
+            <svg
+              className="live-ico"
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              aria-hidden
+            >
+              <circle className="core" cx="12" cy="12" r="2.6" fill="currentColor" stroke="none" />
+              <path className="ring ring1" d="M7.4 16.6a6.5 6.5 0 0 1 0-9.2" opacity={liveMode ? 1 : 0.5} />
+              <path className="ring ring1" d="M16.6 7.4a6.5 6.5 0 0 1 0 9.2" opacity={liveMode ? 1 : 0.5} />
+              <path className="ring ring2" d="M4.7 19.3a10 10 0 0 1 0-14.6" opacity={liveMode ? 1 : 0.28} />
+              <path className="ring ring2" d="M19.3 4.7a10 10 0 0 1 0 14.6" opacity={liveMode ? 1 : 0.28} />
+            </svg>
           </button>
           <button onClick={locate} className="btn btn-cream h-11 w-11 text-lg" aria-label="Konumumu bul">
             🧿

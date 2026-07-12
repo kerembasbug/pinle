@@ -212,9 +212,30 @@ h1, h2, h3, .display {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.08); }
 }
+
+/* Canlı buton ikonu — radar/nabız (haritadaki live-ping ile aynı dil) */
+.live-ico { display: block; }
+.live-ico .ring { transform-origin: 12px 12px; }
+.live-btn-on .live-ico .ring1 { animation: live-radiate 1.6s ease-out infinite; }
+.live-btn-on .live-ico .ring2 { animation: live-radiate 1.6s ease-out infinite 0.55s; }
+.live-btn-on .live-ico .core { animation: live-core 1.6s ease-in-out infinite; }
+@keyframes live-radiate {
+  0% { transform: scale(0.45); opacity: 0.9; }
+  100% { transform: scale(1.05); opacity: 0; }
+}
+@keyframes live-core {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .live-marker .live-ping { animation: none; opacity: 0.25; }
   .live-btn-on { animation: none; }
+  .live-btn-on .live-ico .ring1,
+  .live-btn-on .live-ico .ring2,
+  .live-btn-on .live-ico .core { animation: none; }
+  .live-btn-on .live-ico .ring1 { opacity: 0.5; }
+  .live-btn-on .live-ico .ring2 { opacity: 0.25; }
 }
 
 /* Marker doğuşu — köke DEĞİL çocuğa uygulanır (MapLibre kök transform'u ezilmez) */
