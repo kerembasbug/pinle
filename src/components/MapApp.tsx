@@ -16,6 +16,7 @@ import {
 import type { Me, PinSummary } from "@/lib/types";
 import { formatPrice } from "@/lib/types";
 import { isStalePrice, validityLabel } from "@/lib/validity";
+import { playPinSound } from "@/lib/sfx";
 import { getBlocked } from "@/lib/blocklist";
 import type { SearchResult } from "./SearchSheet";
 
@@ -67,6 +68,7 @@ export default function MapApp({
   // yuvarlanmış geometri döndürür — düşük zoomda yüzlerce metre kayar. DOM
   // marker'ları daima buradaki hassas koordinatla konumlanır.
   const pinCoordsRef = useRef<Map<string, [number, number]>>(new Map());
+  const lastPlaceRef = useRef<[number, number] | null>(null); // son yerleştirme konumu
 
   const [sheet, setSheet] = useState<SheetState>(
     initialPinId ? { kind: "pin", id: initialPinId } : { kind: "none" }
@@ -405,11 +407,24 @@ export default function MapApp({
     const c = mapRef.current?.getCenter();
     if (!c) return;
     setPlacing(false);
+    lastPlaceRef.current = [c.lng, c.lat]; // iniş animasyonu için konumu sakla
     setSheet({ kind: "new", lat: c.lat, lng: c.lng, pinKind: "lezzet" });
+  };
+
+  // Yeni pinin oturduğu noktada tek seferlik mustard "iniş" halkası oynat.
+  const playDropRing = (lngLat: [number, number]) => {
+    const map = mapRef.current;
+    if (!map) return;
+    const el = document.createElement("div");
+    el.className = "drop-ring";
+    const m = new maplibregl.Marker({ element: el, anchor: "center" }).setLngLat(lngLat).addTo(map);
+    setTimeout(() => m.remove(), 900);
   };
 
   const onPinCreated = (id: string, earned: number) => {
     setSheet({ kind: "pin", id });
+    playPinSound(); // 🔊 dopamin — kullanıcı jesti sonucu, autoplay'e takılmaz
+    if (lastPlaceRef.current) playDropRing(lastPlaceRef.current);
     showToast(`+${earned} puan! 🎉`);
     loadPins();
     refreshMe();
@@ -556,11 +571,14 @@ export default function MapApp({
       {/* Nişangah modu */}
       {placing && (
         <>
+          {/* Nişan zemin halkası — tam merkezde (pinin ucunun oturacağı nokta) */}
+          <div className="absolute left-1/2 top-1/2 z-20 aim-ring" />
           <div className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-full pointer-events-none crosshair-pin">
             <svg width="44" height="56" viewBox="0 0 44 56">
+              {/* Mustard gövde — haritadaki kırmızı cluster noktalarından ayrışır */}
               <path
                 d="M22 2C11 2 2.5 10.6 2.5 21.3 2.5 36 19 52 21 54a1.4 1.4 0 0 0 2 0c2-2 18.5-18 18.5-32.7C41.5 10.6 33 2 22 2z"
-                fill="#e8442e"
+                fill="#ffc145"
                 stroke="#221b15"
                 strokeWidth="2.5"
               />

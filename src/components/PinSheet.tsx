@@ -5,6 +5,7 @@ import { categoryById, categoryIcon, isPriceable, itemSuggestionsFor, kindMeta, 
 import type { Comment, PinDetail } from "@/lib/types";
 import { formatPrice, timeAgo } from "@/lib/types";
 import { isStalePrice, validityLabel } from "@/lib/validity";
+import { playPinSound } from "@/lib/sfx";
 import { blockAuthor, getBlocked } from "@/lib/blocklist";
 import { useItemSuggest } from "./useItemSuggest";
 
@@ -191,6 +192,7 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
     const unitInfo =
       data.qty > 1 ? `${data.qty} adet ₺${data.total} → tanesi ₺${data.price} · ` : "";
     onToast(`${unitInfo}+${data.earned} puan! ${data.firstPrice ? "İlk fiyatı sen açtın 🔓" : "🏷️"}`);
+    playPinSound();
     pop();
     onChanged();
   };

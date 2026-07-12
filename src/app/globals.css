@@ -306,15 +306,57 @@ h1, h2, h3, .display {
   .burst-emoji { animation-duration: 1ms; }
 }
 
-/* Yeni pin nişangahı */
+/* Yeni pin nişangahı — mustard gövde (kırmızı cluster noktalarından ayrışır) */
 .crosshair-pin {
   filter: drop-shadow(3px 4px 0 rgb(34 27 21 / 0.35));
-  animation: bounce-in 300ms ease;
+  animation: bounce-in 300ms ease, crosshair-bob 1.8s ease-in-out 0.3s infinite;
 }
 @keyframes bounce-in {
   0% { transform: translateY(-14px) scale(0.8); }
   60% { transform: translateY(3px) scale(1.05); }
   100% { transform: translateY(0) scale(1); }
+}
+/* Nişangah hafifçe süzülür — "buraya nişan alıyorsun" hissi */
+@keyframes crosshair-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+/* Nişan zemin halkası — nişangahın tam altında nabız (yer işareti) */
+.aim-ring {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 26px; height: 12px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 2.5px solid var(--teal);
+  opacity: 0.6;
+  animation: aim-pulse 1.8s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes aim-pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(0.85); opacity: 0.35; }
+  50% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.7; }
+}
+
+/* Pin iniş halkası — yeni pin oluşunca tek seferlik dışa yayılan mustard halka */
+.drop-ring {
+  width: 22px; height: 22px;
+  border-radius: 999px;
+  border: 3px solid var(--mustard);
+  background: rgb(255 193 69 / 0.25);
+  animation: drop-ring 850ms cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  pointer-events: none;
+}
+@keyframes drop-ring {
+  0% { transform: scale(0.3); opacity: 0; }
+  25% { opacity: 0.9; }
+  100% { transform: scale(3.2); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crosshair-pin { animation: bounce-in 300ms ease; }
+  .aim-ring { animation: none; opacity: 0.5; }
+  .drop-ring { animation: drop-ring 400ms ease forwards; }
 }
 
 /* Alt sayfa (bottom sheet) */

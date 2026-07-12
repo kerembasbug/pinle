@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AVATARS } from "@/lib/avatars";
+import { isMuted, setMuted, playPinSound } from "@/lib/sfx";
 import type { Me } from "@/lib/types";
 
 type Props = {
@@ -17,6 +18,16 @@ type Props = {
 
 export default function ProfileSheet({ open, me, onClose, onOpenAuth, onLogout, onToast, onChanged }: Props) {
   const [picking, setPicking] = useState(false);
+  const [muted, setMutedState] = useState(false);
+  useEffect(() => {
+    if (open) setMutedState(isMuted());
+  }, [open]);
+  const toggleSound = () => {
+    const next = !muted;
+    setMuted(next);
+    setMutedState(next);
+    if (!next) playPinSound(); // açınca örnek ses
+  };
 
   const pickAvatar = async (a: string) => {
     const res = await fetch("/api/profile", {
@@ -128,6 +139,14 @@ export default function ProfileSheet({ open, me, onClose, onOpenAuth, onLogout, 
               <Link href="/liderler" className="btn btn-mustard mt-3 block py-3 text-center">
                 🏆 Liderlik Tablosu
               </Link>
+
+              <button
+                onClick={toggleSound}
+                className="mt-2 flex w-full items-center justify-between px-1 text-sm opacity-75"
+              >
+                <span>{muted ? "🔇 Pinleme sesi kapalı" : "🔊 Pinleme sesi açık"}</span>
+                <span className="text-xs underline">{muted ? "Aç" : "Kapat"}</span>
+              </button>
 
               {/* Giriş / hesap durumu */}
               {me.email ? (
