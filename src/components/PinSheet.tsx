@@ -142,22 +142,24 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
     onChanged(); // puan çipi anında güncellensin (dopamin tam anında) + marker yorum sayacı
   };
 
+  // Topluluk isim önerisi — herkes önerir, en çok önerilen ad kazanır.
   const saveName = async () => {
     if (!pin || busy) return;
     const v = nameInput.trim();
     if (v.length < 2) return onToast("İsim en az 2 karakter");
     setBusy(true);
-    const res = await fetch(`/api/pins/${pin.id}`, {
-      method: "PATCH",
+    const res = await fetch(`/api/pins/${pin.id}/name`, {
+      method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: v }),
     });
     const data = await res.json();
     setBusy(false);
-    if (!res.ok) return onToast(data.error ?? "Ad güncellenemedi");
-    setPin({ ...pin, name: data.name });
+    if (!res.ok) return onToast(data.error ?? "Öneri kaydedilemedi");
+    setPin({ ...pin, name: data.name }); // kazanan (kabul gören) ad
     setEditingName(false);
-    onToast("Ad güncellendi ✏️");
+    // Önerin kaydedildi ama başka ad daha çok oy aldıysa bilgilendir
+    onToast(data.pending ? "Önerin kaydedildi 🙌 (şu an başka ad önde)" : "Ad güncellendi ✏️");
     onChanged();
   };
 
@@ -234,10 +236,11 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
   };
 
   const report = async () => {
-    if (!pin || !confirm("Bu pini uygunsuz/yanlış/kapanmış olarak bildirmek istiyor musun?")) return;
+    if (!pin || !confirm("Bu mekan kapandı ya da yanlış mı? Bildirdiğinde birkaç kişi daha onaylayınca haritadan kalkar.")) return;
     const res = await fetch(`/api/pins/${pin.id}/report`, { method: "POST" });
+    const data = await res.json().catch(() => ({}));
     if (res.ok) {
-      onToast("Bildirildi, teşekkürler 🙏");
+      onToast(data.hidden ? "Kapandı olarak işaretlendi, haritadan kalktı 🙏" : "Bildirin alındı, teşekkürler 🙏");
       onClose();
       onChanged();
     }
@@ -379,36 +382,40 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
               </div>
               <div className="min-w-0 flex-1">
                 {editingName ? (
-                  <div className="flex items-center gap-1.5">
-                    <input
-                      value={nameInput}
-                      onChange={(e) => setNameInput(e.target.value)}
-                      onKeyDown={(e) => e.key === "Enter" && saveName()}
-                      maxLength={80}
-                      autoFocus
-                      placeholder="Doğru mekan adı"
-                      className="sticker-flat w-full bg-cream px-2 py-1 text-lg font-extrabold outline-none focus:border-tomato"
-                    />
-                    <button onClick={saveName} disabled={busy} className="btn btn-tomato px-3 py-1.5 text-sm">
-                      ✓
-                    </button>
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-1.5">
+                      <input
+                        value={nameInput}
+                        onChange={(e) => setNameInput(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && saveName()}
+                        maxLength={80}
+                        autoFocus
+                        placeholder="Doğru mekan adı"
+                        className="sticker-flat w-full bg-cream px-2 py-1 text-lg font-extrabold outline-none focus:border-tomato"
+                      />
+                      <button onClick={saveName} disabled={busy} className="btn btn-tomato px-3 py-1.5 text-sm">
+                        ✓
+                      </button>
+                    </div>
+                    <span className="text-[10px] opacity-50">
+                      Adı topluluk belirler — en çok önerilen kazanır.
+                    </span>
                   </div>
                 ) : (
                   <h2 className="flex items-center gap-1.5 text-xl font-extrabold leading-tight">
                     <span className="min-w-0 truncate">{pin.name}</span>
-                    {pin.isMine && (
-                      <button
-                        onClick={() => {
-                          setNameInput(pin.name);
-                          setEditingName(true);
-                        }}
-                        className="shrink-0 text-sm opacity-50 hover:opacity-100"
-                        aria-label="Adı düzelt"
-                        title="Adı düzelt"
-                      >
-                        ✏️
-                      </button>
-                    )}
+                    {/* Herkes ad önerebilir (topluluk oylamalı) */}
+                    <button
+                      onClick={() => {
+                        setNameInput(pin.name);
+                        setEditingName(true);
+                      }}
+                      className="shrink-0 text-sm opacity-50 hover:opacity-100"
+                      aria-label="Doğru adı öner"
+                      title="Doğru adı öner"
+                    >
+                      ✏️
+                    </button>
                   </h2>
                 )}
                 <p className="flex flex-wrap items-center gap-1 text-xs opacity-60">

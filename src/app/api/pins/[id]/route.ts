@@ -1,13 +1,13 @@
 import { db } from "@/lib/db";
 import { getUserIfExists, getOrCreateUser } from "@/lib/identity";
 import { authorIdFor } from "@/lib/authorId";
-import { isClean, withinRateLimit } from "@/lib/moderation";
+import { withinRateLimit } from "@/lib/moderation";
 import { categoryInKind } from "@/lib/categories";
 import { overloadGuard } from "@/lib/flags";
 import { cacheClear } from "@/lib/pinsCache";
 
-// Pini düzelt — YALNIZ sahibi. Ad (yanlış/eski/bilinmeyen) ve/veya TÜR (yer tipi)
-// güncellenebilir; mükerrer pin açmaya gerek kalmaz.
+// TÜR (yer tipi) düzelt — YALNIZ pin sahibi. (Ad artık topluluk oylamalı:
+// bkz. /api/pins/[id]/name — herkes önerir, en çok önerilen kazanır.)
 export async function PATCH(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
@@ -19,23 +19,11 @@ export async function PATCH(
   if (!withinRateLimit(user.id, "comment")) {
     return Response.json({ error: "Çok sık deniyorsun, biraz bekle" }, { status: 429 });
   }
-  const { name, category } = (await request.json().catch(() => ({}))) as {
-    name?: string;
-    category?: string;
-  };
-  const hasName = name !== undefined;
-  const hasCat = category !== undefined;
-  if (!hasName && !hasCat) {
+  const { category } = (await request.json().catch(() => ({}))) as { category?: string };
+  if (category === undefined) {
     return Response.json({ error: "Değişiklik yok" }, { status: 400 });
   }
-  const trimmed = (name ?? "").trim();
-  if (hasName && (trimmed.length < 2 || trimmed.length > 80)) {
-    return Response.json({ error: "İsim 2-80 karakter olmalı" }, { status: 400 });
-  }
-  if (hasName && !isClean(trimmed)) {
-    return Response.json({ error: "Metin uygunsuz ifade içeriyor" }, { status: 400 });
-  }
-  if (hasCat && !categoryInKind("lezzet", category!)) {
+  if (!categoryInKind("lezzet", category)) {
     return Response.json({ error: "Geçersiz tür" }, { status: 400 });
   }
 
@@ -45,12 +33,11 @@ export async function PATCH(
     .get(id) as { user_id: string } | undefined;
   if (!pin) return Response.json({ error: "Pin bulunamadı" }, { status: 404 });
   if (pin.user_id !== user.id) {
-    return Response.json({ error: "Sadece pini ekleyen düzeltebilir" }, { status: 403 });
+    return Response.json({ error: "Sadece pini ekleyen türü düzeltebilir" }, { status: 403 });
   }
-  if (hasName) d.prepare("UPDATE pins SET name = ? WHERE id = ?").run(trimmed, id);
-  if (hasCat) d.prepare("UPDATE pins SET category = ? WHERE id = ?").run(category, id);
+  d.prepare("UPDATE pins SET category = ? WHERE id = ?").run(category, id);
   cacheClear();
-  return Response.json({ ok: true, name: hasName ? trimmed : undefined, category: hasCat ? category : undefined });
+  return Response.json({ ok: true, category });
 }
 
 export async function GET(

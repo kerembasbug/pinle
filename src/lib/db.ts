@@ -88,6 +88,17 @@ function migrate(d: Database.Database) {
       PRIMARY KEY (pin_id, user_id)
     );
 
+    -- Topluluk isim oyları: mekan adını herkes önerir; en çok önerilen kazanır.
+    -- Kullanıcı başına 1 öneri (değiştirilebilir). pins.name = kazanan.
+    CREATE TABLE IF NOT EXISTS name_votes (
+      pin_id TEXT NOT NULL REFERENCES pins(id),
+      user_id TEXT NOT NULL REFERENCES users(id),
+      name TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      PRIMARY KEY (pin_id, user_id)
+    );
+    CREATE INDEX IF NOT EXISTS idx_namevotes_pin ON name_votes(pin_id);
+
     CREATE TABLE IF NOT EXISTS points_events (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       user_id TEXT NOT NULL REFERENCES users(id),
@@ -178,6 +189,16 @@ function migrate(d: Database.Database) {
     d.exec("ALTER TABLE price_reports ADD COLUMN qty INTEGER NOT NULL DEFAULT 1");
     d.exec("ALTER TABLE price_reports ADD COLUMN total REAL");
   }
+
+  // name_votes backfill: her aktif pinin sahibi adı 1 oy olarak sayılsın
+  // (topluluk isim sistemi için taban). Zaten oyu olan pini atla — idempotent.
+  d.exec(`
+    INSERT OR IGNORE INTO name_votes (pin_id, user_id, name, created_at)
+    SELECT p.id, p.user_id, p.name, p.created_at
+      FROM pins p
+     WHERE p.status = 'active'
+       AND NOT EXISTS (SELECT 1 FROM name_votes nv WHERE nv.pin_id = p.id AND nv.user_id = p.user_id)
+  `);
 
   // İlçe/şehri atanmamış pinleri doldur (seed dahil her açılışta idempotent)
   const missing = d

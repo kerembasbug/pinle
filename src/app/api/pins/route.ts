@@ -202,6 +202,10 @@ export async function POST(request: NextRequest) {
       place?.district ?? "-", place?.city ?? "-",
       price, priceItem, price, validUntil, note || null, photoName, lat, lng
     );
+  // Topluluk isim sistemi: pinleyenin adı ilk oy olur (sonra herkes önerebilir)
+  db()
+    .prepare("INSERT OR IGNORE INTO name_votes (pin_id, user_id, name) VALUES (?, ?, ?)")
+    .run(id, user.id, finalName);
 
   const earned = POINTS.PIN + (photoName ? POINTS.PIN_PHOTO_BONUS : 0);
   awardPoints(user.id, earned, "pin");
