@@ -9,7 +9,15 @@ export const dynamic = "force-dynamic";
 export default function sitemap(): MetadataRoute.Sitemap {
   const pins = db()
     .prepare(
-      "SELECT id, created_at FROM pins WHERE status = 'active' ORDER BY created_at DESC LIMIT 1000"
+      `SELECT id, created_at FROM pins
+        WHERE status = 'active'
+          AND (
+            price IS NOT NULL
+            OR length(trim(COALESCE(note, ''))) >= 80
+            OR length(trim(COALESCE(photo, ''))) > 0
+          )
+        ORDER BY created_at DESC
+        LIMIT 1000`
     )
     .all() as { id: string; created_at: string }[];
 

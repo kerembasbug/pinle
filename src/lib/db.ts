@@ -11,6 +11,10 @@ export function db(): Database.Database {
   if (_db) return _db;
   fs.mkdirSync(DATA_DIR, { recursive: true });
   _db = new Database(path.join(DATA_DIR, "pinle.db"));
+  // Next.js build workers can initialize the same persistent SQLite database in
+  // parallel. Wait for the migration/PRAGMA writer instead of failing with
+  // SQLITE_BUSY during static page generation.
+  _db.pragma("busy_timeout = 30000");
   _db.pragma("journal_mode = WAL");
   _db.pragma("foreign_keys = ON");
   migrate(_db);
