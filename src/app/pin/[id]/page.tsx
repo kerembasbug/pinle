@@ -29,6 +29,7 @@ export async function generateMetadata({
   return {
     title,
     description,
+    alternates: { canonical: `/pin/${id}` },
     openGraph: { title, description, type: "article", url: `/pin/${id}` },
     twitter: { card: "summary_large_image", title, description },
   };

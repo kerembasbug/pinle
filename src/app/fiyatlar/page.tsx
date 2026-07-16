@@ -57,13 +57,40 @@ function priceIndex() {
 
 export default function PricesPage() {
   const items = priceIndex();
+  const observationCount = items.reduce((sum, item) => sum + item.count, 0);
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      { "@type": "ListItem", position: 1, name: "Pinle", item: "https://pinle.app" },
-      { "@type": "ListItem", position: 2, name: `Sokak Fiyatları ${YEAR}`, item: "https://pinle.app/fiyatlar" },
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Pinle", item: "https://pinle.app" },
+          { "@type": "ListItem", position: 2, name: `Sokak Fiyatları ${YEAR}`, item: "https://pinle.app/fiyatlar" },
+        ],
+      },
+      {
+        "@type": "Dataset",
+        name: `Türkiye Sokak Fiyatları ${YEAR}`,
+        description,
+        url: "https://pinle.app/fiyatlar",
+        creator: {
+          "@type": "Organization",
+          name: "Pinle",
+          url: "https://pinle.app",
+        },
+        isAccessibleForFree: true,
+        spatialCoverage: { "@type": "Country", name: "Türkiye" },
+        temporalCoverage: String(YEAR),
+        variableMeasured: [
+          "Ürün veya hizmet adı",
+          "Ödenen fiyat",
+          "Şehir",
+          "Topluluk doğrulama durumu",
+        ],
+        measurementTechnique:
+          "Topluluk tarafından girilen fiyat gözlemlerinin ürün veya hizmet adına göre gruplanması; en az iki gözlemi olan gruplarda ortanca ve fiyat aralığı hesabı.",
+      },
     ],
   };
 
@@ -90,6 +117,11 @@ export default function PricesPage() {
           &quot;hâlâ bu fiyat / zamlandı&quot; oylarıyla doğruladığı fiyatlar. Endeks her
           15 dakikada tazelenir; ortanca değer, uç fiyatlardan etkilenmez.
         </p>
+        {observationCount > 0 && (
+          <p className="text-sm font-bold text-teal">
+            {items.length} karşılaştırılabilir kalemde {observationCount} fiyat gözlemi
+          </p>
+        )}
       </header>
 
       {items.length === 0 ? (
@@ -133,6 +165,21 @@ export default function PricesPage() {
             </Link>
           ))}
         </div>
+      </section>
+
+      <section className="sticker-flat flex flex-col gap-2 p-4">
+        <h2 className="text-lg font-extrabold">Veri nasıl hesaplanıyor?</h2>
+        <ul className="list-disc space-y-1 pl-5 text-sm leading-relaxed opacity-80">
+          <li>Fiyatlar Pinle kullanıcılarının gerçekten ödediğini bildirdiği gözlemlerdir; resmi tarife veya işletme menüsü değildir.</li>
+          <li>Tek kayda dayanan ürün ve hizmetler karşılaştırma tablosuna alınmaz.</li>
+          <li>Ortanca değer kullanılır; böylece çok düşük veya çok yüksek tekil fiyatların etkisi azalır.</li>
+          <li>“Hâlâ bu fiyat / zamlandı” oyları eskiyen kayıtların görünürlüğünü azaltmaya yardımcı olur.</li>
+        </ul>
+        <p className="text-sm leading-relaxed opacity-70">
+          Haber, öğrenci bütçesi veya yerel fiyat karşılaştırması hazırlıyorsan bu sayfayı
+          kaynak olarak gösterebilirsin. Veriyi kullanırken tarih ve “topluluk gözlemi”
+          niteliğini belirtmeni öneririz.
+        </p>
       </section>
 
       <p className="text-sm leading-relaxed opacity-70">
