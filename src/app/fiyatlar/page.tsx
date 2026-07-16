@@ -80,12 +80,20 @@ export default function PricesPage() {
           url: "https://pinle.app",
         },
         isAccessibleForFree: true,
+        distribution: {
+          "@type": "DataDownload",
+          contentUrl: "https://pinle.app/veri/fiyatlar.csv",
+          encodingFormat: "text/csv",
+          name: `Toplulaştırılmış Türkiye Sokak Fiyatları ${YEAR} CSV`,
+        },
         spatialCoverage: { "@type": "Country", name: "Türkiye" },
         temporalCoverage: String(YEAR),
         variableMeasured: [
           "Ürün veya hizmet adı",
           "Ödenen fiyat",
           "Şehir",
+          "Gözlem sayısı",
+          "Ortanca, minimum ve maksimum fiyat",
           "Topluluk doğrulama durumu",
         ],
         measurementTechnique:
@@ -118,9 +126,18 @@ export default function PricesPage() {
           15 dakikada tazelenir; ortanca değer, uç fiyatlardan etkilenmez.
         </p>
         {observationCount > 0 && (
-          <p className="text-sm font-bold text-teal">
-            {items.length} karşılaştırılabilir kalemde {observationCount} fiyat gözlemi
-          </p>
+          <div className="flex flex-wrap items-center gap-3">
+            <p className="text-sm font-bold text-teal">
+              {items.length} karşılaştırılabilir kalemde {observationCount} fiyat gözlemi
+            </p>
+            <a
+              href="/veri/fiyatlar.csv"
+              download
+              className="btn btn-cream px-3 py-1.5 text-sm"
+            >
+              Toplulaştırılmış CSV’yi indir ⭳
+            </a>
+          </div>
         )}
       </header>
 
@@ -167,7 +184,7 @@ export default function PricesPage() {
         </div>
       </section>
 
-      <section className="sticker-flat flex flex-col gap-2 p-4">
+      <section id="veri-yontemi" className="sticker-flat flex flex-col gap-2 p-4">
         <h2 className="text-lg font-extrabold">Veri nasıl hesaplanıyor?</h2>
         <ul className="list-disc space-y-1 pl-5 text-sm leading-relaxed opacity-80">
           <li>Fiyatlar Pinle kullanıcılarının gerçekten ödediğini bildirdiği gözlemlerdir; resmi tarife veya işletme menüsü değildir.</li>
@@ -179,6 +196,12 @@ export default function PricesPage() {
           Haber, öğrenci bütçesi veya yerel fiyat karşılaştırması hazırlıyorsan bu sayfayı
           kaynak olarak gösterebilirsin. Veriyi kullanırken tarih ve “topluluk gözlemi”
           niteliğini belirtmeni öneririz.
+        </p>
+        <p className="text-sm leading-relaxed opacity-70">
+          İndirilebilir CSV yalnızca en az iki gözlemi bulunan kalemlerin toplulaştırılmış
+          sonuçlarını içerir. Kullanıcı kimliği, yorum, koordinat ve tekil mekan kaydı
+          paylaşılmaz. Kaynak gösterirken <b>Pinle Türkiye Sokak Fiyatları</b>, erişim tarihi
+          ve <code>https://pinle.app/fiyatlar</code> adresini belirt.
         </p>
       </section>
 
