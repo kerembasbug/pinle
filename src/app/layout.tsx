@@ -21,6 +21,9 @@ export const metadata: Metadata = {
   description:
     "Kazık yeme, Pinle. Nereye gidersen git — döner, çay, şezlong, berber — olduğun yerde gerçekte ne ödeniyor gör. Fiyatları oradakiler girer, oradakiler doğrular. Kayıt yok.",
   applicationName: "Pinle",
+  verification: {
+    google: "bXesrR2KDCFarpdhHIsHZpHmiBv1OSZ8EiiaWqDnQVo",
+  },
   icons: {
     apple: "/icons/apple-touch-icon.png",
   },
