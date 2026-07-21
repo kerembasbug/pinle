@@ -54,6 +54,9 @@ export default async function Home({
               <Link href="/android">Pinle Android uygulaması — gerçek fiyat haritasını indir</Link>
             </li>
             <li>
+              <Link href="/sprint/istanbul">İstanbul Fiyat Sprinti — Beyoğlu ve Kadıköy gerçek fiyat yarışı</Link>
+            </li>
+            <li>
               <Link href="/en">Pinle in English — community-updated local price map</Link>
             </li>
           </ul>

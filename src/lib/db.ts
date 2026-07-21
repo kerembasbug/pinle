@@ -127,6 +127,16 @@ function migrate(d: Database.Database) {
     );
     CREATE INDEX IF NOT EXISTS idx_outbound_clicks_created
       ON outbound_clicks(created_at, source);
+
+    -- Kampanya paylaşım niyeti: WhatsApp/X paylaşım bağlantısına tıklama.
+    -- Kimlik, içerik, hedef kişi veya IP tutulmaz.
+    CREATE TABLE IF NOT EXISTS share_clicks (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      source TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_share_clicks_created
+      ON share_clicks(created_at, source);
   `);
 
   // users: kimlik (login) kolonları — anonim başla, isteğe bağlı bağla

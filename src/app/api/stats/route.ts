@@ -53,6 +53,7 @@ export async function GET(request: NextRequest) {
              WHERE date(COALESCE(vt.updated_at, vt.created_at)) = dates.day
           )) AS active_contributors,
          (SELECT COUNT(*) FROM comments c WHERE date(c.created_at) = dates.day) AS comments,
+         (SELECT COUNT(*) FROM share_clicks sc WHERE date(sc.created_at) = dates.day) AS shares,
          (SELECT COUNT(*) FROM outbound_clicks oc WHERE date(oc.created_at) = dates.day) AS play_clicks
        FROM dates ORDER BY dates.day`
     )
@@ -70,6 +71,7 @@ export async function GET(request: NextRequest) {
         (SELECT COUNT(DISTINCT pin_id) FROM votes WHERE value = 1) AS community_confirmed_pins,
         (SELECT COUNT(*) FROM comments) AS comments,
         (SELECT COUNT(*) FROM reports) AS reports,
+        (SELECT COUNT(*) FROM share_clicks) AS share_clicks,
         (SELECT COUNT(*) FROM outbound_clicks) AS outbound_play_clicks`
     )
     .get();
@@ -153,6 +155,16 @@ export async function GET(request: NextRequest) {
     )
     .all();
 
+  const shareBySource = d
+    .prepare(
+      `SELECT source, COUNT(*) AS clicks
+         FROM share_clicks
+        WHERE created_at > datetime('now', '-30 day')
+        GROUP BY source
+        ORDER BY clicks DESC, source ASC`
+    )
+    .all();
+
   // Katkı oranı: son 7 günün ziyaretçilerinden pin ekleyenlerin payı (launch KPI'sı)
   const contribution = d
     .prepare(
@@ -171,6 +183,7 @@ export async function GET(request: NextRequest) {
     totals,
     byKind,
     playBySource,
+    shareBySource,
     last14Days: days,
     launchMetrics: {
       ...launchMetrics,

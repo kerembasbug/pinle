@@ -158,6 +158,18 @@ export default function AndroidLaunchPage() {
           </article>
         </section>
 
+        <Link href="/sprint/istanbul" className="sticker-flat sticker-mustard block p-6 sm:p-7">
+          <p className="text-sm font-extrabold uppercase tracking-wide text-tomato">Canlı yerel görev</p>
+          <h2 className="mt-1 text-2xl font-extrabold">Beyoğlu mu Kadıköy mü?</h2>
+          <p className="mt-2 text-sm leading-relaxed opacity-75">
+            İstanbul Fiyat Sprinti’nde iki ilçenin gerçek kullanıcı katkılarını canlı gör;
+            mahallenden bir fiyat ekleyerek takımına katıl.
+          </p>
+          <span className="mt-4 inline-block text-sm font-extrabold underline underline-offset-4">
+            Canlı skoru aç →
+          </span>
+        </Link>
+
         <section className="sticker sticker-tomato flex flex-col items-start gap-4 p-6 text-white sm:p-8">
           <h2 className="text-3xl font-extrabold">Mahallenden bir gerçek fiyat ekle.</h2>
           <p className="max-w-3xl text-sm leading-relaxed text-white/85 sm:text-base">
