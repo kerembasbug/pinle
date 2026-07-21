@@ -46,7 +46,9 @@ export async function POST(
       awardPoints(pin.user_id, POINTS.PIN_CONFIRMED, "pin_confirmed");
     }
   } else if (existing.value !== value) {
-    d.prepare("UPDATE votes SET value = ? WHERE pin_id = ? AND user_id = ?").run(value, id, user.id);
+    d.prepare(
+      "UPDATE votes SET value = ?, updated_at = datetime('now') WHERE pin_id = ? AND user_id = ?"
+    ).run(value, id, user.id);
   }
 
   const counts = d

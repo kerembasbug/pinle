@@ -204,6 +204,13 @@ function migrate(d: Database.Database) {
     d.exec("ALTER TABLE price_reports ADD COLUMN total REAL");
   }
 
+  // Bir kullanıcı fiyat oyunu sonradan değiştirebilir. İlk oy zamanı ile son
+  // anlamlı değişikliği ayrı tutarak haftalık doğrulama KPI'ını doğru ölç.
+  const voteCols = d.prepare("PRAGMA table_info(votes)").all() as { name: string }[];
+  if (voteCols.length && !voteCols.some((c) => c.name === "updated_at")) {
+    d.exec("ALTER TABLE votes ADD COLUMN updated_at TEXT");
+  }
+
   // name_votes backfill: her aktif pinin sahibi adı 1 oy olarak sayılsın
   // (topluluk isim sistemi için taban). Zaten oyu olan pini atla — idempotent.
   d.exec(`
