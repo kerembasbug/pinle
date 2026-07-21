@@ -21,10 +21,10 @@ export async function generateMetadata({
   const { slug } = await params;
   const city = cityBySlug(slug);
   if (!city) return { title: "Şehir bulunamadı — Pinle" };
-  const { pins } = cityStats(city.name);
+  const stats = cityStats(city.name);
   // Long-tail: "[şehir]'de ucuza ne yenir", "[şehir] ucuz yemek", "öğrenci dostu"
   const title = `${city.name}'da Ucuza Ne Yenir? Ucuz Yemek & Fiyat Haritası ${YEAR} | Pinle`;
-  const description = `${city.name}'da ucuza doyabileceğin yerler: esnaf lokantası, döner, kahvaltı, çay bahçesi — öğrenci ve dar bütçe dostu. ${pins > 0 ? `${pins} nokta, ` : ""}sokakta ödenen gerçek fiyatlar, mahalleli doğrulamalı. Kayıt yok.`;
+  const description = `${city.name}'da yeme-içme ve günlük hizmet fiyatlarını haritada incele. ${stats.pins > 0 ? `${stats.pins} nokta${stats.priced > 0 ? `, ${stats.priced} fiyatlı kayıt` : ""}. ` : ""}Eklenme tarihini ve topluluk doğrulamasını kontrol et; kayıt olmadan katkı ver.`;
   return {
     title,
     description,
@@ -56,14 +56,14 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
           {
             "@type": "ListItem",
             position: 2,
-            name: `${city.name} Ucuz Lezzet Haritası`,
+            name: `${city.name} Fiyat Haritası`,
             item: `https://pinle.app/sehir/${city.slug}`,
           },
         ],
       },
       {
         "@type": "ItemList",
-        name: `${city.name} ucuz lezzet noktaları`,
+        name: `${city.name} fiyat kayıtları`,
         numberOfItems: pins.length,
         itemListElement: pins.slice(0, 20).map((p, i) => ({
           "@type": "ListItem",
@@ -76,7 +76,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
   };
 
   return (
-    <main className="paper-grain mx-auto flex min-h-dvh max-w-2xl flex-col gap-5 p-6">
+    <main className="paper-grain mx-auto flex min-h-dvh w-full min-w-0 max-w-2xl flex-col gap-5 p-6">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdSafe(jsonLd) }}
@@ -96,16 +96,16 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
           {city.name}&apos;da Ucuza Ne Yenir? ({YEAR} Fiyat Haritası)
         </h1>
         <p className="text-[15px] leading-relaxed opacity-80">
-          {city.name}&apos;da ucuza doyabileceğin yerler: esnaf lokantaları, dönerciler,
-          kahvaltıcılar, çay bahçeleri — öğrenci ve dar bütçe dostu. Buradaki rakamlar menü
-          değil, sokakta gerçekten ödenen fiyatlar; mahalleli &quot;hâlâ bu fiyat / zamlandı&quot;
-          oylarıyla güncel tutuyor. Berber, market, şezlong gibi hizmet fiyatları da haritada.
-          Kayıt yok; anonim başla, bildiğin ucuz yeri pinle.
+          Esnaf lokantası, döner, kahvaltı ve çaydan berber, market ve şezlonga kadar
+          bilinen fiyatları haritada incele. Kayıtlar kullanıcı bildirimleri ile Pinle
+          başlangıç verilerinden oluşur; fiyatın eklenme tarihini ve &quot;hâlâ bu fiyat /
+          zamlandı&quot; doğrulamalarını kontrol et. Kayıt olmadan anonim başla, gördüğün
+          güncel fiyatı ekle.
         </p>
       </header>
 
       <div className="flex flex-wrap gap-2 text-sm font-bold">
-        <span className="sticker-flat px-3 py-1.5">🍽️ {stats.pins} nokta</span>
+        <span className="sticker-flat px-3 py-1.5">📍 {stats.pins} nokta</span>
         {stats.priced > 0 && (
           <span className="sticker-flat px-3 py-1.5 text-tomato">🏷️ {stats.priced} fiyatlı</span>
         )}
@@ -114,9 +114,17 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
         )}
       </div>
 
-      <Link href={`/?sehir=${city.slug}`} className="btn btn-tomato self-start px-7 py-3 text-lg">
-        {city.name} Haritasını Aç 🗺️
-      </Link>
+      <div className="flex flex-wrap gap-2">
+        <Link
+          href={`/?sehir=${city.slug}&katki=seo_city&utm_source=seo_city&utm_medium=organic&utm_campaign=missing_price`}
+          className="btn btn-tomato max-w-full whitespace-normal px-6 py-3 text-center text-lg leading-tight"
+        >
+          Eksik bir fiyatı tamamla 🏷️
+        </Link>
+        <Link href={`/?sehir=${city.slug}`} className="btn btn-cream px-5 py-3">
+          Haritayı incele 🗺️
+        </Link>
+      </div>
 
       {catLinks.length > 0 && (
         <section className="flex flex-col gap-2">
@@ -182,8 +190,11 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
       ) : (
         <p className="sticker-flat p-4 text-sm opacity-70">
           {city.name}&apos;da henüz pin yok. İlk pinleyen sen ol —{" "}
-          <Link href={`/?sehir=${city.slug}`} className="underline">
-            haritayı aç
+          <Link
+            href={`/?sehir=${city.slug}&katki=seo_city&utm_source=seo_city&utm_medium=organic&utm_campaign=first_pin`}
+            className="underline"
+          >
+            ilk yeri ekle
           </Link>
           .
         </p>

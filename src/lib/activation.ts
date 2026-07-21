@@ -1,11 +1,14 @@
-import type { ActivationAction } from "./marketing";
+import {
+  isActivationSource,
+  type ActivationAction,
+  type ActivationSource,
+} from "./marketing";
 
-const SOURCE = "first_contribution_mission" as const;
-const STARTED_KEY = "pinle-first-contribution-mission-started";
-const PENDING_KEY = "pinle-first-contribution-mission-pending";
+const STARTED_PREFIX = "pinle-contribution-mission-started:";
+const PENDING_KEY = "pinle-contribution-mission-pending";
 
-function track(action: ActivationAction) {
-  const payload = JSON.stringify({ source: SOURCE, action });
+function track(source: ActivationSource, action: ActivationAction) {
+  const payload = JSON.stringify({ source, action });
   if (navigator.sendBeacon) {
     const accepted = navigator.sendBeacon(
       "/api/events/activation",
@@ -21,26 +24,33 @@ function track(action: ActivationAction) {
   }).catch(() => {});
 }
 
-/** Aynı tarayıcı oturumunda ilk görev açılışını tekilleştir. */
-export function startFirstContributionMission(
+/** Kaynak bazında görev başlangıcını aynı tarayıcı oturumunda tekilleştir. */
+export function startContributionMission(
+  source: ActivationSource,
   action: "open_missing_price" | "start_new_pin"
 ) {
   try {
-    if (sessionStorage.getItem(STARTED_KEY)) return;
-    sessionStorage.setItem(STARTED_KEY, "1");
-    sessionStorage.setItem(PENDING_KEY, "1");
-    track(action);
+    if (sessionStorage.getItem(PENDING_KEY)) return;
+    const startedKey = `${STARTED_PREFIX}${source}`;
+    if (sessionStorage.getItem(startedKey)) return;
+    sessionStorage.setItem(startedKey, "1");
+    sessionStorage.setItem(PENDING_KEY, source);
+    track(source, action);
   } catch {
     // Depolama kapalıysa görev yine çalışır; yalnız attribution atlanır.
   }
 }
 
 /** Görev açıldıktan sonraki ilk anlamlı katkıyı anonim funnel tamamlanması say. */
-export function completeFirstContributionMission() {
+export function completeContributionMission() {
   try {
-    if (!sessionStorage.getItem(PENDING_KEY)) return;
+    const source = sessionStorage.getItem(PENDING_KEY);
+    if (!isActivationSource(source)) {
+      sessionStorage.removeItem(PENDING_KEY);
+      return;
+    }
     sessionStorage.removeItem(PENDING_KEY);
-    track("completed");
+    track(source, "completed");
   } catch {
     // Katkı akışı ölçüm sorunundan etkilenmez.
   }

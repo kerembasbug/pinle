@@ -108,12 +108,18 @@ export function cityCatPriceStats(name: string, category: string): CatPriceStats
     .prepare(
       `SELECT price, name AS pname, price_item FROM pins
         WHERE status = 'active' AND city = ? AND category = ? AND price IS NOT NULL
+          AND (price_valid_until IS NULL OR date(price_valid_until) >= date('now'))
+          AND NOT EXISTS (
+            SELECT 1 FROM votes v WHERE v.pin_id = pins.id AND v.value = -1
+          )
         ORDER BY price ASC`
     )
     .all(name, category) as { price: number; pname: string; price_item: string | null }[];
   if (rows.length === 0) return null;
   const prices = rows.map((r) => r.price);
-  const median = prices[Math.floor(prices.length / 2)];
+  const middle = Math.floor(prices.length / 2);
+  const median =
+    prices.length % 2 === 1 ? prices[middle] : (prices[middle - 1] + prices[middle]) / 2;
   return {
     count: rows.length,
     min: prices[0],

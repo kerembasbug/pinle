@@ -1,14 +1,17 @@
 import Link from "next/link";
+import Script from "next/script";
 import MapApp from "@/components/MapApp";
 import { CITIES, cityBySlug } from "@/lib/cities";
 
 export default async function Home({
   searchParams,
 }: {
-  searchParams: Promise<{ pin?: string; sehir?: string; kategori?: string }>;
+  searchParams: Promise<{ pin?: string; sehir?: string; kategori?: string; katki?: string }>;
 }) {
-  const { pin, sehir, kategori } = await searchParams;
+  const { pin, sehir, kategori, katki } = await searchParams;
   const initialCenter = sehir ? cityBySlug(sehir)?.center : undefined;
+  const initialMissionSource =
+    katki === "seo_city" || katki === "seo_city_category" ? katki : undefined;
   return (
     <>
       {/* Açılış splash'ı — ilk HTML'de, saf CSS ile ~1.7sn'de kendini kapatır.
@@ -20,22 +23,25 @@ export default async function Home({
       </div>
       {/* Failsafe: CSS animasyonu (eski tarayıcı/arka plan sekme) çalışmazsa bile
           splash 2.6sn sonra kesin kalksın — uygulama asla bloklanmasın. */}
-      <script
-        dangerouslySetInnerHTML={{
-          __html:
-            "setTimeout(function(){var s=document.querySelector('.splash');if(s){s.style.display='none'}},2600)",
-        }}
-      />
+      <Script id="pinle-splash-failsafe" strategy="afterInteractive">
+        {"setTimeout(function(){var s=document.querySelector('.splash');if(s){s.style.display='none'}},2600)"}
+      </Script>
 
-      <MapApp initialPinId={pin} initialCenter={initialCenter} initialCategory={kategori} />
+      <MapApp
+        initialPinId={pin}
+        initialCenter={initialCenter}
+        initialCategory={kategori}
+        initialMissionSource={initialMissionSource}
+      />
       {/* Taranabilir SEO içeriği + şehir sayfalarına iç link akışı (harita SPA'sı istemci tarafı) */}
       <section className="sr-only">
         <h1>Pinle — Kazık Yeme, Pinle. Olduğun Yerin Gerçek Fiyat Haritası</h1>
         <p>
           Nereye gidersen git — tatilde, yeni bir semtte, kendi mahallende — döner, çay, şezlong,
-          berber gerçekte kaça, oturmadan gör. Fiyatları oradakiler giriyor, &quot;hâlâ bu fiyat /
-          zamlandı&quot; oylarıyla oradakiler doğruluyor. Esnaf lokantasından beach club&apos;a
-          tüm fiyatlar haritada. Kayıt yok, anonim başla, fiyatı bilerek git.
+          berber gerçekte kaça, oturmadan gör. Fiyat kayıtları kullanıcı bildirimleri ve Pinle
+          başlangıç verilerinden oluşur; eklenme tarihini ve &quot;hâlâ bu fiyat / zamlandı&quot;
+          doğrulamalarını kontrol et. Esnaf lokantasından beach club&apos;a bilinen fiyatlar
+          haritada. Kayıt yok, anonim başla, fiyatı bilerek git.
         </p>
         <nav aria-label="Şehirler">
           <ul>

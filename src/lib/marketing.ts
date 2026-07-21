@@ -44,7 +44,11 @@ export function isReviewAction(value: unknown): value is ReviewAction {
   return typeof value === "string" && REVIEW_ACTIONS.includes(value as ReviewAction);
 }
 
-export const ACTIVATION_SOURCES = ["first_contribution_mission"] as const;
+export const ACTIVATION_SOURCES = [
+  "first_contribution_mission",
+  "seo_city",
+  "seo_city_category",
+] as const;
 export const ACTIVATION_ACTIONS = ["open_missing_price", "start_new_pin", "completed"] as const;
 
 export type ActivationSource = (typeof ACTIVATION_SOURCES)[number];

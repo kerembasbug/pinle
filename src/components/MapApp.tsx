@@ -21,9 +21,10 @@ import { avatarUrl } from "@/lib/avatars";
 import { getBlocked } from "@/lib/blocklist";
 import { DEFAULT_CITY_ZOOM } from "@/lib/cityCenters";
 import {
-  completeFirstContributionMission,
-  startFirstContributionMission,
+  completeContributionMission,
+  startContributionMission,
 } from "@/lib/activation";
+import type { ActivationSource } from "@/lib/marketing";
 import type { SearchResult } from "./SearchSheet";
 
 // Sheet/overlay bileşenleri yalnızca etkileşimde açılır → ilk JS bundle'ından
@@ -52,10 +53,12 @@ export default function MapApp({
   initialPinId,
   initialCenter,
   initialCategory,
+  initialMissionSource,
 }: {
   initialPinId?: string;
   initialCenter?: [number, number];
   initialCategory?: string;
+  initialMissionSource?: ActivationSource;
 }) {
   // Şehir/kategori sayfasından gelen ön-filtre → yer tipi (eski id de çözülür)
   const initialType =
@@ -76,6 +79,7 @@ export default function MapApp({
   // marker'ları daima buradaki hassas koordinatla konumlanır.
   const pinCoordsRef = useRef<Map<string, [number, number]>>(new Map());
   const visiblePinsRef = useRef<PinSummary[]>([]);
+  const autoMissionStartedRef = useRef(false);
   const lastPlaceRef = useRef<[number, number] | null>(null); // son yerleştirme konumu
   // showMeAt'i harita 'load' closure'ından güncel çağırmak için (TDZ/bayat closure yok)
   const showMeAtRef = useRef<((c: [number, number], animate: boolean) => void) | null>(null);
@@ -102,6 +106,7 @@ export default function MapApp({
   const [authOpen, setAuthOpen] = useState(false);
   const [liveMode, setLiveMode] = useState(false);
   const [reviewTrigger, setReviewTrigger] = useState(0);
+  const [pinsLoadedVersion, setPinsLoadedVersion] = useState(0);
   const liveMarkersRef = useRef<maplibregl.Marker[]>([]);
 
   const showToast = useCallback((msg: string) => {
@@ -231,6 +236,7 @@ export default function MapApp({
             },
           }));
         src.setData({ type: "FeatureCollection", features });
+        setPinsLoadedVersion((version) => version + 1);
       })
       .catch(() => {});
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -499,14 +505,14 @@ export default function MapApp({
     showToast(`+${earned} puan! 🎉`);
     loadPins();
     refreshMe();
-    completeFirstContributionMission();
+    completeContributionMission();
     setReviewTrigger((n) => n + 1);
   };
 
   // flyTo, rAF kısıtlanınca (arka plan sekmesi / güç tasarrufu modu) sessizce
   // donar ve harita hiç kımıldamaz. Kısa süre sonra kamera hiç oynamadıysa
   // jumpTo ile garanti zıpla — "şehir seçince ışınlanmıyor" bunu çözer.
-  const flyOrJump = (opts: maplibregl.FlyToOptions & { center: [number, number] }) => {
+  const flyOrJump = useCallback((opts: maplibregl.FlyToOptions & { center: [number, number] }) => {
     const map = mapRef.current;
     if (!map) return;
     const start = map.getCenter();
@@ -517,7 +523,7 @@ export default function MapApp({
         Math.abs(c.lng - start.lng) > 1e-4 || Math.abs(c.lat - start.lat) > 1e-4;
       if (!moved) map.jumpTo({ center: opts.center, zoom: opts.zoom });
     }, 400);
-  };
+  }, []);
 
   const gotoResult = (r: SearchResult) => {
     setSearchOpen(false);
@@ -525,7 +531,7 @@ export default function MapApp({
     setTimeout(() => setSheet({ kind: "pin", id: r.id }), 400);
   };
 
-  const openFirstContributionMission = () => {
+  const openContributionMission = useCallback((source: ActivationSource) => {
     const map = mapRef.current;
     const center = map?.getCenter();
     const target = visiblePinsRef.current
@@ -539,20 +545,33 @@ export default function MapApp({
       .sort((a, b) => a.distance - b.distance)[0]?.pin;
 
     if (!target) {
-      startFirstContributionMission("start_new_pin");
+      startContributionMission(source, "start_new_pin");
       setPlacing(true);
       showToast("Yakında fiyat bekleyen yer yok — bildiğin yeri pinle 🎯");
       return;
     }
 
-    startFirstContributionMission("open_missing_price");
+    startContributionMission(source, "open_missing_price");
     flyOrJump({ center: [target.lng, target.lat], zoom: 16 });
     showToast("Bu yerin bildiğin güncel fiyatını ekle 🏷️");
     setTimeout(
       () => setSheet({ kind: "pin", id: target.id, firstMission: true }),
       350
     );
-  };
+  }, [flyOrJump, showToast]);
+
+  // Organik şehir/kategori sayfasındaki açık katkı CTA'sı, harita verisi gelir
+  // gelmez aynı filtre bağlamında görevi başlatır. URL'deki tek kullanımlık
+  // parametreyi temizle; UTM'ler kanal analizi için korunur.
+  useEffect(() => {
+    if (!initialMissionSource || pinsLoadedVersion === 0 || autoMissionStartedRef.current) return;
+    autoMissionStartedRef.current = true;
+    openContributionMission(initialMissionSource);
+    const params = new URLSearchParams(window.location.search);
+    params.delete("katki");
+    const rest = params.toString();
+    window.history.replaceState({}, "", window.location.pathname + (rest ? `?${rest}` : ""));
+  }, [initialMissionSource, openContributionMission, pinsLoadedVersion]);
 
   // Yeni pin formundan "zaten var olan mekan" seçilince: mükerrer açma, o pini aç.
   const openExistingPin = (id: string) => {
@@ -676,7 +695,7 @@ export default function MapApp({
           !searchOpen &&
           !authOpen && (
             <button
-              onClick={openFirstContributionMission}
+              onClick={() => openContributionMission("first_contribution_mission")}
               className="sticker pointer-events-auto mt-2 flex min-h-12 w-full items-center gap-2 px-3 py-2 text-left"
               aria-label="İlk görev: fiyat bekleyen yakındaki bir yeri aç"
             >
@@ -776,7 +795,7 @@ export default function MapApp({
           refreshMe();
         }}
         onMeaningfulContribution={() => {
-          completeFirstContributionMission();
+          completeContributionMission();
           setReviewTrigger((n) => n + 1);
         }}
       />
@@ -816,7 +835,7 @@ export default function MapApp({
         }}
       />
 
-      <Onboarding />
+      <Onboarding skip={Boolean(initialMissionSource)} />
       <InstallPrompt onToast={showToast} />
       <ReviewPrompt trigger={reviewTrigger} />
 

@@ -1,19 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const KEY = "pinle_onboarded_v1";
 
 // Not: burada kurulum butonu YOK. (1) Tarayıcıdan kurulum mağaza dışına
 // yönlendirme demek — kurulumu Play'e topluyoruz. (2) Kullanıcı daha haritayı
 // görmeden kurulum istemek erken; Play daveti InstallPrompt'ta 12 sn sonra.
-export default function Onboarding() {
-  const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (!localStorage.getItem(KEY)) setShow(true);
-  }, []);
+export default function Onboarding({ skip = false }: { skip?: boolean }) {
+  const [show, setShow] = useState(
+    () => !skip && typeof window !== "undefined" && !localStorage.getItem(KEY)
+  );
 
   const dismiss = () => {
     localStorage.setItem(KEY, "1");

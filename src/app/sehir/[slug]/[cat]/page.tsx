@@ -42,11 +42,11 @@ export async function generateMetadata({
   if (!v) return { title: "Sayfa bulunamadı — Pinle" };
   const { kw, what } = intentFor(cat);
   const stats = cityCatPriceStats(v.city.name, cat);
-  // Long-tail niyet: "[şehir] [X] fiyatları [yıl]" + "en ucuz [X] ne kadar"
-  const title = `${v.city.name} ${kw} ${YEAR} — En Ucuzu Ne Kadar? | Pinle`;
+  // Long-tail niyet: "[şehir] [X] fiyatları [yıl]" + "[X] ne kadar"
+  const title = `${v.city.name} ${kw} ${YEAR} — Ne Kadar? | Pinle`;
   const description = stats
-    ? `${v.city.name}'da ${what} fiyatları ${YEAR}: ${fmt(stats.min)}–${fmt(stats.max)} arası, ortanca ${fmt(stats.median)}. ${v.pins} nokta, fiyatlar mahalleli tarafından "hâlâ bu fiyat / zamlandı" oylarıyla güncel tutuluyor.`
-    : `${v.city.name}'da en ucuz ${what} nerede? ${v.pins} nokta haritada; fiyatları topluluk giriyor ve doğruluyor. Kayıt yok, anonim bak.`;
+    ? `${v.city.name}'da ${what} fiyat kayıtları ${YEAR}: ${fmt(stats.min)}–${fmt(stats.max)} arası, ortanca ${fmt(stats.median)}. ${v.pins} noktayı incele; tarih ve doğrulama durumunu kontrol et.`
+    : `${v.city.name}'da ${what} için ${v.pins} noktayı haritada incele. Eksik bildiğin fiyatı kayıt olmadan ekle.`;
   return {
     title,
     description,
@@ -90,7 +90,7 @@ export default async function CityCatPage({
           {
             "@type": "ListItem",
             position: 2,
-            name: `${city.name} Ucuz Lezzet Haritası`,
+            name: `${city.name} Fiyat Haritası`,
             item: `https://pinle.app/sehir/${city.slug}`,
           },
           {
@@ -116,7 +116,7 @@ export default async function CityCatPage({
   };
 
   return (
-    <main className="paper-grain mx-auto flex min-h-dvh max-w-2xl flex-col gap-5 p-6">
+    <main className="paper-grain mx-auto flex min-h-dvh w-full min-w-0 max-w-2xl flex-col gap-5 p-6">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLdSafe(jsonLd) }}
@@ -140,9 +140,9 @@ export default async function CityCatPage({
           {city.name} {kw} {YEAR} {meta.emoji}
         </h1>
         <p className="text-[15px] leading-relaxed opacity-80">
-          {city.name}&apos;da en ucuz {what} nerede, kaç TL? Bu sayfadaki fiyatları mahalleli
-          giriyor ve &quot;hâlâ bu fiyat / zamlandı&quot; oylarıyla güncel tutuyor — menü değil,
-          sokakta ödenen gerçek rakamlar. Kayıt yok; anonim bak, bildiğin yeri pinle.
+          {city.name}&apos;da {what}{" "}kaç TL? Pinle&apos;deki kayıtlar kullanıcı bildirimleri ve
+          başlangıç verilerinden oluşur. Fiyatın eklenme tarihini ve &quot;hâlâ bu fiyat /
+          zamlandı&quot; doğrulamalarını kontrol et; gördüğün güncel fiyatı kayıt olmadan ekle.
         </p>
       </header>
 
@@ -172,22 +172,34 @@ export default async function CityCatPage({
             <b className="text-tomato">{fmt(stats.median)}</b>.
             {stats.cheapestName && (
               <>
-                {" "}Şu an en ucuzu <b>{stats.cheapestName}</b>
+                {" "}Bu listedeki en düşük kayıt <b>{stats.cheapestName}</b>
                 {stats.cheapestItem ? ` (${stats.cheapestItem} ${fmt(stats.min)})` : ` (${fmt(stats.min)})`}.
               </>
             )}{" "}
-            Fiyatlar topluluk doğrulamalı ve sürekli güncelleniyor — zamlanan fiyat
-            oylamayla düşürülür, eskiyen fiyat işaretlenir.
+            Bu özet, süresi geçmemiş ve &quot;zamlandı&quot; oyu almamış listedeki kayıtlardan
+            hesaplanır.
+          </p>
+          <p className="text-xs opacity-65">
+            Kullanıcı bildirimleri ve Pinle başlangıç verileri birlikte gösterilir; kapsam
+            tüm şehirdeki bütün işletmeler anlamına gelmez.
           </p>
         </section>
       )}
 
-      <Link
-        href={`/?sehir=${city.slug}&kategori=${cat}`}
-        className="btn btn-tomato self-start px-7 py-3 text-lg"
-      >
-        Haritada Gör 🗺️
-      </Link>
+      <div className="flex flex-wrap gap-2">
+        <Link
+          href={`/?sehir=${city.slug}&kategori=${cat}&katki=seo_city_category&utm_source=seo_city_category&utm_medium=organic&utm_campaign=missing_price`}
+          className="btn btn-tomato max-w-full whitespace-normal px-6 py-3 text-center text-lg leading-tight"
+        >
+          Bu kategoride eksik fiyatı tamamla 🏷️
+        </Link>
+        <Link
+          href={`/?sehir=${city.slug}&kategori=${cat}`}
+          className="btn btn-cream px-5 py-3"
+        >
+          Haritada gör 🗺️
+        </Link>
+      </div>
 
       <section className="flex flex-col gap-2">
         <h2 className="mt-2 text-lg font-extrabold">Noktalar</h2>

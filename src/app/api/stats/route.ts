@@ -248,6 +248,24 @@ export async function GET(request: NextRequest) {
     )
     .all();
 
+  const activationBySource = (
+    d
+      .prepare(
+        `SELECT source,
+                SUM(CASE WHEN action IN ('open_missing_price', 'start_new_pin') THEN 1 ELSE 0 END) AS starts,
+                SUM(CASE WHEN action = 'completed' THEN 1 ELSE 0 END) AS completions
+           FROM activation_events
+          WHERE created_at > datetime('now', '-7 day')
+          GROUP BY source
+          ORDER BY starts DESC, source ASC`
+      )
+      .all() as { source: string; starts: number; completions: number }[]
+  ).map((row) => ({
+    ...row,
+    completion_rate:
+      row.starts > 0 ? Math.round((row.completions / row.starts) * 100) / 100 : null,
+  }));
+
   // Katkı oranı: son 7 günün ziyaretçilerinden pin ekleyenlerin payı (launch KPI'sı)
   const contribution = d
     .prepare(
@@ -280,6 +298,7 @@ export async function GET(request: NextRequest) {
     embedBySource,
     reviewByAction,
     activationByAction,
+    activationBySource,
     last14Days: days,
     launchMetrics: {
       ...launchMetrics,
