@@ -1,66 +1,8 @@
-import { db } from "@/lib/db";
+import { getPriceDataset, PRICE_DATASET_METHOD_VERSION } from "@/lib/priceDataset";
 import { YEAR } from "@/lib/seoIntents";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
-
-type PriceRow = {
-  item: string;
-  price: number;
-  city: string | null;
-  observedAt: string;
-};
-
-type Aggregate = {
-  item: string;
-  count: number;
-  median: number;
-  min: number;
-  max: number;
-  cheapestCity: string;
-  lastObservedAt: string;
-};
-
-function aggregatePrices(): Aggregate[] {
-  const rows = db()
-    .prepare(
-      `SELECT trim(price_item) AS item,
-              price,
-              city,
-              COALESCE(price_updated_at, created_at) AS observedAt
-         FROM pins
-        WHERE status = 'active'
-          AND price IS NOT NULL
-          AND price > 0
-          AND price_item IS NOT NULL
-          AND trim(price_item) != ''`
-    )
-    .all() as PriceRow[];
-
-  const byItem = new Map<string, PriceRow[]>();
-  for (const row of rows) {
-    if (!byItem.has(row.item)) byItem.set(row.item, []);
-    byItem.get(row.item)!.push(row);
-  }
-
-  return [...byItem.entries()]
-    .map(([item, observations]) => {
-      const sorted = [...observations].sort((a, b) => a.price - b.price);
-      const dated = observations.map((row) => row.observedAt).filter(Boolean).sort();
-      return {
-        item,
-        count: observations.length,
-        median: sorted[Math.floor(sorted.length / 2)].price,
-        min: sorted[0].price,
-        max: sorted[sorted.length - 1].price,
-        cheapestCity:
-          sorted[0].city && sorted[0].city !== "-" ? sorted[0].city : "Belirtilmedi",
-        lastObservedAt: dated.at(-1) ?? "",
-      };
-    })
-    .filter((item) => item.count >= 2)
-    .sort((a, b) => b.count - a.count || a.item.localeCompare(b.item, "tr"));
-}
 
 function csvCell(value: string | number): string {
   let text = String(value);
@@ -78,11 +20,15 @@ export async function GET() {
     "minimum_tl",
     "maksimum_tl",
     "en_ucuz_sehir",
+    "gercek_kullanici_gozlemi",
+    "ekip_baslangic_gozlemi",
+    "ikinci_kisi_dogrulamali_gozlem",
     "son_gozlem_utc",
+    "yontem_surumu",
     "kaynak",
   ];
   const source = "https://pinle.app/fiyatlar";
-  const lines = aggregatePrices().map((row) =>
+  const lines = getPriceDataset().items.map((row) =>
     [
       row.item,
       row.count,
@@ -90,7 +36,11 @@ export async function GET() {
       row.min,
       row.max,
       row.cheapestCity,
+      row.userObservationCount,
+      row.seedObservationCount,
+      row.confirmedObservationCount,
       row.lastObservedAt,
+      PRICE_DATASET_METHOD_VERSION,
       source,
     ]
       .map(csvCell)
