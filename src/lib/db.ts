@@ -159,6 +159,17 @@ function migrate(d: Database.Database) {
     );
     CREATE INDEX IF NOT EXISTS idx_review_events_created
       ON review_events(created_at, source, action);
+
+    -- İlk katkı görevinin anonim aktivasyon hunisi. Kullanıcı/pin/IP yok;
+    -- yalnız görev kaynağı, eylem ve sunucu zaman damgası tutulur.
+    CREATE TABLE IF NOT EXISTS activation_events (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      source TEXT NOT NULL,
+      action TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_activation_events_created
+      ON activation_events(created_at, source, action);
   `);
 
   // users: kimlik (login) kolonları — anonim başla, isteğe bağlı bağla

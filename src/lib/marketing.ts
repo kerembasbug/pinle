@@ -43,3 +43,17 @@ export function isReviewSource(value: unknown): value is ReviewSource {
 export function isReviewAction(value: unknown): value is ReviewAction {
   return typeof value === "string" && REVIEW_ACTIONS.includes(value as ReviewAction);
 }
+
+export const ACTIVATION_SOURCES = ["first_contribution_mission"] as const;
+export const ACTIVATION_ACTIONS = ["open_missing_price", "start_new_pin", "completed"] as const;
+
+export type ActivationSource = (typeof ACTIVATION_SOURCES)[number];
+export type ActivationAction = (typeof ACTIVATION_ACTIONS)[number];
+
+export function isActivationSource(value: unknown): value is ActivationSource {
+  return typeof value === "string" && ACTIVATION_SOURCES.includes(value as ActivationSource);
+}
+
+export function isActivationAction(value: unknown): value is ActivationAction {
+  return typeof value === "string" && ACTIVATION_ACTIONS.includes(value as ActivationAction);
+}

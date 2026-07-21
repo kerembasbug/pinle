@@ -33,7 +33,8 @@ export default function Privacy() {
           oyların. <strong>Kullanım verisi:</strong> Günlük tekil ziyaret sayısı (anonim
           kimlik bazında, IP adresi saklanmaz), Google Play, paylaşım ve yayıncıya gömülen
           harita bağlantılarındaki anonim kaynak/hedef/zaman sinyali ile katkı sonrası
-          değerlendirme isteminin anonim kaynak/eylem/zaman sinyali. Davet linkiyle gelirsen anonim kimliğin davet edenin
+          değerlendirme istemi ve ilk katkı görevinin anonim kaynak/eylem/zaman sinyali.
+          Davet linkiyle gelirsen anonim kimliğin davet edenin
           opak koduna bağlanır; paylaştığın metin, hedef kişi veya alıcı saklanmaz.{" "}
           <strong>İsteğe bağlı giriş bilgisi:</strong>{" "}
           Yalnızca &quot;hesabımı koru&quot; dersen — Google ile girişte Google hesap

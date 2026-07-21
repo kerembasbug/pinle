@@ -17,6 +17,7 @@ type Props = {
   onToast: (msg: string) => void;
   onChanged: () => void;
   onMeaningfulContribution: () => void;
+  startPriceEditing?: boolean;
 };
 
 // Dopamin patlaması: kart üzerinde yükselen emoji konfetisi (saf CSS animasyon)
@@ -48,6 +49,7 @@ export default function PinSheet({
   onToast,
   onChanged,
   onMeaningfulContribution,
+  startPriceEditing = false,
 }: Props) {
   const [pin, setPin] = useState<PinDetail | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
@@ -88,13 +90,16 @@ export default function PinSheet({
         // Mevcut kalem varsa ön-doldur; yoksa BOŞ bırak (kategori adı değil —
         // "Esnaf Lokantası" bir ürün değildir; öneri çipleri yol gösterir).
         setItemInput(data.pin.price_item ?? "");
+        if (startPriceEditing && isPriceable(data.pin.kind, data.pin.category)) {
+          setEditingPrice(true);
+        }
       })
       .catch(() => {
         onToast("Pin yüklenemedi");
         onClose();
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pinId]);
+  }, [pinId, startPriceEditing]);
 
   const pop = () => setBurst(Date.now());
 

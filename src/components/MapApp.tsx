@@ -20,6 +20,10 @@ import { playPinSound } from "@/lib/sfx";
 import { avatarUrl } from "@/lib/avatars";
 import { getBlocked } from "@/lib/blocklist";
 import { DEFAULT_CITY_ZOOM } from "@/lib/cityCenters";
+import {
+  completeFirstContributionMission,
+  startFirstContributionMission,
+} from "@/lib/activation";
 import type { SearchResult } from "./SearchSheet";
 
 // Sheet/overlay bileşenleri yalnızca etkileşimde açılır → ilk JS bundle'ından
@@ -38,7 +42,7 @@ const ISTANBUL: [number, number] = [28.98, 41.03];
 
 type SheetState =
   | { kind: "none" }
-  | { kind: "pin"; id: string }
+  | { kind: "pin"; id: string; firstMission?: boolean }
   | { kind: "new"; lat: number; lng: number; pinKind: PinKind }
   | { kind: "profile" };
 
@@ -71,6 +75,7 @@ export default function MapApp({
   // yuvarlanmış geometri döndürür — düşük zoomda yüzlerce metre kayar. DOM
   // marker'ları daima buradaki hassas koordinatla konumlanır.
   const pinCoordsRef = useRef<Map<string, [number, number]>>(new Map());
+  const visiblePinsRef = useRef<PinSummary[]>([]);
   const lastPlaceRef = useRef<[number, number] | null>(null); // son yerleştirme konumu
   // showMeAt'i harita 'load' closure'ından güncel çağırmak için (TDZ/bayat closure yok)
   const showMeAtRef = useRef<((c: [number, number], animate: boolean) => void) | null>(null);
@@ -205,9 +210,9 @@ export default function MapApp({
         const src = map.getSource("pins") as maplibregl.GeoJSONSource | undefined;
         if (!src) return;
         const blocked = getBlocked();
+        visiblePinsRef.current = pins.filter((p) => !blocked.has(p.authorId));
         for (const p of pins) pinCoordsRef.current.set(p.id, [p.lng, p.lat]);
-        const features = pins
-          .filter((p) => !blocked.has(p.authorId))
+        const features = visiblePinsRef.current
           .map((p) => ({
             type: "Feature" as const,
             geometry: { type: "Point" as const, coordinates: [p.lng, p.lat] },
@@ -494,6 +499,7 @@ export default function MapApp({
     showToast(`+${earned} puan! 🎉`);
     loadPins();
     refreshMe();
+    completeFirstContributionMission();
     setReviewTrigger((n) => n + 1);
   };
 
@@ -517,6 +523,35 @@ export default function MapApp({
     setSearchOpen(false);
     flyOrJump({ center: [r.lng, r.lat], zoom: 16 });
     setTimeout(() => setSheet({ kind: "pin", id: r.id }), 400);
+  };
+
+  const openFirstContributionMission = () => {
+    const map = mapRef.current;
+    const center = map?.getCenter();
+    const target = visiblePinsRef.current
+      .filter((p) => p.price == null && isPriceable(p.kind, p.category))
+      .map((p) => ({
+        pin: p,
+        distance: center
+          ? (p.lng - center.lng) ** 2 + (p.lat - center.lat) ** 2
+          : Number.POSITIVE_INFINITY,
+      }))
+      .sort((a, b) => a.distance - b.distance)[0]?.pin;
+
+    if (!target) {
+      startFirstContributionMission("start_new_pin");
+      setPlacing(true);
+      showToast("Yakında fiyat bekleyen yer yok — bildiğin yeri pinle 🎯");
+      return;
+    }
+
+    startFirstContributionMission("open_missing_price");
+    flyOrJump({ center: [target.lng, target.lat], zoom: 16 });
+    showToast("Bu yerin bildiğin güncel fiyatını ekle 🏷️");
+    setTimeout(
+      () => setSheet({ kind: "pin", id: target.id, firstMission: true }),
+      350
+    );
   };
 
   // Yeni pin formundan "zaten var olan mekan" seçilince: mükerrer açma, o pini aç.
@@ -635,6 +670,24 @@ export default function MapApp({
             </button>
           ))}
         </div>
+        {me?.meaningfulContributionCount === 0 &&
+          sheet.kind === "none" &&
+          !placing &&
+          !searchOpen &&
+          !authOpen && (
+            <button
+              onClick={openFirstContributionMission}
+              className="sticker pointer-events-auto mt-2 flex min-h-12 w-full items-center gap-2 px-3 py-2 text-left"
+              aria-label="İlk görev: fiyat bekleyen yakındaki bir yeri aç"
+            >
+              <span className="text-xl" aria-hidden>🎯</span>
+              <span className="min-w-0 flex-1 text-xs leading-tight">
+                <b className="block text-sm">İlk görev: bir gerçek fiyat ekle</b>
+                Fiyat bekleyen yakındaki yeri birlikte bulalım.
+              </span>
+              <span className="shrink-0 text-xs font-extrabold text-tomato">Yeri aç →</span>
+            </button>
+          )}
       </header>
 
       {/* Nişangah modu */}
@@ -715,13 +768,17 @@ export default function MapApp({
       {/* Alt sayfalar */}
       <PinSheet
         pinId={sheet.kind === "pin" ? sheet.id : null}
+        startPriceEditing={sheet.kind === "pin" && sheet.firstMission === true}
         onClose={() => setSheet({ kind: "none" })}
         onToast={showToast}
         onChanged={() => {
           loadPins();
           refreshMe();
         }}
-        onMeaningfulContribution={() => setReviewTrigger((n) => n + 1)}
+        onMeaningfulContribution={() => {
+          completeFirstContributionMission();
+          setReviewTrigger((n) => n + 1);
+        }}
       />
       <NewPinSheet
         coords={sheet.kind === "new" ? { lat: sheet.lat, lng: sheet.lng } : null}
