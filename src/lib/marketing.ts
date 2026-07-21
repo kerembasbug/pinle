@@ -5,6 +5,7 @@ export const PLAY_SOURCES = [
   "en_bottom",
   "sprint_istanbul_hero",
   "sprint_istanbul_bottom",
+  "basin_play",
 ] as const;
 
 export type PlaySource = (typeof PLAY_SOURCES)[number];

@@ -57,6 +57,9 @@ export default async function Home({
               <Link href="/sprint/istanbul">İstanbul Fiyat Sprinti — Beyoğlu ve Kadıköy gerçek fiyat yarışı</Link>
             </li>
             <li>
+              <Link href="/basin">Pinle basın ve medya kiti — ürün özeti, görseller ve iletişim</Link>
+            </li>
+            <li>
               <Link href="/en">Pinle in English — community-updated local price map</Link>
             </li>
           </ul>

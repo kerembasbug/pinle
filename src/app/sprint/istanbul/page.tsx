@@ -230,6 +230,7 @@ export default function IstanbulPriceSprintPage() {
           </p>
           <div className="flex gap-4">
             <Link href="/android">Android</Link>
+            <Link href="/basin">Basın</Link>
             <Link href="/fiyatlar">Veri yöntemi</Link>
             <Link href="/gizlilik">Gizlilik</Link>
           </div>
