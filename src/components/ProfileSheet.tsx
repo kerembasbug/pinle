@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { AVATARS } from "@/lib/avatars";
 import { Avatar } from "./Avatar";
 import { isMuted, setMuted, playPinSound } from "@/lib/sfx";
+import { playUrl, isAndroid, isInstalledApp } from "@/lib/store";
 import type { Me } from "@/lib/types";
 
 type Props = {
@@ -20,9 +21,14 @@ type Props = {
 export default function ProfileSheet({ open, me, onClose, onOpenAuth, onLogout, onToast, onChanged }: Props) {
   const [picking, setPicking] = useState(false);
   const [muted, setMutedState] = useState(false);
+  // İstemcide ölç: sunucuda navigator yok, doğrudan render edilirse hydration uyuşmaz
+  const [showPlay, setShowPlay] = useState(false);
   useEffect(() => {
     if (open) setMutedState(isMuted());
   }, [open]);
+  useEffect(() => {
+    setShowPlay(isAndroid() && !isInstalledApp());
+  }, []);
   const toggleSound = () => {
     const next = !muted;
     setMuted(next);
@@ -140,6 +146,24 @@ export default function ProfileSheet({ open, me, onClose, onOpenAuth, onLogout, 
               <Link href="/liderler" className="btn btn-mustard mt-3 block py-3 text-center">
                 🏆 Liderlik Tablosu
               </Link>
+
+              {/* Play kurulumu — kalıcı giriş (banner kapatılmış olabilir).
+                  Zaten uygulamadan açılmışsa gösterme. */}
+              {showPlay && (
+                <a
+                  href={playUrl("profil")}
+                  target="_blank"
+                  rel="noopener"
+                  className="sticker-flat mt-3 flex items-center gap-3 bg-cream px-3 py-2.5"
+                >
+                  <span className="text-lg">📲</span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-sm font-bold">Uygulamayı indir</p>
+                    <p className="text-[11px] opacity-60">Google Play&apos;de yayında</p>
+                  </div>
+                  <span className="text-xs underline opacity-60">İndir</span>
+                </a>
+              )}
 
               <button
                 onClick={toggleSound}
