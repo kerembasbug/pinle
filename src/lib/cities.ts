@@ -1,25 +1,11 @@
 import { db } from "./db";
 
-export type City = {
-  slug: string;
-  name: string; // pins.city ile birebir eşleşmeli
-  center: [number, number]; // [lng, lat]
-};
-
-// Pilot 7 şehir. slug'lar ASCII (SEO dostu URL). name, DB'deki city değeriyle aynı.
-export const CITIES: City[] = [
-  { slug: "istanbul", name: "İstanbul", center: [28.98, 41.03] },
-  { slug: "ankara", name: "Ankara", center: [32.85, 39.92] },
-  { slug: "izmir", name: "İzmir", center: [27.14, 38.42] },
-  { slug: "mugla", name: "Muğla", center: [28.36, 37.21] },
-  { slug: "aydin", name: "Aydın", center: [27.84, 37.85] },
-  { slug: "manisa", name: "Manisa", center: [27.43, 38.61] },
-  { slug: "denizli", name: "Denizli", center: [29.09, 37.85] },
-];
-
-export function cityBySlug(slug: string): City | undefined {
-  return CITIES.find((c) => c.slug === slug);
-}
+// Şehir listesi/merkezleri lib/cityCenters.ts'te (db import etmeyen saf modül —
+// istemci bileşenleri de oradan okuyor). Buradan yeniden dışa aktarılıyor ki
+// mevcut `from "@/lib/cities"` import'ları kırılmasın.
+export { CITIES, cityBySlug } from "./cityCenters";
+export type { City } from "./cityCenters";
+import { CITIES } from "./cityCenters";
 
 export type CityStats = { pins: number; priced: number; districts: number };
 

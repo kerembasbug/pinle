@@ -15,22 +15,15 @@ export type SearchResult = {
   lng: number;
 };
 
-export const CITY_CENTERS: { name: string; center: [number, number] }[] = [
-  { name: "İstanbul", center: [28.98, 41.03] },
-  { name: "Ankara", center: [32.85, 39.92] },
-  { name: "İzmir", center: [27.14, 38.42] },
-  { name: "Muğla", center: [28.36, 37.21] },
-  { name: "Bodrum", center: [27.43, 37.03] },
-  { name: "Aydın", center: [27.84, 37.85] },
-  { name: "Manisa", center: [27.43, 38.61] },
-  { name: "Denizli", center: [29.09, 37.85] },
-];
+// Merkezler lib/cityCenters.ts'te (tek kaynak — SEO sayfaları da aynısını kullanır)
+import { PLACE_CHIPS } from "@/lib/cityCenters";
+export { PLACE_CHIPS as CITY_CENTERS };
 
 type Props = {
   open: boolean;
   onClose: () => void;
   onPickResult: (r: SearchResult) => void;
-  onPickCity: (center: [number, number]) => void;
+  onPickCity: (center: [number, number], zoom?: number) => void;
   onLocate: () => void;
 };
 
@@ -127,10 +120,10 @@ export default function SearchSheet({ open, onClose, onPickResult, onPickCity, o
             <>
               <h3 className="mt-4 text-sm font-bold opacity-70">Şehir</h3>
               <div className="mt-2 flex flex-wrap gap-1.5">
-                {CITY_CENTERS.map((c) => (
+                {PLACE_CHIPS.map((c) => (
                   <button
                     key={c.name}
-                    onClick={() => onPickCity(c.center)}
+                    onClick={() => onPickCity(c.center, c.zoom)}
                     className="btn btn-cream px-3 py-1.5 text-sm"
                   >
                     🏙️ {c.name}

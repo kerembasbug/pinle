@@ -19,6 +19,7 @@ import { isStalePrice, validityLabel } from "@/lib/validity";
 import { playPinSound } from "@/lib/sfx";
 import { avatarUrl } from "@/lib/avatars";
 import { getBlocked } from "@/lib/blocklist";
+import { DEFAULT_CITY_ZOOM } from "@/lib/cityCenters";
 import type { SearchResult } from "./SearchSheet";
 
 // Sheet/overlay bileşenleri yalnızca etkileşimde açılır → ilk JS bundle'ından
@@ -520,9 +521,11 @@ export default function MapApp({
     setSheet({ kind: "pin", id });
   };
 
-  const gotoCity = (center: [number, number]) => {
+  // Bazı iller (Muğla) şehir merkezinde değil kıyıya yayılmış — o yüzden zoom
+  // şehre göre değişebiliyor (bkz. lib/cityCenters.ts).
+  const gotoCity = (center: [number, number], zoom = DEFAULT_CITY_ZOOM) => {
     setSearchOpen(false);
-    flyOrJump({ center, zoom: 12.5 });
+    flyOrJump({ center, zoom });
   };
 
   const logout = async () => {
