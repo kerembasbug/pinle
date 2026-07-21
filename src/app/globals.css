@@ -57,6 +57,12 @@ h1, h2, h3, .display {
   border-radius: 14px;
 }
 
+/* Sticker tabanı `background` verdiği için aynı elemandaki Tailwind bg-* sınıfları
+   kaynak sırası nedeniyle ezilebiliyor. Pazarlama/sonuç kartlarında açık renk sözleşmesi. */
+.sticker-tomato { background: var(--tomato); }
+.sticker-mustard { background: var(--mustard); }
+.sticker-mint { background: #e7f5f1; }
+
 .btn {
   font-family: var(--font-baloo), system-ui, sans-serif;
   font-weight: 700;

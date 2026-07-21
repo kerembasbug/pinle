@@ -32,7 +32,8 @@ export async function GET(request: NextRequest) {
          (SELECT COUNT(*) FROM pins p WHERE date(p.created_at) = dates.day) AS pins,
          (SELECT COUNT(*) FROM users u WHERE date(u.created_at) = dates.day) AS new_users,
          (SELECT COUNT(*) FROM votes vt WHERE date(vt.created_at) = dates.day) AS votes,
-         (SELECT COUNT(*) FROM comments c WHERE date(c.created_at) = dates.day) AS comments
+         (SELECT COUNT(*) FROM comments c WHERE date(c.created_at) = dates.day) AS comments,
+         (SELECT COUNT(*) FROM outbound_clicks oc WHERE date(oc.created_at) = dates.day) AS play_clicks
        FROM dates ORDER BY dates.day`
     )
     .all();
@@ -45,12 +46,23 @@ export async function GET(request: NextRequest) {
         (SELECT COUNT(*) FROM pins WHERE status = 'hidden') AS hidden_pins,
         (SELECT COUNT(*) FROM votes) AS votes,
         (SELECT COUNT(*) FROM comments) AS comments,
-        (SELECT COUNT(*) FROM reports) AS reports`
+        (SELECT COUNT(*) FROM reports) AS reports,
+        (SELECT COUNT(*) FROM outbound_clicks) AS outbound_play_clicks`
     )
     .get();
 
   const byKind = d
     .prepare("SELECT kind, COUNT(*) AS c FROM pins WHERE status = 'active' GROUP BY kind")
+    .all();
+
+  const playBySource = d
+    .prepare(
+      `SELECT source, COUNT(*) AS clicks
+         FROM outbound_clicks
+        WHERE created_at > datetime('now', '-30 day')
+        GROUP BY source
+        ORDER BY clicks DESC, source ASC`
+    )
     .all();
 
   // Katkı oranı: son 7 günün ziyaretçilerinden pin ekleyenlerin payı (launch KPI'sı)
@@ -65,6 +77,7 @@ export async function GET(request: NextRequest) {
   return Response.json({
     totals,
     byKind,
+    playBySource,
     last14Days: days,
     contributionRate:
       contribution.weekly_visitors > 0

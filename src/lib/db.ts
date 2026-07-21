@@ -117,6 +117,16 @@ function migrate(d: Database.Database) {
       user_id TEXT NOT NULL,
       PRIMARY KEY (day, user_id)
     );
+
+    -- Pazarlama landing page'lerinden Google Play'e giden gerçek kullanıcı
+    -- tıklamaları. Kimlik/IP tutulmaz; yalnız CTA kaynağı ve zaman damgası.
+    CREATE TABLE IF NOT EXISTS outbound_clicks (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      source TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_outbound_clicks_created
+      ON outbound_clicks(created_at, source);
   `);
 
   // users: kimlik (login) kolonları — anonim başla, isteğe bağlı bağla

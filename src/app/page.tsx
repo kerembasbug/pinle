@@ -1,7 +1,6 @@
 import Link from "next/link";
 import MapApp from "@/components/MapApp";
 import { CITIES, cityBySlug } from "@/lib/cities";
-import { playUrl } from "@/lib/store";
 
 export default async function Home({
   searchParams,
@@ -52,9 +51,10 @@ export default async function Home({
               <Link href="/liderler">Liderlik tablosu</Link>
             </li>
             <li>
-              <a href={playUrl("anasayfa")}>
-                Pinle Android uygulamasını Google Play&apos;den indir
-              </a>
+              <Link href="/android">Pinle Android uygulaması — gerçek fiyat haritasını indir</Link>
+            </li>
+            <li>
+              <Link href="/en">Pinle in English — community-updated local price map</Link>
             </li>
           </ul>
         </nav>
