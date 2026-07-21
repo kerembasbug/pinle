@@ -54,6 +54,11 @@ export async function GET(request: NextRequest) {
           )) AS active_contributors,
          (SELECT COUNT(*) FROM comments c WHERE date(c.created_at) = dates.day) AS comments,
          (SELECT COUNT(*) FROM share_clicks sc WHERE date(sc.created_at) = dates.day) AS shares,
+         (SELECT COUNT(*) FROM users ru WHERE date(ru.referred_at) = dates.day) AS referral_bindings,
+         (SELECT COUNT(*) FROM users ru
+            WHERE ru.referred_by IS NOT NULL
+              AND date((SELECT MIN(p.created_at) FROM pins p WHERE p.user_id = ru.id)) = dates.day
+         ) AS referral_activations,
          (SELECT COUNT(*) FROM outbound_clicks oc WHERE date(oc.created_at) = dates.day) AS play_clicks
        FROM dates ORDER BY dates.day`
     )
@@ -72,6 +77,10 @@ export async function GET(request: NextRequest) {
         (SELECT COUNT(*) FROM comments) AS comments,
         (SELECT COUNT(*) FROM reports) AS reports,
         (SELECT COUNT(*) FROM share_clicks) AS share_clicks,
+        (SELECT COUNT(*) FROM users WHERE referred_by IS NOT NULL) AS referred_users,
+        (SELECT COUNT(*) FROM users ru
+          WHERE ru.referred_by IS NOT NULL
+            AND EXISTS (SELECT 1 FROM pins p WHERE p.user_id = ru.id)) AS activated_referrals,
         (SELECT COUNT(*) FROM outbound_clicks) AS outbound_play_clicks`
     )
     .get();
@@ -112,7 +121,13 @@ export async function GET(request: NextRequest) {
              AND value = -1) AS outdated_reports,
          (SELECT COUNT(*) FROM pins p JOIN users u ON u.id = p.user_id
            WHERE p.created_at > datetime('now', '-7 day')
-             AND u.name != 'Pinle Ekibi 📌') AS user_created_pins`
+             AND u.name != 'Pinle Ekibi 📌') AS user_created_pins,
+         (SELECT COUNT(*) FROM users ru
+           WHERE ru.referred_at > datetime('now', '-7 day')) AS referral_bindings,
+         (SELECT COUNT(*) FROM users ru
+           WHERE ru.referred_by IS NOT NULL
+             AND (SELECT MIN(p.created_at) FROM pins p WHERE p.user_id = ru.id)
+                 > datetime('now', '-7 day')) AS referral_activations`
     )
     .get() as {
     active_contributors: number;
@@ -120,6 +135,8 @@ export async function GET(request: NextRequest) {
     price_verifications: number;
     outdated_reports: number;
     user_created_pins: number;
+    referral_bindings: number;
+    referral_activations: number;
   };
 
   const districtSignals = d

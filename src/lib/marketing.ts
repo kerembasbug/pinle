@@ -14,7 +14,12 @@ export function isPlaySource(value: unknown): value is PlaySource {
   return typeof value === "string" && PLAY_SOURCES.includes(value as PlaySource);
 }
 
-export const SHARE_SOURCES = ["sprint_whatsapp", "sprint_x"] as const;
+export const SHARE_SOURCES = [
+  "sprint_whatsapp",
+  "sprint_x",
+  "profile_invite",
+  "pin_share",
+] as const;
 
 export type ShareSource = (typeof SHARE_SOURCES)[number];
 

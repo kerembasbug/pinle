@@ -155,6 +155,9 @@ function migrate(d: Database.Database) {
   if (!userCols.some((c) => c.name === "referred_by")) {
     d.exec("ALTER TABLE users ADD COLUMN referred_by TEXT");
   }
+  if (!userCols.some((c) => c.name === "referred_at")) {
+    d.exec("ALTER TABLE users ADD COLUMN referred_at TEXT");
+  }
   // Emoji avatar (sabit listeden seçilir — lib/avatars.ts)
   if (!userCols.some((c) => c.name === "avatar")) {
     d.exec("ALTER TABLE users ADD COLUMN avatar TEXT");

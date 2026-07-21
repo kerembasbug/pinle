@@ -6,6 +6,7 @@ import type { Comment, PinDetail } from "@/lib/types";
 import { formatPrice, timeAgo } from "@/lib/types";
 import { isStalePrice, validityLabel } from "@/lib/validity";
 import { playPinSound } from "@/lib/sfx";
+import { trackShare } from "@/lib/share";
 import { Avatar } from "./Avatar";
 import { blockAuthor, getBlocked } from "@/lib/blocklist";
 import { useItemSuggest } from "./useItemSuggest";
@@ -225,13 +226,21 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
 
   const share = async () => {
     if (!pin) return;
-    const url = `${location.origin}/pin/${pin.id}`;
+    const url = new URL(`/pin/${pin.id}`, location.origin);
+    url.searchParams.set("utm_source", "pin_share");
+    url.searchParams.set("utm_medium", "share");
+    url.searchParams.set("utm_campaign", "organic_product_share");
     const title = `${pin.name} — Pinle`;
-    if (navigator.share) {
-      await navigator.share({ title, url }).catch(() => {});
-    } else {
-      await navigator.clipboard.writeText(url);
-      onToast("Link kopyalandı 🔗");
+    try {
+      if (navigator.share) {
+        await navigator.share({ title, url: url.toString() });
+      } else {
+        await navigator.clipboard.writeText(url.toString());
+        onToast("Link kopyalandı 🔗");
+      }
+      trackShare("pin_share");
+    } catch {
+      // Kullanıcı native paylaşım penceresini kapattıysa dönüşüm yazma.
     }
   };
 

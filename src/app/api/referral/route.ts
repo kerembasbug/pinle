@@ -38,6 +38,9 @@ export async function POST(request: Request) {
   }
   const referrer = resolveCode(code);
   if (!referrer || referrer === user.id) return Response.json({ ok: false });
-  d.prepare("UPDATE users SET referred_by = ? WHERE id = ?").run(referrer, user.id);
+  d.prepare("UPDATE users SET referred_by = ?, referred_at = datetime('now') WHERE id = ?").run(
+    referrer,
+    user.id,
+  );
   return Response.json({ ok: true });
 }

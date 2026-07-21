@@ -31,7 +31,10 @@ export default function Privacy() {
           eşleştirilmez. <strong>İçerik verileri:</strong> Eklediğin pinler (mekan/konu adı,
           kategori, fiyat, not, fotoğraf ve pinlediğin noktanın koordinatı), yorumların ve
           oyların. <strong>Kullanım verisi:</strong> Günlük tekil ziyaret sayısı (anonim
-          kimlik bazında, IP adresi saklanmaz). <strong>İsteğe bağlı giriş bilgisi:</strong>{" "}
+          kimlik bazında, IP adresi saklanmaz), Google Play ve paylaşım bağlantılarındaki
+          anonim kaynak/zaman sinyali. Davet linkiyle gelirsen anonim kimliğin davet edenin
+          opak koduna bağlanır; paylaştığın metin, hedef kişi veya alıcı saklanmaz.{" "}
+          <strong>İsteğe bağlı giriş bilgisi:</strong>{" "}
           Yalnızca &quot;hesabımı koru&quot; dersen — Google ile girişte Google hesap
           kimliğin/e-postan, e-posta ile girişte verdiğin e-posta adresi saklanır ve anonim
           kimliğine bağlanır. Giriş yapmazsan bu veriler hiç toplanmaz.
@@ -94,7 +97,7 @@ export default function Privacy() {
         </p>
 
         <p className="opacity-60">
-          Son güncelleme: 9 Temmuz 2026.
+          Son güncelleme: 21 Temmuz 2026.
         </p>
       </div>
 

@@ -6,6 +6,7 @@ import { AVATARS } from "@/lib/avatars";
 import { Avatar } from "./Avatar";
 import { isMuted, setMuted, playPinSound } from "@/lib/sfx";
 import { playUrl, isAndroid, isInstalledApp } from "@/lib/store";
+import { trackShare } from "@/lib/share";
 import type { Me } from "@/lib/types";
 
 type Props = {
@@ -51,13 +52,23 @@ export default function ProfileSheet({ open, me, onClose, onOpenAuth, onLogout, 
   // Davet linki paylaş: Web Share varsa native sheet, yoksa panoya kopyala.
   const invite = async () => {
     if (!me) return;
-    const url = `${location.origin}/?ref=${me.refCode}`;
-    const text = "Mahallendeki ucuz lezzetleri ve indirimleri haritada gör — Pinle'ye davetlisin 📍";
-    if (navigator.share) {
-      await navigator.share({ title: "Pinle", text, url }).catch(() => {});
-    } else {
-      await navigator.clipboard.writeText(`${text} ${url}`);
-      onToast("Davet linki kopyalandı 🔗");
+    const url = new URL(location.origin);
+    url.searchParams.set("ref", me.refCode);
+    url.searchParams.set("utm_source", "referral");
+    url.searchParams.set("utm_medium", "share");
+    url.searchParams.set("utm_campaign", "product_invite");
+    const text =
+      "Çevrende gerçekten ne ödendiğini gör, ilk fiyatını haritaya ekle. İlk pinin sana 10 puan, beni de +15 puanla destekliyor 📍";
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: "Pinle gerçek fiyat haritası", text, url: url.toString() });
+      } else {
+        await navigator.clipboard.writeText(`${text} ${url.toString()}`);
+        onToast("Davet linki kopyalandı 🔗");
+      }
+      trackShare("profile_invite");
+    } catch {
+      // Kullanıcı native paylaşım penceresini kapattıysa dönüşüm yazma.
     }
   };
   return (
@@ -140,7 +151,7 @@ export default function ProfileSheet({ open, me, onClose, onOpenAuth, onLogout, 
                 🎁 Arkadaşını davet et {me.invitedCount > 0 ? `(${me.invitedCount} kişi geldi)` : "(+15 puan)"}
               </button>
               <p className="mt-1 text-center text-[11px] opacity-50">
-                Davet ettiğin kişi ilk pinini atınca +15 puan kazanırsın
+                Arkadaşın ilk gerçek pinini ekleyince +15 puan kazanırsın
               </p>
 
               <Link href="/liderler" className="btn btn-mustard mt-3 block py-3 text-center">
