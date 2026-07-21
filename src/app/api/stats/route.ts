@@ -59,6 +59,7 @@ export async function GET(request: NextRequest) {
             WHERE ru.referred_by IS NOT NULL
               AND date((SELECT MIN(p.created_at) FROM pins p WHERE p.user_id = ru.id)) = dates.day
          ) AS referral_activations,
+         (SELECT COUNT(*) FROM embed_clicks ec WHERE date(ec.created_at) = dates.day) AS embed_clicks,
          (SELECT COUNT(*) FROM outbound_clicks oc WHERE date(oc.created_at) = dates.day) AS play_clicks
        FROM dates ORDER BY dates.day`
     )
@@ -81,6 +82,7 @@ export async function GET(request: NextRequest) {
         (SELECT COUNT(*) FROM users ru
           WHERE ru.referred_by IS NOT NULL
             AND EXISTS (SELECT 1 FROM pins p WHERE p.user_id = ru.id)) AS activated_referrals,
+        (SELECT COUNT(*) FROM embed_clicks) AS embed_clicks,
         (SELECT COUNT(*) FROM outbound_clicks) AS outbound_play_clicks`
     )
     .get();
@@ -127,7 +129,9 @@ export async function GET(request: NextRequest) {
          (SELECT COUNT(*) FROM users ru
            WHERE ru.referred_by IS NOT NULL
              AND (SELECT MIN(p.created_at) FROM pins p WHERE p.user_id = ru.id)
-                 > datetime('now', '-7 day')) AS referral_activations`
+                 > datetime('now', '-7 day')) AS referral_activations,
+         (SELECT COUNT(*) FROM embed_clicks
+           WHERE created_at > datetime('now', '-7 day')) AS embed_referrals`
     )
     .get() as {
     active_contributors: number;
@@ -137,6 +141,7 @@ export async function GET(request: NextRequest) {
     user_created_pins: number;
     referral_bindings: number;
     referral_activations: number;
+    embed_referrals: number;
   };
 
   const districtSignals = d
@@ -182,6 +187,16 @@ export async function GET(request: NextRequest) {
     )
     .all();
 
+  const embedBySource = d
+    .prepare(
+      `SELECT source, target, COUNT(*) AS clicks
+         FROM embed_clicks
+        WHERE created_at > datetime('now', '-30 day')
+        GROUP BY source, target
+        ORDER BY clicks DESC, source ASC, target ASC`
+    )
+    .all();
+
   // Katkı oranı: son 7 günün ziyaretçilerinden pin ekleyenlerin payı (launch KPI'sı)
   const contribution = d
     .prepare(
@@ -201,6 +216,7 @@ export async function GET(request: NextRequest) {
     byKind,
     playBySource,
     shareBySource,
+    embedBySource,
     last14Days: days,
     launchMetrics: {
       ...launchMetrics,

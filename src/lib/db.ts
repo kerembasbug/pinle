@@ -137,6 +137,17 @@ function migrate(d: Database.Database) {
     );
     CREATE INDEX IF NOT EXISTS idx_share_clicks_created
       ON share_clicks(created_at, source);
+
+    -- Yayıncı iframe'inden Pinle ana sayfasına veya bir pin detayına giden
+    -- anonim tıklamalar. Yalnız yayıncının kısa kaynak kodu, hedef türü ve zaman.
+    CREATE TABLE IF NOT EXISTS embed_clicks (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      source TEXT NOT NULL,
+      target TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_embed_clicks_created
+      ON embed_clicks(created_at, source, target);
   `);
 
   // users: kimlik (login) kolonları — anonim başla, isteğe bağlı bağla

@@ -31,8 +31,8 @@ export default function Privacy() {
           eşleştirilmez. <strong>İçerik verileri:</strong> Eklediğin pinler (mekan/konu adı,
           kategori, fiyat, not, fotoğraf ve pinlediğin noktanın koordinatı), yorumların ve
           oyların. <strong>Kullanım verisi:</strong> Günlük tekil ziyaret sayısı (anonim
-          kimlik bazında, IP adresi saklanmaz), Google Play ve paylaşım bağlantılarındaki
-          anonim kaynak/zaman sinyali. Davet linkiyle gelirsen anonim kimliğin davet edenin
+          kimlik bazında, IP adresi saklanmaz), Google Play, paylaşım ve yayıncıya gömülen
+          harita bağlantılarındaki anonim kaynak/hedef/zaman sinyali. Davet linkiyle gelirsen anonim kimliğin davet edenin
           opak koduna bağlanır; paylaştığın metin, hedef kişi veya alıcı saklanmaz.{" "}
           <strong>İsteğe bağlı giriş bilgisi:</strong>{" "}
           Yalnızca &quot;hesabımı koru&quot; dersen — Google ile girişte Google hesap

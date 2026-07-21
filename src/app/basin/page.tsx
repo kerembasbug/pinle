@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import CopyEmbedCodeButton from "@/components/CopyEmbedCodeButton";
 import PlayStoreLink from "@/components/PlayStoreLink";
 import { jsonLdSafe } from "@/lib/jsonld";
 
@@ -51,6 +52,18 @@ const facts = [
   ["Hesapsız başlangıç", "Temel kullanım modeli"],
   ["Gör · ekle · doğrula", "Topluluk döngüsü"],
 ] as const;
+
+const embedCode = `<iframe
+  src="https://pinle.app/embed?source=publisher&lat=41.03&lng=28.98&zoom=11.8"
+  title="Pinle gerçek fiyat haritası"
+  width="100%"
+  height="480"
+  loading="lazy"
+  style="border:0"
+></iframe>
+<p>Gerçek fiyat haritası:
+  <a href="https://pinle.app/?utm_source=publisher&utm_medium=embed&utm_campaign=publisher_widget">Pinle</a>
+</p>`;
 
 const sources = [
   {
@@ -229,6 +242,47 @@ export default function PressPage() {
               <span className="mt-4 inline-block text-sm font-bold underline underline-offset-4">Görseli aç ↗</span>
             </a>
           </div>
+        </section>
+
+        <section id="haritayi-gom" aria-labelledby="embed-baslik" className="space-y-4 scroll-mt-6">
+          <div>
+            <p className="text-sm font-extrabold uppercase tracking-wide text-tomato">Yayıncılar için</p>
+            <h2 id="embed-baslik" className="text-3xl font-extrabold">Gerçek fiyat haritasını göm</h2>
+          </div>
+          <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
+            <article className="sticker-flat sticker-mint p-6 sm:p-7">
+              <h3 className="text-2xl font-extrabold">Salt-okur, ölçülebilir widget</h3>
+              <p className="mt-3 text-sm leading-relaxed opacity-80">
+                Haritayı haber, kampüs veya yerel rehber sayfana iframe ile ekle. Yayın adını
+                küçük harfli bir slug olarak <code>source</code> alanına yaz; merkez için
+                <code>lat</code>, <code>lng</code> ve <code>zoom</code> değerlerini değiştir.
+                Tıklama ölçümü yalnız kaynak kodu, hedef türü ve zamanı tutar.
+              </p>
+              <a
+                href="/embed?source=basin_demo&lat=41.03&lng=28.98&zoom=11.8"
+                target="_blank"
+                rel="noreferrer"
+                className="mt-5 inline-block text-sm font-extrabold underline underline-offset-4"
+              >
+                Widget&apos;ı canlı aç ↗
+              </a>
+            </article>
+            <article
+              className="sticker-flat min-w-0 p-5 text-paper sm:p-6"
+              style={{ backgroundColor: "#221b15" }}
+            >
+              <pre className="max-w-full overflow-x-auto whitespace-pre text-xs leading-relaxed">
+                <code>{embedCode}</code>
+              </pre>
+              <div className="mt-4">
+                <CopyEmbedCodeButton code={embedCode} />
+              </div>
+            </article>
+          </div>
+          <p className="text-xs leading-relaxed opacity-60">
+            Altındaki görünür kaynak bağlantısını kaldırmamanı rica ediyoruz. Kod editoryal
+            kullanım için ücretsizdir; Pinle verisini kendi verinmiş gibi sunma.
+          </p>
         </section>
 
         <section className="sticker sticker-mustard flex flex-col items-start gap-4 p-6 sm:p-8">
