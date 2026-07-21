@@ -1,65 +1,75 @@
-# 📍 Pinle
+# 📍 Pinle — gerçek fiyat haritası
 
-Türkiye için harita tabanlı pin + yorum uygulaması. Üç katman: **Lezzet** 🍲 (ucuz yemek
-noktaları + fiyat doğrulama), **Anı** 💌 (anonim anı/itiraf pinleri), **Sorun** ⚠️ (mahalle
-sorun bildirimi). Puan, rozet, haftalık "Muhtar" ve liderlik tablosuyla oyunlaştırılmış.
+Pinle, insanların çevrede **gerçekte ne ödendiğini** gördüğü; fiyat ekleyip “hâlâ bu fiyat / zamlandı” sinyalleriyle güncelliğini doğruladığı topluluk destekli yerel fiyat haritasıdır.
 
-Launch stratejisi ve viral pazarlama planı: [PAZARLAMA.md](PAZARLAMA.md)
+**Kazık yeme, Pinle.**
 
-## Stack
+- [Canlı web uygulaması](https://pinle.app)
+- [Android uygulamasını Google Play'den indir](https://play.google.com/store/apps/details?id=app.pinle.twa)
+- [İstanbul Fiyat Sprinti](https://pinle.app/sprint/istanbul)
+- [Basın ve medya kiti](https://pinle.app/basin)
+- [Gizlilik politikası](https://pinle.app/gizlilik)
 
-- Next.js 16 (App Router, Turbopack) — Web/PWA
-- MapLibre GL JS + [OpenFreeMap](https://openfreemap.org) tile'ları (API anahtarı yok, ücretsiz)
-- SQLite (better-sqlite3) — `data/pinle.db`; fotoğraflar `data/uploads/`
-- Anonim çerez kimliği — kayıt/e-posta yok
+## Nasıl çalışır?
 
-## Geliştirme
+1. Haritada dönerden çaya, berberden şezlonga kadar yerel fiyatları gör.
+2. Ödediğin gerçek fiyatı ve ne için ödediğini birkaç saniyede ekle.
+3. Yakındaki fiyatı “hâlâ bu fiyat” veya “zamlandı” diye doğrula.
+4. Güncel fiyat kartını paylaş; çevrendekileri fiyatı doğrulamaya veya güncellemeye çağır.
+
+Kayıt zorunlu değildir. Kullanıcı anonim başlayabilir; hesabını korumak isterse Google veya e-posta ile isteğe bağlı olarak bağlayabilir.
+
+## Ürün yüzeyleri
+
+- Topluluk güncellemeli fiyat haritası
+- Fiyat kalemi, geçerlilik tarihi, fotoğraf ve not desteği
+- Güncellik doğrulaması ve eski fiyat bildirimi
+- Şehir/ilçe liderlikleri ve katkı puanları
+- Kişisel davet linki; davet edilen kişinin ilk gerçek pininden sonra ödül
+- Şehir ve pin bazlı 1200×630 sosyal önizleme kartları
+- [Türkiye sokak fiyatları endeksi](https://pinle.app/fiyatlar)
+- Gömülebilir harita: `<iframe src="https://pinle.app/embed" width="100%" height="480"></iframe>`
+
+## Teknoloji
+
+- Next.js 16 App Router ve React 19
+- MapLibre GL JS + [OpenFreeMap](https://openfreemap.org)
+- SQLite (`better-sqlite3`) ve kalıcı dosya depolama
+- PWA + Google Play için Trusted Web Activity
+- Dinamik sitemap, şehir/pin sayfaları ve Open Graph kartları
+
+## Yerel geliştirme
 
 ```bash
 npm install
-npm run dev                                # http://localhost:3000
-node scripts/fetch-osm.mjs                 # OSM'den gerçek İstanbul mekanları → data/seed-istanbul.json
-node scripts/seed.mjs data/seed-istanbul.json   # gerçek veriyi yükle (Pinle Ekibi 📌, oy/puan üretmez)
-node scripts/seed.mjs pinler.csv           # kendi CSV'n: name,category,price,lat,lng,note
-npm run seed                               # KURGUSAL demo verisi (sadece geliştirme)
-node scripts/gen-assets.mjs                # PWA ikonları + Play feature graphic
-node scripts/store-screenshots.mjs         # Play Store ekran görüntüleri (sistem Chrome ile)
+npm run dev
+npm run build
 ```
 
-## Google Play
+Varsayılan geliştirme adresi `http://localhost:3000`'dir. OSM seed ve mağaza varlığı komutları için `scripts/` klasörüne; TWA ve Play Store notları için [PLAYSTORE.md](PLAYSTORE.md) dosyasına bakın.
 
-TWA (Bubblewrap) ile paketlenir — adım adım rehber, mağaza metinleri ve veri güvenliği
-cevapları: [PLAYSTORE.md](PLAYSTORE.md). Hazır görseller: `store-assets/`.
-
-## Ortam Değişkenleri
+## Ortam değişkenleri
 
 | Değişken | Amaç |
 |---|---|
-| `NEXT_PUBLIC_SITE_URL` | Canlı URL (sitemap, robots, OG linkleri için) — örn. `https://pinle.app` |
-| `PINLE_ADMIN_TOKEN` | `/api/stats?token=…` iç analytics erişimi (ayarlanmazsa endpoint kapalı) |
+| `NEXT_PUBLIC_SITE_URL` | Canonical, sitemap ve sosyal kartlar için canlı origin |
+| `PINLE_ADMIN_TOKEN` | Korumalı iç KPI endpoint'i erişimi |
+| `AUTH_SECRET` | İsteğe bağlı hesap bağlama akışının imzalama sırrı |
+| `GOOGLE_CLIENT_ID` | Google hesap bağlama istemci kimliği |
 
-## Özellikler
-
-- 3 katman: Lezzet (fiyat doğrulama), Anı (❤️), Sorun (hâlâ duruyor/çözüldü)
-- 🏙️ **İlçe Ligi**: pin→ilçe ataması otomatik (en yakın merkez, İstanbul 39 ilçe) — `/liderler`
-- 📊 İç analytics: `/api/stats?token=…` (günlük ziyaretçi/pin/oy, katkı oranı KPI'sı)
-- Embed widget: `<iframe src="…/embed?kind=lezzet" width="100%" height="480"></iframe>`
-- SEO: dinamik sitemap (son 1000 pin), robots.txt, OG görselleri
+Gerçek secret değerlerini repoya eklemeyin.
 
 ## Deploy
 
-SQLite kullanıldığı için **kalıcı diskli** bir host gerekir (Fly.io, Railway, Hetzner, herhangi bir VPS):
+SQLite ve yüklenen fotoğraflar nedeniyle production ortamında kalıcı disk gerekir.
 
 ```bash
 docker build -t pinle .
 docker run -d -p 3000:3000 -v pinle-data:/app/data pinle
-# seed (opsiyonel): docker exec <container> node scripts/seed.mjs
 ```
 
-Vercel/serverless istenirse veritabanının Supabase veya Turso'ya taşınması gerekir —
-tüm SQL tek dosyada: `src/lib/db.ts`.
+## Katkı ve iletişim
 
-## Launch öncesi checklist
+Ürün geri bildirimi, veri yöntemi veya editoryal talepler için [canlı basın ve medya sayfasındaki](https://pinle.app/basin) iletişim kanalını kullanın. Yanlış veya eski fiyatlar uygulama içindeki doğrulama/güncelleme akışıyla düzeltilmelidir.
 
-[PAZARLAMA.md](PAZARLAMA.md) içinde: gerçek seed verisi, KVKK metni, küfür listesi,
-analytics, sosyal hesaplar.
+Kamuya açık launch ve iletişim ilkeleri: [PAZARLAMA.md](PAZARLAMA.md).

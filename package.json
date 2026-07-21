@@ -1,6 +1,12 @@
 {
   "name": "pinle",
   "version": "0.1.0",
+  "description": "Pinle — topluluk doğrulamalı gerçek fiyat haritası",
+  "homepage": "https://pinle.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kerembasbug/pinle.git"
+  },
   "private": true,
   "scripts": {
     "dev": "next dev",
