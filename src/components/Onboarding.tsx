@@ -4,33 +4,20 @@ import { useEffect, useState } from "react";
 
 const KEY = "pinle_onboarded_v1";
 
-type BIPEvent = Event & { prompt: () => Promise<void>; userChoice: Promise<{ outcome: string }> };
-
+// Not: burada kurulum butonu YOK. (1) Tarayıcıdan kurulum mağaza dışına
+// yönlendirme demek — kurulumu Play'e topluyoruz. (2) Kullanıcı daha haritayı
+// görmeden kurulum istemek erken; Play daveti InstallPrompt'ta 12 sn sonra.
 export default function Onboarding() {
   const [show, setShow] = useState(false);
-  const [installEvt, setInstallEvt] = useState<BIPEvent | null>(null);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (!localStorage.getItem(KEY)) setShow(true);
-    const onBip = (e: Event) => {
-      e.preventDefault();
-      setInstallEvt(e as BIPEvent);
-    };
-    window.addEventListener("beforeinstallprompt", onBip);
-    return () => window.removeEventListener("beforeinstallprompt", onBip);
   }, []);
 
   const dismiss = () => {
     localStorage.setItem(KEY, "1");
     setShow(false);
-  };
-
-  const install = async () => {
-    if (!installEvt) return;
-    await installEvt.prompt();
-    await installEvt.userChoice.catch(() => {});
-    setInstallEvt(null);
   };
 
   if (!show) return null;
@@ -72,11 +59,6 @@ export default function Onboarding() {
         <button onClick={dismiss} className="btn btn-tomato mt-5 w-full py-3 text-lg">
           Haritaya Başla 🗺️
         </button>
-        {installEvt && (
-          <button onClick={install} className="btn btn-cream mt-2 w-full py-2.5 text-sm">
-            📲 Ana ekrana ekle
-          </button>
-        )}
       </div>
     </div>
   );

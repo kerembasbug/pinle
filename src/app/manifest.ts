@@ -15,11 +15,12 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: "#e8442e",
     lang: "tr",
     categories: ["food", "maps", "social"],
-    // Play sürümüyle ilişkiyi bildir. prefer_related_applications BİLEREK false:
-    // true olsaydı Chrome tarayıcıdan kurulumu (beforeinstallprompt) tamamen
-    // bastırırdı — mağazaya gitmek istemeyen kullanıcıyı da kaybetmek istemiyoruz.
+    // Play sürümüyle ilişkiyi bildir. prefer_related_applications=true: Chrome
+    // tarayıcıdan kurulum (PWA) yerine Play uygulamasını işaret etsin — kurulum
+    // sayısı, yorum ve mağaza sıralaması oradan geliyor, mağaza dışına
+    // yönlendirmiyoruz. (InstallPrompt de beforeinstallprompt'u bastırıyor.)
     related_applications: [{ platform: "play", id: PLAY_PACKAGE, url: playUrl("manifest") }],
-    prefer_related_applications: false,
+    prefer_related_applications: true,
     icons: [
       { src: "/icons/icon-192.png", sizes: "192x192", type: "image/png", purpose: "any" },
       { src: "/icons/icon-512.png", sizes: "512x512", type: "image/png", purpose: "any" },

@@ -3,22 +3,19 @@
 import { useEffect, useState } from "react";
 import { playUrl, isAndroid, isInstalledApp } from "@/lib/store";
 
-// "Uygulama gibi kullan" daveti.
-// Android: ARTIK Play Store birincil yol (mağaza kurulumu güncelleme + yorum
-//   getirir). beforeinstallprompt yakalanırsa tarayıcıdan kurulum ikincil
-//   seçenek olarak durur — mağazaya gitmek istemeyen kullanıcıyı kaybetmeyelim.
-// iOS: Play yok, beforeinstallprompt da yok → Paylaş → Ana Ekrana Ekle yönergesi.
-// Zaten uygulamadaysa (TWA ya da eklenmiş PWA) hiç görünmez; kapatılırsa 7 gün susar.
-type BIPEvent = Event & {
-  prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
-};
-
+// Kurulum daveti — TEK YOL Google Play.
+// Tarayıcıdan kurulum (PWA/A2HS) BİLEREK kaldırıldı: mağaza dışına yönlendirmek
+// kendi Play listelemenle rekabet ediyor (kurulum sayısı, yorum ve sıralama
+// oradan geliyor). Manifest'te de prefer_related_applications=true.
+//
+// iOS istisnası: iOS uygulaması YOK, Play linki iPhone'da işe yaramaz. Oradaki
+// tek seçenek ana ekrana ekleme — bu mağaza dışına yönlendirme değil, çünkü
+// yönlendirilecek bir mağaza sürümü yok.
+// Zaten uygulamadaysa hiç görünmez; kapatılırsa 7 gün susar.
 const DISMISS_KEY = "pinle-a2hs-dismiss";
 const DELAY_MS = 12000;
 
 export default function InstallPrompt({ onToast }: { onToast: (msg: string) => void }) {
-  const [bip, setBip] = useState<BIPEvent | null>(null);
   const [ios, setIos] = useState(false);
   const [android, setAndroid] = useState(false);
   const [show, setShow] = useState(false);
@@ -28,25 +25,20 @@ export default function InstallPrompt({ onToast }: { onToast: (msg: string) => v
     const dismissedAt = Number(localStorage.getItem(DISMISS_KEY) ?? 0);
     if (Date.now() - dismissedAt < 7 * 24 * 60 * 60 * 1000) return;
 
-    const onBip = (e: Event) => {
-      e.preventDefault();
-      setBip(e as BIPEvent);
-      setShow(true);
-    };
-    window.addEventListener("beforeinstallprompt", onBip);
+    // Chrome'un kendi "uygulamayı yükle" balonunu bastır — kullanıcıyı Play'e
+    // gönderiyoruz, iki ayrı kurulum yolu göstermek kafa karıştırıyor.
+    const blockBip = (e: Event) => e.preventDefault();
+    window.addEventListener("beforeinstallprompt", blockBip);
 
-    // Android'de Play linki her zaman geçerli — beforeinstallprompt'u bekleme
-    // (Chrome dışı tarayıcılarda ya da kriterler tutmazsa o olay hiç gelmez).
     let t: ReturnType<typeof setTimeout> | null = null;
     if (isAndroid()) {
       setAndroid(true);
       t = setTimeout(() => setShow(true), DELAY_MS);
     } else if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
-      t = setTimeout(() => {
-        setIos(true);
-        setShow(true);
-      }, DELAY_MS);
+      setIos(true);
+      t = setTimeout(() => setShow(true), DELAY_MS);
     }
+    // Masaüstü: hiçbir şey gösterme — indirilecek masaüstü sürümü yok.
 
     const onInstalled = () => {
       setShow(false);
@@ -54,7 +46,7 @@ export default function InstallPrompt({ onToast }: { onToast: (msg: string) => v
     };
     window.addEventListener("appinstalled", onInstalled);
     return () => {
-      window.removeEventListener("beforeinstallprompt", onBip);
+      window.removeEventListener("beforeinstallprompt", blockBip);
       window.removeEventListener("appinstalled", onInstalled);
       if (t) clearTimeout(t);
     };
@@ -63,12 +55,6 @@ export default function InstallPrompt({ onToast }: { onToast: (msg: string) => v
   const dismiss = () => {
     setShow(false);
     localStorage.setItem(DISMISS_KEY, String(Date.now()));
-  };
-
-  const install = async () => {
-    if (!bip) return;
-    setShow(false);
-    await bip.prompt().catch(() => {});
   };
 
   if (!show) return null;
@@ -89,28 +75,19 @@ export default function InstallPrompt({ onToast }: { onToast: (msg: string) => v
             >
               Google Play&apos;den indir
             </a>
-            {bip && (
-              <button onClick={install} className="text-[11px] underline opacity-60">
-                ya da tarayıcıdan yükle
-              </button>
-            )}
           </>
         ) : (
-          <>
-            <p className="text-[13px] font-bold leading-snug">
-              📲 Pinle&apos;yi uygulama gibi kullan — market beklemeden, 1 saniyede.
-            </p>
-            {ios ? (
+          ios && (
+            <>
+              <p className="text-[13px] font-bold leading-snug">
+                📲 Pinle&apos;yi ana ekranına ekle — tek dokunuşla açılsın.
+              </p>
               <p className="text-[12px] opacity-70">
                 Safari&apos;de <b>Paylaş</b> <span aria-hidden>⎋</span> →{" "}
                 <b>Ana Ekrana Ekle</b> de, bu kadar.
               </p>
-            ) : (
-              <button onClick={install} className="btn btn-tomato py-2 text-sm">
-                Yükle 🚀
-              </button>
-            )}
-          </>
+            </>
+          )
         )}
         <button onClick={dismiss} className="text-[11px] underline opacity-50">
           Şimdi değil
