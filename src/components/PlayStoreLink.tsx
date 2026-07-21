@@ -11,6 +11,7 @@ type Props = {
   children: ReactNode;
   ariaLabel?: string;
   hideWhenInstalled?: boolean;
+  onClick?: () => void;
 };
 
 const subscribeToNoEvents = () => () => {};
@@ -21,6 +22,7 @@ export default function PlayStoreLink({
   children,
   ariaLabel,
   hideWhenInstalled = false,
+  onClick,
 }: Props) {
   const hidden = useSyncExternalStore(
     subscribeToNoEvents,
@@ -54,7 +56,10 @@ export default function PlayStoreLink({
       rel="noopener noreferrer"
       className={className}
       aria-label={ariaLabel}
-      onClick={recordClick}
+      onClick={() => {
+        recordClick();
+        onClick?.();
+      }}
     >
       {children}
     </a>

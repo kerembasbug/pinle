@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { playUrl, isAndroid, isInstalledApp } from "@/lib/store";
+import { isAndroid, isInstalledApp } from "@/lib/store";
+import PlayStoreLink from "./PlayStoreLink";
 
 // Kurulum daveti — TEK YOL Google Play.
 // Tarayıcıdan kurulum (PWA/A2HS) BİLEREK kaldırıldı: mağaza dışına yönlendirmek
@@ -16,8 +17,7 @@ const DISMISS_KEY = "pinle-a2hs-dismiss";
 const DELAY_MS = 12000;
 
 export default function InstallPrompt({ onToast }: { onToast: (msg: string) => void }) {
-  const [ios, setIos] = useState(false);
-  const [android, setAndroid] = useState(false);
+  const [platform, setPlatform] = useState<"android" | "ios" | null>(null);
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -32,11 +32,15 @@ export default function InstallPrompt({ onToast }: { onToast: (msg: string) => v
 
     let t: ReturnType<typeof setTimeout> | null = null;
     if (isAndroid()) {
-      setAndroid(true);
-      t = setTimeout(() => setShow(true), DELAY_MS);
+      t = setTimeout(() => {
+        setPlatform("android");
+        setShow(true);
+      }, DELAY_MS);
     } else if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
-      setIos(true);
-      t = setTimeout(() => setShow(true), DELAY_MS);
+      t = setTimeout(() => {
+        setPlatform("ios");
+        setShow(true);
+      }, DELAY_MS);
     }
     // Masaüstü: hiçbir şey gösterme — indirilecek masaüstü sürümü yok.
 
@@ -61,23 +65,21 @@ export default function InstallPrompt({ onToast }: { onToast: (msg: string) => v
   return (
     <div className="fixed bottom-0 left-0 z-20 p-4 pb-[calc(env(safe-area-inset-bottom,0px)+16px)]">
       <div className="sticker flex max-w-[250px] flex-col gap-2 p-3">
-        {android ? (
+        {platform === "android" ? (
           <>
             <p className="text-[13px] font-bold leading-snug">
               📲 Pinle&apos;yi telefonuna kur — Google Play&apos;de yayında.
             </p>
-            <a
-              href={playUrl("install-banner")}
-              target="_blank"
-              rel="noopener"
+            <PlayStoreLink
+              source="install_banner"
               onClick={dismiss}
               className="btn btn-tomato py-2 text-center text-sm"
             >
               Google Play&apos;den indir
-            </a>
+            </PlayStoreLink>
           </>
         ) : (
-          ios && (
+          platform === "ios" && (
             <>
               <p className="text-[13px] font-bold leading-snug">
                 📲 Pinle&apos;yi ana ekranına ekle — tek dokunuşla açılsın.

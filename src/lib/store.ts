@@ -13,6 +13,11 @@ export function playUrl(source?: string): string {
   return `${base}&referrer=${encodeURIComponent(ref)}`;
 }
 
+/** Katkı sonrası değerlendirme istemi için Play'in yorumlar görünümü. */
+export function playReviewUrl(source = "post_contribution_review"): string {
+  return `${playUrl(source)}&showAllReviews=true`;
+}
+
 /**
  * Uygulama olarak mı açılmış? (Play/TWA ya da ana ekrana eklenmiş PWA)
  * TWA, Custom Tabs üzerinden yüklendiği için hem `android-app://` referrer'ı

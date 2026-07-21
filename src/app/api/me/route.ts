@@ -16,6 +16,15 @@ export async function GET() {
   const pinCount = (
     d.prepare("SELECT COUNT(*) AS c FROM pins WHERE user_id = ? AND status = 'active'").get(user.id) as { c: number }
   ).c;
+  // Değerlendirme istemi için "yeterli deneyim" eşiği: bonus/yorum/teşekkür
+  // değil, yalnız yeni pin, fiyat bildirimi ve ilk oy gerçek katkı sayılır.
+  const meaningfulContributionCount = (
+    d
+      .prepare(
+        "SELECT COUNT(*) AS c FROM points_events WHERE user_id = ? AND reason IN ('pin', 'price', 'vote')"
+      )
+      .get(user.id) as { c: number }
+  ).c;
 
   // Haftanın Muhtarı: son 7 günün puan toplamında 1. sıra
   const weeklyPoints = (
@@ -50,6 +59,7 @@ export async function GET() {
     name: user.name,
     points,
     pinCount,
+    meaningfulContributionCount,
     weeklyPoints,
     weeklyRank,
     isMuhtar: weeklyRank === 1,

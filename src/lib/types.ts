@@ -52,6 +52,7 @@ export type Me = {
   name: string;
   points: number;
   pinCount: number;
+  meaningfulContributionCount: number;
   weeklyPoints: number;
   weeklyRank: number | null;
   isMuhtar: boolean;

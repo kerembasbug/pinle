@@ -31,6 +31,7 @@ const ProfileSheet = dynamic(() => import("./ProfileSheet"), { ssr: false });
 const SearchSheet = dynamic(() => import("./SearchSheet"), { ssr: false });
 const Onboarding = dynamic(() => import("./Onboarding"), { ssr: false });
 const AuthSheet = dynamic(() => import("./AuthSheet"), { ssr: false });
+const ReviewPrompt = dynamic(() => import("./ReviewPrompt"), { ssr: false });
 
 const MAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
 const ISTANBUL: [number, number] = [28.98, 41.03];
@@ -95,6 +96,7 @@ export default function MapApp({
   const [searchOpen, setSearchOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [liveMode, setLiveMode] = useState(false);
+  const [reviewTrigger, setReviewTrigger] = useState(0);
   const liveMarkersRef = useRef<maplibregl.Marker[]>([]);
 
   const showToast = useCallback((msg: string) => {
@@ -492,6 +494,7 @@ export default function MapApp({
     showToast(`+${earned} puan! 🎉`);
     loadPins();
     refreshMe();
+    setReviewTrigger((n) => n + 1);
   };
 
   // flyTo, rAF kısıtlanınca (arka plan sekmesi / güç tasarrufu modu) sessizce
@@ -718,6 +721,7 @@ export default function MapApp({
           loadPins();
           refreshMe();
         }}
+        onMeaningfulContribution={() => setReviewTrigger((n) => n + 1)}
       />
       <NewPinSheet
         coords={sheet.kind === "new" ? { lat: sheet.lat, lng: sheet.lng } : null}
@@ -757,6 +761,7 @@ export default function MapApp({
 
       <Onboarding />
       <InstallPrompt onToast={showToast} />
+      <ReviewPrompt trigger={reviewTrigger} />
 
       {toast && (
         <div key={toast.key} className="toast">

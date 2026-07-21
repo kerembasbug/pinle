@@ -148,6 +148,17 @@ function migrate(d: Database.Database) {
     );
     CREATE INDEX IF NOT EXISTS idx_embed_clicks_created
       ON embed_clicks(created_at, source, target);
+
+    -- Katkı sonrası Google Play değerlendirme isteminin anonim hunisi.
+    -- Kullanıcı/pin/IP yok; yalnız istem kaynağı, eylem ve zaman damgası.
+    CREATE TABLE IF NOT EXISTS review_events (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      source TEXT NOT NULL,
+      action TEXT NOT NULL,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_review_events_created
+      ON review_events(created_at, source, action);
   `);
 
   // users: kimlik (login) kolonları — anonim başla, isteğe bağlı bağla

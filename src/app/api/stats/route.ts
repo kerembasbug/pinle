@@ -60,7 +60,11 @@ export async function GET(request: NextRequest) {
               AND date((SELECT MIN(p.created_at) FROM pins p WHERE p.user_id = ru.id)) = dates.day
          ) AS referral_activations,
          (SELECT COUNT(*) FROM embed_clicks ec WHERE date(ec.created_at) = dates.day) AS embed_clicks,
-         (SELECT COUNT(*) FROM outbound_clicks oc WHERE date(oc.created_at) = dates.day) AS play_clicks
+         (SELECT COUNT(*) FROM outbound_clicks oc WHERE date(oc.created_at) = dates.day) AS play_clicks,
+         (SELECT COUNT(*) FROM review_events re
+            WHERE date(re.created_at) = dates.day AND re.action = 'shown') AS review_prompts,
+         (SELECT COUNT(*) FROM review_events re
+            WHERE date(re.created_at) = dates.day AND re.action = 'open_play') AS review_play_opens
        FROM dates ORDER BY dates.day`
     )
     .all();
@@ -83,7 +87,10 @@ export async function GET(request: NextRequest) {
           WHERE ru.referred_by IS NOT NULL
             AND EXISTS (SELECT 1 FROM pins p WHERE p.user_id = ru.id)) AS activated_referrals,
         (SELECT COUNT(*) FROM embed_clicks) AS embed_clicks,
-        (SELECT COUNT(*) FROM outbound_clicks) AS outbound_play_clicks`
+        (SELECT COUNT(*) FROM outbound_clicks) AS outbound_play_clicks,
+        (SELECT COUNT(*) FROM review_events WHERE action = 'shown') AS review_prompts,
+        (SELECT COUNT(*) FROM review_events WHERE action = 'open_play') AS review_play_opens,
+        (SELECT COUNT(*) FROM review_events WHERE action = 'dismissed') AS review_dismissals`
     )
     .get();
 
@@ -131,7 +138,13 @@ export async function GET(request: NextRequest) {
              AND (SELECT MIN(p.created_at) FROM pins p WHERE p.user_id = ru.id)
                  > datetime('now', '-7 day')) AS referral_activations,
          (SELECT COUNT(*) FROM embed_clicks
-           WHERE created_at > datetime('now', '-7 day')) AS embed_referrals`
+           WHERE created_at > datetime('now', '-7 day')) AS embed_referrals,
+         (SELECT COUNT(*) FROM review_events
+           WHERE created_at > datetime('now', '-7 day') AND action = 'shown') AS review_prompts,
+         (SELECT COUNT(*) FROM review_events
+           WHERE created_at > datetime('now', '-7 day') AND action = 'open_play') AS review_play_opens,
+         (SELECT COUNT(*) FROM review_events
+           WHERE created_at > datetime('now', '-7 day') AND action = 'dismissed') AS review_dismissals`
     )
     .get() as {
     active_contributors: number;
@@ -142,6 +155,9 @@ export async function GET(request: NextRequest) {
     referral_bindings: number;
     referral_activations: number;
     embed_referrals: number;
+    review_prompts: number;
+    review_play_opens: number;
+    review_dismissals: number;
   };
 
   const districtSignals = d
@@ -197,6 +213,16 @@ export async function GET(request: NextRequest) {
     )
     .all();
 
+  const reviewByAction = d
+    .prepare(
+      `SELECT source, action, COUNT(*) AS events
+         FROM review_events
+        WHERE created_at > datetime('now', '-30 day')
+        GROUP BY source, action
+        ORDER BY events DESC, source ASC, action ASC`
+    )
+    .all();
+
   // Katkı oranı: son 7 günün ziyaretçilerinden pin ekleyenlerin payı (launch KPI'sı)
   const contribution = d
     .prepare(
@@ -210,6 +236,10 @@ export async function GET(request: NextRequest) {
     contribution.weekly_visitors > 0
       ? Math.round((launchMetrics.active_contributors / contribution.weekly_visitors) * 100) / 100
       : null;
+  const reviewOpenRate =
+    launchMetrics.review_prompts > 0
+      ? Math.round((launchMetrics.review_play_opens / launchMetrics.review_prompts) * 100) / 100
+      : null;
 
   return Response.json({
     totals,
@@ -217,11 +247,13 @@ export async function GET(request: NextRequest) {
     playBySource,
     shareBySource,
     embedBySource,
+    reviewByAction,
     last14Days: days,
     launchMetrics: {
       ...launchMetrics,
       weekly_visitors: contribution.weekly_visitors,
       contribution_rate: launchContributionRate,
+      review_open_rate: reviewOpenRate,
       district_signals: districtSignals,
       window_days: 7,
       seed_policy: "Pinle Ekibi 📌 pins excluded from contributor and new-price-signal counts",

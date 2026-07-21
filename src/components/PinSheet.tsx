@@ -16,6 +16,7 @@ type Props = {
   onClose: () => void;
   onToast: (msg: string) => void;
   onChanged: () => void;
+  onMeaningfulContribution: () => void;
 };
 
 // Dopamin patlaması: kart üzerinde yükselen emoji konfetisi (saf CSS animasyon)
@@ -41,7 +42,13 @@ function EmojiBurst({ seed }: { seed: number }) {
   );
 }
 
-export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) {
+export default function PinSheet({
+  pinId,
+  onClose,
+  onToast,
+  onChanged,
+  onMeaningfulContribution,
+}: Props) {
   const [pin, setPin] = useState<PinDetail | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const [myVote, setMyVote] = useState(0);
@@ -109,6 +116,7 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
       pop();
     }
     onChanged();
+    if (data.earned > 0) onMeaningfulContribution();
   };
 
   const thank = async () => {
@@ -222,6 +230,7 @@ export default function PinSheet({ pinId, onClose, onToast, onChanged }: Props) 
     playPinSound();
     pop();
     onChanged();
+    onMeaningfulContribution();
   };
 
   const share = async () => {
