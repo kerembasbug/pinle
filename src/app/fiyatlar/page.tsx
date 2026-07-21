@@ -11,7 +11,10 @@ import {
 import { YEAR } from "@/lib/seoIntents";
 import { formatPrice } from "@/lib/types";
 
-export const revalidate = 900; // 15 dk ISR — canlı fiyat endeksi
+// Build konteynerinde production veritabanı bağlı olmadığı için bu sayfa statik
+// üretilmemeli; CSV ve sayfa her zaman aynı canlı veri kaynağını okumalı.
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 // "döner fiyatı ne kadar 2026", "çay fiyatı", "simit kaç TL" long-tail kümesinin
 // tek güçlü merkezi: kaynağı açıkça ayrılmış canlı sokak fiyat endeksi.

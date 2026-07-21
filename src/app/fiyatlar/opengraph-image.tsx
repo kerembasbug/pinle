@@ -5,6 +5,8 @@ import { YEAR } from "@/lib/seoIntents";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const alt = `Pinle Türkiye Sokak Fiyatları ${YEAR} — kaynak ayrımlı veri özeti`;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default function PricesOgImage() {
   const dataset = getPriceDataset();
