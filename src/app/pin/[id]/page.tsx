@@ -5,6 +5,8 @@ import { categoryById, categoryIcon } from "@/lib/categories";
 import { formatPrice, timeAgo } from "@/lib/types";
 import { validityLabel } from "@/lib/validity";
 import { getPin } from "@/lib/pins";
+import PlayStoreLink from "@/components/PlayStoreLink";
+import type { PlaySource } from "@/lib/marketing";
 
 const CONFIRM_LABEL: Record<string, (n: number) => string> = {
   lezzet: (n) => `✓ ${n} doğrulandı`,
@@ -35,12 +37,22 @@ export async function generateMetadata({
   };
 }
 
-export default async function PinPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function PinPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ id: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const { id } = await params;
+  const query = await searchParams;
   const pin = getPin(id);
   if (!pin) notFound();
   const cat = categoryById(pin.category);
   const price = formatPrice(pin.price);
+  const incomingSource = Array.isArray(query.utm_source) ? query.utm_source[0] : query.utm_source;
+  const sharedPinVisit = incomingSource === "pin_share";
+  const playSource: PlaySource = sharedPinVisit ? "pin_share_play" : "pin_detail_play";
 
   return (
     <main className="paper-grain flex min-h-dvh flex-col items-center justify-center gap-5 p-5">
@@ -105,8 +117,28 @@ export default async function PinPage({ params }: { params: Promise<{ id: string
       <Link href={`/?pin=${pin.id}`} className="btn btn-tomato px-8 py-3.5 text-lg">
         Haritada Aç 🗺️
       </Link>
+
+      <section className="sticker-flat sticker-mustard flex w-full max-w-sm flex-col items-center gap-3 p-4 text-center">
+        <div>
+          <h2 className="text-lg font-extrabold">
+            {sharedPinVisit ? "Bu fiyatı bir arkadaşın paylaştı 📲" : "Fiyat haritası cebinde olsun 📲"}
+          </h2>
+          <p className="mt-1 text-sm leading-relaxed opacity-75">
+            Yakınındaki tarihli fiyatları gör; bildiğin bir fiyatı ekle veya güncelliğini doğrula.
+          </p>
+        </div>
+        <PlayStoreLink
+          source={playSource}
+          hideWhenInstalled
+          className="btn btn-teal px-6 py-3"
+          ariaLabel="Pinle Android uygulamasını Google Play'de aç"
+        >
+          Google Play&apos;de Aç ↗
+        </PlayStoreLink>
+      </section>
+
       <p className="max-w-xs text-center text-xs opacity-50">
-        Sen de mahallendeki ucuz ve iyi yerleri pinle, puan topla, mahallenin muhtarı ol.
+        Sen de çevrendeki gerçek fiyatları ekle, güncelliğini doğrula, mahallene katkı ver.
       </p>
     </main>
   );

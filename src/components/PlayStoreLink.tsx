@@ -1,17 +1,33 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { useSyncExternalStore } from "react";
 import type { PlaySource } from "@/lib/marketing";
-import { playUrl } from "@/lib/store";
+import { isInstalledApp, playUrl } from "@/lib/store";
 
 type Props = {
   source: PlaySource;
   className?: string;
   children: ReactNode;
   ariaLabel?: string;
+  hideWhenInstalled?: boolean;
 };
 
-export default function PlayStoreLink({ source, className, children, ariaLabel }: Props) {
+const subscribeToNoEvents = () => () => {};
+
+export default function PlayStoreLink({
+  source,
+  className,
+  children,
+  ariaLabel,
+  hideWhenInstalled = false,
+}: Props) {
+  const hidden = useSyncExternalStore(
+    subscribeToNoEvents,
+    () => hideWhenInstalled && isInstalledApp(),
+    () => false,
+  );
+
   const recordClick = () => {
     const payload = JSON.stringify({ source });
     if (navigator.sendBeacon) {
@@ -28,6 +44,8 @@ export default function PlayStoreLink({ source, className, children, ariaLabel }
       keepalive: true,
     }).catch(() => {});
   };
+
+  if (hidden) return null;
 
   return (
     <a
