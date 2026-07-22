@@ -23,6 +23,8 @@ export const SHARE_SOURCES = [
   "sprint_x",
   "task_board_whatsapp",
   "task_board_x",
+  "task_detail_whatsapp",
+  "task_detail_x",
   "profile_invite",
   "pin_share",
 ] as const;
@@ -53,6 +55,7 @@ export const ACTIVATION_SOURCES = [
   "seo_city_category",
   "task_board",
   "campus",
+  "shared_task",
 ] as const;
 export const ACTIVATION_ACTIONS = ["open_missing_price", "start_new_pin", "completed"] as const;
 

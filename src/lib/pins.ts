@@ -5,6 +5,8 @@ export type PinRow = {
   name: string;
   kind: string;
   category: string;
+  city: string | null;
+  district: string | null;
   price: number | null;
   price_item: string | null;
   price_valid_until: string | null;
@@ -19,7 +21,7 @@ export type PinRow = {
 export function getPin(id: string): PinRow | undefined {
   return db()
     .prepare(
-      `SELECT p.id, p.name, p.kind, p.category, p.price, p.price_item, p.price_valid_until, p.note, p.photo, p.created_at,
+      `SELECT p.id, p.name, p.kind, p.category, p.city, p.district, p.price, p.price_item, p.price_valid_until, p.note, p.photo, p.created_at,
         u.name AS author,
         COALESCE((SELECT COUNT(*) FROM votes v WHERE v.pin_id = p.id AND v.value = 1), 0) AS confirms,
         COALESCE((SELECT COUNT(*) FROM votes v WHERE v.pin_id = p.id AND v.value = -1), 0) AS outdated

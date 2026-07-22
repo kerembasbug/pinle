@@ -42,6 +42,15 @@ function taskHref(task: PriceTask, context: TaskContext) {
   return `/?${params.toString()}`;
 }
 
+function taskLandingHref(task: PriceTask, context: TaskContext) {
+  const params = new URLSearchParams({
+    utm_source: context.utmSource,
+    utm_medium: context.utmMedium,
+    utm_campaign: context.utmCampaign,
+  });
+  return `/gorev/${task.id}?${params.toString()}`;
+}
+
 export default async function PriceTasksPage({
   searchParams,
 }: {
@@ -222,6 +231,12 @@ export default async function PriceTasksPage({
                       className="btn btn-tomato mt-auto w-full whitespace-normal px-4 py-2.5 text-center text-sm leading-tight"
                     >
                       Bu fiyatı tamamla →
+                    </Link>
+                    <Link
+                      href={taskLandingHref(task, taskContext)}
+                      className="text-center text-xs font-bold underline underline-offset-4"
+                    >
+                      Görev paylaşım kartı →
                     </Link>
                   </article>
                 ))}
