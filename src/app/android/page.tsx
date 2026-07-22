@@ -25,7 +25,7 @@ const applicationJsonLd = {
   name: "Pinle: Ucuz Lezzet Haritası",
   operatingSystem: "Android",
   applicationCategory: "LifestyleApplication",
-  description: "Topluluk tarafından eklenen ve doğrulanan gerçek yerel fiyat haritası.",
+  description: "Kullanıcı bildirimleri ve başlangıç verilerini kaynak şeffaflığıyla gösteren yerel fiyat haritası.",
   url: "https://pinle.app/android",
   downloadUrl: "https://play.google.com/store/apps/details?id=app.pinle.twa",
   datePublished: "2026-07-21",
@@ -39,7 +39,7 @@ const applicationJsonLd = {
 };
 
 const steps = [
-  ["1", "Gör", "Yakındaki mekan, ürün ve hizmetlerde insanların bildirdiği tarihli fiyatlara bak."],
+  ["1", "Gör", "Yakındaki mekan, ürün ve hizmetlerdeki tarihli fiyat kayıtlarına bak."],
   ["2", "Ekle", "Gerçekte gördüğün ya da ödediğin fiyatı mekan ve ürün bilgisiyle haritaya ekle."],
   ["3", "Doğrula", "Bir kaydı “hâlâ bu fiyat” veya “zamlandı” sinyaliyle güncel tut."],
 ] as const;
@@ -73,7 +73,7 @@ export default function AndroidLaunchPage() {
               </h1>
               <p className="max-w-2xl text-base leading-relaxed opacity-80 sm:text-lg">
                 Çaydan dönere, berberden şezlonga çevrende gerçekten ne ödendiğini gör;
-                bildiğin fiyatı ekle, güncelliğini mahalleliyle birlikte doğrula.
+                bildiğin fiyatı ekle, güncelliğini toplulukla birlikte doğrula.
               </p>
             </div>
             <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
@@ -97,7 +97,7 @@ export default function AndroidLaunchPage() {
             <div className="rounded-[2rem] border-[3px] border-ink bg-cream p-3 shadow-[6px_6px_0_var(--ink)]">
               <div className="mb-3 flex items-center justify-between border-b-2 border-line pb-2">
                 <span className="display font-extrabold text-tomato">📍 Pinle</span>
-                <span className="text-xs font-bold">Yakındaki fiyatlar</span>
+                <span className="text-xs font-bold">Örnek fiyat kartları</span>
               </div>
               <div className="relative min-h-72 overflow-hidden rounded-2xl border-2 border-ink bg-[#dcebea] p-4">
                 <div className="absolute -right-10 top-8 h-28 w-44 rotate-12 rounded-full border-2 border-teal/40 bg-[#c8e3dc]" />
@@ -122,7 +122,7 @@ export default function AndroidLaunchPage() {
         <section aria-labelledby="nasil-calisir" className="space-y-4">
           <div>
             <p className="text-sm font-extrabold uppercase tracking-wide text-tomato">Topluluk döngüsü</p>
-            <h2 id="nasil-calisir" className="text-3xl font-extrabold">Fiyatı mahalleli ekler, mahalleli doğrular</h2>
+            <h2 id="nasil-calisir" className="text-3xl font-extrabold">Fiyatı ekle, doğrulamayı birlikte büyüt</h2>
           </div>
           <div className="grid gap-4 md:grid-cols-3">
             {steps.map(([number, label, copy], index) => (
@@ -139,8 +139,8 @@ export default function AndroidLaunchPage() {
           <article className="sticker-flat p-6">
             <h2 className="text-2xl font-extrabold">Gözlem, resmi tarife değil</h2>
             <p className="mt-3 text-sm leading-relaxed opacity-75">
-              Pinle’deki rakamlar insanların sahada gördüğü veya ödediği tarihli fiyat
-              gözlemleridir. Tarihe ve doğrulama sinyallerine bak; değişen fiyatı güncelle.
+              Pinle’deki kayıtlar kullanıcı bildirimleri ve Pinle başlangıç verilerinden
+              oluşur. Tarihe ve doğrulama sinyallerine bak; değişen fiyatı güncelle.
             </p>
             <Link href="/fiyatlar#veri-yontemi" className="mt-4 inline-block text-sm font-bold underline underline-offset-4">
               Veri yöntemini incele →
@@ -170,6 +170,18 @@ export default function AndroidLaunchPage() {
           </span>
         </Link>
 
+        <Link href="/gorevler" className="sticker-flat sticker-mint block p-6 sm:p-7">
+          <p className="text-sm font-extrabold uppercase tracking-wide text-tomato">Canlı mikro görevler</p>
+          <h2 className="mt-1 text-2xl font-extrabold">Haritada hangi yerler fiyat bekliyor?</h2>
+          <p className="mt-2 text-sm leading-relaxed opacity-75">
+            Şehir şehir eksik fiyatları gör; bildiğin mekanın görevini aç ve fiyat formuna
+            doğrudan git. Başlangıç noktaları ile kullanıcı noktaları ayrı gösterilir.
+          </p>
+          <span className="mt-4 inline-block text-sm font-extrabold underline underline-offset-4">
+            Fiyat görevlerini aç →
+          </span>
+        </Link>
+
         <section className="sticker sticker-tomato flex flex-col items-start gap-4 p-6 text-white sm:p-8">
           <h2 className="text-3xl font-extrabold">Mahallenden bir gerçek fiyat ekle.</h2>
           <p className="max-w-3xl text-sm leading-relaxed text-white/85 sm:text-base">
@@ -189,6 +201,7 @@ export default function AndroidLaunchPage() {
           <p>Pinle · Revoba · 2026</p>
           <div className="flex gap-4">
             <Link href="/fiyatlar">Fiyatlar</Link>
+            <Link href="/gorevler">Görevler</Link>
             <Link href="/basin">Basın</Link>
             <Link href="/gizlilik">Gizlilik</Link>
             <Link href="/en">English</Link>

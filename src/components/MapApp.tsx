@@ -85,7 +85,9 @@ export default function MapApp({
   const showMeAtRef = useRef<((c: [number, number], animate: boolean) => void) | null>(null);
 
   const [sheet, setSheet] = useState<SheetState>(
-    initialPinId ? { kind: "pin", id: initialPinId } : { kind: "none" }
+    initialPinId
+      ? { kind: "pin", id: initialPinId, firstMission: Boolean(initialMissionSource) }
+      : { kind: "none" }
   );
   const [placing, setPlacing] = useState(false);
   const [placeType, setPlaceType] = useState(initialType); // seçili yer tipi ("" = tümü)
@@ -564,14 +566,19 @@ export default function MapApp({
   // gelmez aynı filtre bağlamında görevi başlatır. URL'deki tek kullanımlık
   // parametreyi temizle; UTM'ler kanal analizi için korunur.
   useEffect(() => {
-    if (!initialMissionSource || pinsLoadedVersion === 0 || autoMissionStartedRef.current) return;
+    if (!initialMissionSource || autoMissionStartedRef.current) return;
+    if (!initialPinId && pinsLoadedVersion === 0) return;
     autoMissionStartedRef.current = true;
-    openContributionMission(initialMissionSource);
+    if (initialPinId) {
+      startContributionMission(initialMissionSource, "open_missing_price");
+    } else {
+      openContributionMission(initialMissionSource);
+    }
     const params = new URLSearchParams(window.location.search);
     params.delete("katki");
     const rest = params.toString();
     window.history.replaceState({}, "", window.location.pathname + (rest ? `?${rest}` : ""));
-  }, [initialMissionSource, openContributionMission, pinsLoadedVersion]);
+  }, [initialMissionSource, initialPinId, openContributionMission, pinsLoadedVersion]);
 
   // Yeni pin formundan "zaten var olan mekan" seçilince: mükerrer açma, o pini aç.
   const openExistingPin = (id: string) => {

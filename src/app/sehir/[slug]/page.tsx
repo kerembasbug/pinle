@@ -204,6 +204,10 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
         🏷️ Türkiye sokak fiyatları endeksi — döner, çay, ekmek {YEAR}&apos;de ne kadar? →
       </Link>
 
+      <Link href="/gorevler" className="sticker-flat sticker-mustard p-3 text-sm font-bold">
+        🎯 Fiyat görevleri — bildiğin bir yerin eksik fiyatını tamamla →
+      </Link>
+
       <section className="mt-2 flex flex-col gap-2">
         <h2 className="text-lg font-extrabold">Diğer şehirler</h2>
         <div className="flex flex-wrap gap-2">

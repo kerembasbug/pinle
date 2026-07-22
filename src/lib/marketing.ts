@@ -20,6 +20,8 @@ export function isPlaySource(value: unknown): value is PlaySource {
 export const SHARE_SOURCES = [
   "sprint_whatsapp",
   "sprint_x",
+  "task_board_whatsapp",
+  "task_board_x",
   "profile_invite",
   "pin_share",
 ] as const;
@@ -48,6 +50,7 @@ export const ACTIVATION_SOURCES = [
   "first_contribution_mission",
   "seo_city",
   "seo_city_category",
+  "task_board",
 ] as const;
 export const ACTIVATION_ACTIONS = ["open_missing_price", "start_new_pin", "completed"] as const;
 

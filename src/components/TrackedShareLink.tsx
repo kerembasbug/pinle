@@ -15,11 +15,11 @@ export default function TrackedShareLink({ href, source, className, children, ar
   const recordClick = () => {
     const payload = JSON.stringify({ source });
     if (navigator.sendBeacon) {
-      navigator.sendBeacon(
+      const accepted = navigator.sendBeacon(
         "/api/events/share",
         new Blob([payload], { type: "application/json" })
       );
-      return;
+      if (accepted) return;
     }
     fetch("/api/events/share", {
       method: "POST",

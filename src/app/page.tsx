@@ -11,7 +11,9 @@ export default async function Home({
   const { pin, sehir, kategori, katki } = await searchParams;
   const initialCenter = sehir ? cityBySlug(sehir)?.center : undefined;
   const initialMissionSource =
-    katki === "seo_city" || katki === "seo_city_category" ? katki : undefined;
+    katki === "seo_city" || katki === "seo_city_category" || katki === "task_board"
+      ? katki
+      : undefined;
   return (
     <>
       {/* Açılış splash'ı — ilk HTML'de, saf CSS ile ~1.7sn'de kendini kapatır.
@@ -52,6 +54,9 @@ export default async function Home({
             ))}
             <li>
               <Link href="/fiyatlar">Türkiye sokak fiyatları — döner, çay, ekmek ne kadar</Link>
+            </li>
+            <li>
+              <Link href="/gorevler">Fiyat görevleri — haritadaki eksik fiyatları tamamla</Link>
             </li>
             <li>
               <Link href="/liderler">Liderlik tablosu</Link>
