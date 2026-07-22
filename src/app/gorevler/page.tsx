@@ -20,20 +20,52 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-function taskHref(task: PriceTask) {
+const CAMPUS_SOURCES = new Set(["campus", "gsu_gastronomi", "ozu_cuisine", "yeditepe_gastroyunica"]);
+
+type TaskContext = {
+  activationSource: "task_board" | "campus";
+  utmSource: string;
+  utmMedium: string;
+  utmCampaign: string;
+};
+
+function taskHref(task: PriceTask, context: TaskContext) {
   const params = new URLSearchParams({
     sehir: task.citySlug,
     kategori: task.categoryId,
     pin: task.id,
-    katki: "task_board",
-    utm_source: "task_board",
-    utm_medium: "owned",
-    utm_campaign: "missing_price_tasks",
+    katki: context.activationSource,
+    utm_source: context.utmSource,
+    utm_medium: context.utmMedium,
+    utm_campaign: context.utmCampaign,
   });
   return `/?${params.toString()}`;
 }
 
-export default function PriceTasksPage() {
+export default async function PriceTasksPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const query = await searchParams;
+  const incomingSource = typeof query.utm_source === "string" ? query.utm_source : "";
+  const incomingMedium = typeof query.utm_medium === "string" ? query.utm_medium : "";
+  const incomingCampaign = typeof query.utm_campaign === "string" ? query.utm_campaign : "";
+  const fromCampus =
+    incomingCampaign === "campus_price_tasks_2026_07" && CAMPUS_SOURCES.has(incomingSource);
+  const taskContext: TaskContext = fromCampus
+    ? {
+        activationSource: "campus",
+        utmSource: incomingSource,
+        utmMedium: incomingMedium === "outreach_email" ? "outreach_email" : "owned",
+        utmCampaign: "campus_price_tasks_2026_07",
+      }
+    : {
+        activationSource: "task_board",
+        utmSource: "task_board",
+        utmMedium: "owned",
+        utmCampaign: "missing_price_tasks",
+      };
   const board = getPriceTaskBoard();
   const formattedTotal = board.totalMissing.toLocaleString("tr-TR");
   const campaignUrl = "https://pinle.app/gorevler";
@@ -84,6 +116,7 @@ export default function PriceTasksPage() {
           </Link>
           <div className="flex gap-4 text-sm font-bold">
             <Link href="/fiyatlar" className="underline underline-offset-4">Fiyat verisi</Link>
+            <Link href="/kampus" className="underline underline-offset-4">Kampüs</Link>
             <Link href="/android" className="underline underline-offset-4">Android</Link>
           </div>
         </nav>
@@ -185,7 +218,7 @@ export default function PriceTasksPage() {
                         : "Kullanıcının eklediği yer · fiyat bekliyor"}
                     </p>
                     <Link
-                      href={taskHref(task)}
+                      href={taskHref(task, taskContext)}
                       className="btn btn-tomato mt-auto w-full whitespace-normal px-4 py-2.5 text-center text-sm leading-tight"
                     >
                       Bu fiyatı tamamla →
@@ -231,6 +264,7 @@ export default function PriceTasksPage() {
             <Link href="/">Harita</Link>
             <Link href="/fiyatlar">Fiyat verisi</Link>
             <Link href="/sprint/istanbul">İstanbul sprinti</Link>
+            <Link href="/kampus">Kampüs pilotu</Link>
             <Link href="/gizlilik">Gizlilik</Link>
           </div>
         </footer>

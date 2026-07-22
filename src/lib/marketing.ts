@@ -9,6 +9,7 @@ export const PLAY_SOURCES = [
   "pin_share_play",
   "pin_detail_play",
   "install_banner",
+  "campus_play",
 ] as const;
 
 export type PlaySource = (typeof PLAY_SOURCES)[number];
@@ -51,6 +52,7 @@ export const ACTIVATION_SOURCES = [
   "seo_city",
   "seo_city_category",
   "task_board",
+  "campus",
 ] as const;
 export const ACTIVATION_ACTIONS = ["open_missing_price", "start_new_pin", "completed"] as const;
 

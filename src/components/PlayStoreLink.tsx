@@ -33,11 +33,11 @@ export default function PlayStoreLink({
   const recordClick = () => {
     const payload = JSON.stringify({ source });
     if (navigator.sendBeacon) {
-      navigator.sendBeacon(
+      const accepted = navigator.sendBeacon(
         "/api/events/outbound-play",
         new Blob([payload], { type: "application/json" })
       );
-      return;
+      if (accepted) return;
     }
     fetch("/api/events/outbound-play", {
       method: "POST",

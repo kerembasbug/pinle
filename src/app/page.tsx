@@ -11,7 +11,10 @@ export default async function Home({
   const { pin, sehir, kategori, katki } = await searchParams;
   const initialCenter = sehir ? cityBySlug(sehir)?.center : undefined;
   const initialMissionSource =
-    katki === "seo_city" || katki === "seo_city_category" || katki === "task_board"
+    katki === "seo_city" ||
+    katki === "seo_city_category" ||
+    katki === "task_board" ||
+    katki === "campus"
       ? katki
       : undefined;
   return (
@@ -57,6 +60,9 @@ export default async function Home({
             </li>
             <li>
               <Link href="/gorevler">Fiyat görevleri — haritadaki eksik fiyatları tamamla</Link>
+            </li>
+            <li>
+              <Link href="/kampus">Kampüs fiyat pilotu — öğrenci kulüpleriyle yerel fiyat haritası</Link>
             </li>
             <li>
               <Link href="/liderler">Liderlik tablosu</Link>

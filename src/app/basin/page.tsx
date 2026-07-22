@@ -90,6 +90,12 @@ const sources = [
     copy: "Beyoğlu ve Kadıköy gerçek kullanıcı fiyat sinyallerinin canlı skoru.",
     href: "/sprint/istanbul",
   },
+  {
+    label: "Öğrenci toplulukları",
+    title: "Kampüs fiyat pilotu",
+    copy: "5–10 gönüllüyle 7 günlük, kaynak-şeffaf kampüs çevresi fiyat görevi.",
+    href: "/kampus",
+  },
 ] as const;
 
 export default function PressPage() {
@@ -304,6 +310,7 @@ export default function PressPage() {
           <div className="flex flex-wrap gap-4">
             <Link href="/android">Android</Link>
             <Link href="/fiyatlar">Veri yöntemi</Link>
+            <Link href="/kampus">Kampüs pilotu</Link>
             <Link href="/gizlilik">Gizlilik</Link>
           </div>
         </footer>

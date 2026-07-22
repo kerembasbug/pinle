@@ -52,6 +52,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/liderler`, changeFrequency: "daily", priority: 0.8 },
     { url: `${BASE}/fiyatlar`, changeFrequency: "daily", priority: 0.9 },
     { url: `${BASE}/gorevler`, changeFrequency: "hourly", priority: 0.9 },
+    { url: `${BASE}/kampus`, changeFrequency: "weekly", priority: 0.8 },
     ...CITIES.map((c) => ({
       url: `${BASE}/sehir/${c.slug}`,
       changeFrequency: "daily" as const,

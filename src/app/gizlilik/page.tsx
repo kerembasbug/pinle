@@ -33,7 +33,7 @@ export default function Privacy() {
           oyların. <strong>Kullanım verisi:</strong> Günlük tekil ziyaret sayısı (anonim
           kimlik bazında, IP adresi saklanmaz), Google Play, paylaşım ve yayıncıya gömülen
           harita bağlantılarındaki anonim kaynak/hedef/zaman sinyali ile katkı sonrası
-          değerlendirme istemi ile ilk katkı ve organik sayfa katkı görevlerinin anonim
+          değerlendirme istemi ile ilk katkı, organik sayfa ve kampüs katkı görevlerinin anonim
           kaynak/eylem/zaman sinyali.
           Davet linkiyle gelirsen anonim kimliğin davet edenin
           opak koduna bağlanır; paylaştığın metin, hedef kişi veya alıcı saklanmaz.{" "}
@@ -45,7 +45,7 @@ export default function Privacy() {
 
         <h2 className="text-base font-extrabold">3. İşlenmeyen Veriler</h2>
         <p>
-          Ad-soyad, telefon, cihaz konum geçmişi toplanmaz. E-posta yalnızca e-posta ile
+          Ad-soyad, telefon, cihaz konum geçmişi zorunlu olarak toplanmaz. E-posta yalnızca e-posta ile
           giriş yapmayı <em>sen</em> seçersen alınır. &quot;Konumumu bul&quot; özelliği
           konumunu yalnızca cihazında, haritayı ortalamak için kullanır — sunucuya gönderilmez.
         </p>
@@ -92,7 +92,7 @@ export default function Privacy() {
         <h2 className="text-base font-extrabold">7. İçerik Kuralları</h2>
         <p>
           Kişisel bilgi (isim, telefon, adres, plaka) içeren, hakaret veya nefret söylemi
-          barındıran içerikler kaldırılır. Anı pinlerinde üçüncü kişileri teşhis edilebilir
+          barındıran içerikler kaldırılır. Pin ve yorumlarda üçüncü kişileri teşhis edilebilir
           şekilde anlatmak yasaktır. Uygunsuz içeriği her pinin altındaki &quot;Bildir&quot;
           ile işaretleyebilirsin; eşik aşıldığında içerik otomatik gizlenir. Bir kullanıcının
           tüm içeriklerini görmek istemiyorsan &quot;Kullanıcıyı gizle&quot; ile bu cihazda
@@ -100,7 +100,7 @@ export default function Privacy() {
         </p>
 
         <p className="opacity-60">
-          Son güncelleme: 21 Temmuz 2026.
+          Son güncelleme: 22 Temmuz 2026.
         </p>
       </div>
 

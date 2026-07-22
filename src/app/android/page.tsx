@@ -202,6 +202,7 @@ export default function AndroidLaunchPage() {
           <div className="flex gap-4">
             <Link href="/fiyatlar">Fiyatlar</Link>
             <Link href="/gorevler">Görevler</Link>
+            <Link href="/kampus">Kampüs</Link>
             <Link href="/basin">Basın</Link>
             <Link href="/gizlilik">Gizlilik</Link>
             <Link href="/en">English</Link>
