@@ -27,6 +27,7 @@ export const ACQUISITION_SOURCES = [
   "rotabu",
   "shiftdelete",
   "webtekno",
+  "github_repo",
   "gsu_gastronomi",
   "ozu_cuisine",
   "yeditepe_gastroyunica",
@@ -91,6 +92,7 @@ export const ACQUISITION_CONTENTS = [
   "qr_card",
   "beyoglu_task",
   "kadikoy_task",
+  "readme_sprint",
 ] as const;
 
 export type AcquisitionSurface = (typeof ACQUISITION_SURFACES)[number];

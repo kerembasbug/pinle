@@ -6,7 +6,7 @@ Pinle, insanların çevrede **gerçekte ne ödendiğini** gördüğü; fiyat ekl
 
 - [Canlı web uygulaması](https://pinle.app)
 - [Android uygulamasını Google Play'den indir](https://play.google.com/store/apps/details?id=app.pinle.twa)
-- [İstanbul Fiyat Sprinti](https://pinle.app/sprint/istanbul)
+- [İstanbul Fiyat Sprinti — ilçeni seç, tek görevi aç](https://pinle.app/sprint/istanbul?utm_source=github_repo&utm_medium=referral&utm_campaign=istanbul_price_sprint_2026_07&utm_content=readme_sprint)
 - [Basın ve medya kiti](https://pinle.app/basin)
 - [Gizlilik politikası](https://pinle.app/gizlilik)
 
@@ -18,6 +18,12 @@ Pinle, insanların çevrede **gerçekte ne ödendiğini** gördüğü; fiyat ekl
 4. Güncel fiyat kartını paylaş; çevrendekileri fiyatı doğrulamaya veya güncellemeye çağır.
 
 Kayıt zorunlu değildir. Kullanıcı anonim başlayabilir; hesabını korumak isterse Google veya e-posta ile isteğe bağlı olarak bağlayabilir.
+
+## Canlı İstanbul Fiyat Sprinti
+
+Beyoğlu ve Kadıköy’de amaç seed mekan sayısını büyütmek değil, insanların gerçekten gördüğü güncel fiyatları ve ikinci-kişi doğrulamalarını çoğaltmak. Pinle Ekibi’nin başlangıç noktaları sprint skoruna dahil edilmez.
+
+[İlçeni seç ve bildiğin tek fiyat görevini doğrudan aç →](https://pinle.app/sprint/istanbul?utm_source=github_repo&utm_medium=referral&utm_campaign=istanbul_price_sprint_2026_07&utm_content=readme_sprint)
 
 ## Ürün yüzeyleri
 
