@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import TrackedShareLink from "@/components/TrackedShareLink";
+import { acquisitionContextFromValues } from "@/lib/acquisition";
 import { categoryById, isPriceable, placeTypeIdOf } from "@/lib/categories";
 import { CITIES } from "@/lib/cityCenters";
 import { jsonLdSafe } from "@/lib/jsonld";
@@ -16,17 +17,6 @@ type Props = {
   params: Promise<{ id: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
-
-const ATTRIBUTION_SOURCES = new Set([
-  "task_board",
-  "campus",
-  "gsu_gastronomi",
-  "ozu_cuisine",
-  "yeditepe_gastroyunica",
-  "whatsapp",
-  "x",
-  "shared_task",
-]);
 
 function first(value: string | string[] | undefined) {
   return Array.isArray(value) ? value[0] : value;
@@ -78,27 +68,26 @@ export default async function SharedPriceTaskPage({ params, searchParams }: Prop
   if (!context) notFound();
   const { pin, city, category } = context;
   const completed = pin.price != null;
-  const sourceCandidate = first(query.utm_source) ?? "shared_task";
-  const source = ATTRIBUTION_SOURCES.has(sourceCandidate) ? sourceCandidate : "shared_task";
-  const mediumCandidate = first(query.utm_medium);
-  const medium = mediumCandidate === "outreach_email" || mediumCandidate === "owned"
-    ? mediumCandidate
-    : mediumCandidate === "share"
-      ? "share"
-      : "referral";
-  const campaignCandidate = first(query.utm_campaign);
-  const campaign = campaignCandidate === "campus_price_tasks_2026_07"
-    ? campaignCandidate
-    : "single_price_task";
+  const acquisition = acquisitionContextFromValues(
+    first(query.utm_source),
+    first(query.utm_medium),
+    first(query.utm_campaign),
+    first(query.utm_content)
+  ) ?? {
+    source: "shared_task" as const,
+    medium: "referral" as const,
+    campaign: "single_price_task" as const,
+  };
   const taskParams = new URLSearchParams({
     sehir: city.slug,
     kategori: placeTypeIdOf(pin.category),
     pin: pin.id,
     katki: "shared_task",
-    utm_source: source,
-    utm_medium: medium,
-    utm_campaign: campaign,
+    utm_source: acquisition.source,
+    utm_medium: acquisition.medium,
+    utm_campaign: acquisition.campaign,
   });
+  if (acquisition.content) taskParams.set("utm_content", acquisition.content);
   const taskHref = `/?${taskParams.toString()}`;
   const canonicalUrl = `https://pinle.app/gorev/${pin.id}`;
   const location = [pin.district, pin.city].filter(Boolean).join(", ");
