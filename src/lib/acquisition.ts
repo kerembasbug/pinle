@@ -16,6 +16,8 @@ export const ACQUISITION_SOURCES = [
   "x",
   "linkedin",
   "reddit",
+  "reddit_turkdev",
+  "reddit_sideproject",
   "producthunt",
   "earned_media",
   "offline",
