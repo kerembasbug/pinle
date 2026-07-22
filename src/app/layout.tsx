@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Baloo_2, Sora } from "next/font/google";
 import "./globals.css";
 import SwRegister from "@/components/SwRegister";
+import AcquisitionTracker from "@/components/AcquisitionTracker";
 
 const baloo = Baloo_2({
   variable: "--font-baloo",
@@ -62,6 +63,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://tiles.openfreemap.org" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://tiles.openfreemap.org" />
         {children}
+        <AcquisitionTracker />
         <SwRegister />
       </body>
     </html>

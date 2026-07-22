@@ -3,12 +3,36 @@ import {
   type ActivationAction,
   type ActivationSource,
 } from "./marketing";
+import {
+  acquisitionContextFromSearch,
+  type AcquisitionContext,
+} from "./acquisition";
 
 const STARTED_PREFIX = "pinle-contribution-mission-started:";
 const PENDING_KEY = "pinle-contribution-mission-pending";
 
-function track(source: ActivationSource, action: ActivationAction) {
-  const payload = JSON.stringify({ source, action });
+type PendingMission = {
+  source: ActivationSource;
+  acquisition?: AcquisitionContext;
+};
+
+function track(
+  source: ActivationSource,
+  action: ActivationAction,
+  acquisition?: AcquisitionContext
+) {
+  const payload = JSON.stringify({
+    source,
+    action,
+    ...(acquisition
+      ? {
+          acquisition_source: acquisition.source,
+          acquisition_medium: acquisition.medium,
+          acquisition_campaign: acquisition.campaign,
+          acquisition_content: acquisition.content,
+        }
+      : {}),
+  });
   if (navigator.sendBeacon) {
     const accepted = navigator.sendBeacon(
       "/api/events/activation",
@@ -34,8 +58,9 @@ export function startContributionMission(
     const startedKey = `${STARTED_PREFIX}${source}`;
     if (sessionStorage.getItem(startedKey)) return;
     sessionStorage.setItem(startedKey, "1");
-    sessionStorage.setItem(PENDING_KEY, source);
-    track(source, action);
+    const acquisition = acquisitionContextFromSearch(window.location.search) ?? undefined;
+    sessionStorage.setItem(PENDING_KEY, JSON.stringify({ source, acquisition } satisfies PendingMission));
+    track(source, action, acquisition);
   } catch {
     // Depolama kapalıysa görev yine çalışır; yalnız attribution atlanır.
   }
@@ -44,13 +69,25 @@ export function startContributionMission(
 /** Görev açıldıktan sonraki ilk anlamlı katkıyı anonim funnel tamamlanması say. */
 export function completeContributionMission() {
   try {
-    const source = sessionStorage.getItem(PENDING_KEY);
-    if (!isActivationSource(source)) {
+    const raw = sessionStorage.getItem(PENDING_KEY);
+    let pending: PendingMission | null = null;
+    if (isActivationSource(raw)) {
+      pending = { source: raw };
+    } else if (raw) {
+      const parsed = JSON.parse(raw) as Partial<PendingMission>;
+      if (isActivationSource(parsed.source)) {
+        pending = {
+          source: parsed.source,
+          acquisition: parsed.acquisition,
+        };
+      }
+    }
+    if (!pending) {
       sessionStorage.removeItem(PENDING_KEY);
       return;
     }
     sessionStorage.removeItem(PENDING_KEY);
-    track(source, "completed");
+    track(pending.source, "completed", pending.acquisition);
   } catch {
     // Katkı akışı ölçüm sorunundan etkilenmez.
   }

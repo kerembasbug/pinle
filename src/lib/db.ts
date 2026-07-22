@@ -166,11 +166,47 @@ function migrate(d: Database.Database) {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       source TEXT NOT NULL,
       action TEXT NOT NULL,
+      acquisition_source TEXT,
+      acquisition_medium TEXT,
+      acquisition_campaign TEXT,
+      acquisition_content TEXT,
       created_at TEXT NOT NULL DEFAULT (datetime('now'))
     );
     CREATE INDEX IF NOT EXISTS idx_activation_events_created
       ON activation_events(created_at, source, action);
+
+    -- UTM etiketli landing oturumları. Tarayıcı oturumunda tekilleştirilir;
+    -- kullanıcı, pin, IP, konum veya referrer URL'si tutulmaz.
+    CREATE TABLE IF NOT EXISTS acquisition_events (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      surface TEXT NOT NULL,
+      source TEXT NOT NULL,
+      medium TEXT NOT NULL,
+      campaign TEXT NOT NULL,
+      content TEXT,
+      created_at TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+    CREATE INDEX IF NOT EXISTS idx_acquisition_events_created
+      ON acquisition_events(created_at, surface, source);
   `);
+
+  const activationCols = d
+    .prepare("PRAGMA table_info(activation_events)")
+    .all() as { name: string }[];
+  for (const column of [
+    "acquisition_source",
+    "acquisition_medium",
+    "acquisition_campaign",
+    "acquisition_content",
+  ]) {
+    if (!activationCols.some((candidate) => candidate.name === column)) {
+      d.exec(`ALTER TABLE activation_events ADD COLUMN ${column} TEXT`);
+    }
+  }
+  d.exec(
+    `CREATE INDEX IF NOT EXISTS idx_activation_events_acquisition
+       ON activation_events(created_at, acquisition_source, source, action)`
+  );
 
   // users: kimlik (login) kolonları — anonim başla, isteğe bağlı bağla
   const userCols = d.prepare("PRAGMA table_info(users)").all() as { name: string }[];

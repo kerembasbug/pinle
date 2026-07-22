@@ -69,7 +69,9 @@ export async function GET(request: NextRequest) {
             WHERE date(ae.created_at) = dates.day
               AND ae.action IN ('open_missing_price', 'start_new_pin')) AS activation_starts,
          (SELECT COUNT(*) FROM activation_events ae
-            WHERE date(ae.created_at) = dates.day AND ae.action = 'completed') AS activation_completions
+            WHERE date(ae.created_at) = dates.day AND ae.action = 'completed') AS activation_completions,
+         (SELECT COUNT(*) FROM acquisition_events aq
+            WHERE date(aq.created_at) = dates.day) AS tagged_landings
        FROM dates ORDER BY dates.day`
     )
     .all();
@@ -98,7 +100,8 @@ export async function GET(request: NextRequest) {
         (SELECT COUNT(*) FROM review_events WHERE action = 'dismissed') AS review_dismissals,
         (SELECT COUNT(*) FROM activation_events
           WHERE action IN ('open_missing_price', 'start_new_pin')) AS activation_starts,
-        (SELECT COUNT(*) FROM activation_events WHERE action = 'completed') AS activation_completions`
+        (SELECT COUNT(*) FROM activation_events WHERE action = 'completed') AS activation_completions,
+        (SELECT COUNT(*) FROM acquisition_events) AS tagged_landings`
     )
     .get();
 
@@ -157,7 +160,9 @@ export async function GET(request: NextRequest) {
            WHERE created_at > datetime('now', '-7 day')
              AND action IN ('open_missing_price', 'start_new_pin')) AS activation_starts,
          (SELECT COUNT(*) FROM activation_events
-           WHERE created_at > datetime('now', '-7 day') AND action = 'completed') AS activation_completions`
+           WHERE created_at > datetime('now', '-7 day') AND action = 'completed') AS activation_completions,
+         (SELECT COUNT(*) FROM acquisition_events
+           WHERE created_at > datetime('now', '-7 day')) AS tagged_landing_sessions`
     )
     .get() as {
     active_contributors: number;
@@ -173,6 +178,7 @@ export async function GET(request: NextRequest) {
     review_dismissals: number;
     activation_starts: number;
     activation_completions: number;
+    tagged_landing_sessions: number;
   };
 
   const districtSignals = d
@@ -266,6 +272,107 @@ export async function GET(request: NextRequest) {
       row.starts > 0 ? Math.round((row.completions / row.starts) * 100) / 100 : null,
   }));
 
+  const acquisitionByChannel = d
+    .prepare(
+      `SELECT surface, source, medium, campaign, content, COUNT(*) AS sessions
+         FROM acquisition_events
+        WHERE created_at > datetime('now', '-30 day')
+        GROUP BY surface, source, medium, campaign, content
+        ORDER BY sessions DESC, surface ASC, source ASC, content ASC`
+    )
+    .all();
+
+  const activationByAcquisition = (
+    d
+      .prepare(
+        `SELECT acquisition_source AS acquisition_source,
+                acquisition_medium AS acquisition_medium,
+                acquisition_campaign AS acquisition_campaign,
+                acquisition_content AS acquisition_content,
+                source AS activation_source,
+                SUM(CASE WHEN action IN ('open_missing_price', 'start_new_pin') THEN 1 ELSE 0 END) AS starts,
+                SUM(CASE WHEN action = 'completed' THEN 1 ELSE 0 END) AS completions
+           FROM activation_events
+          WHERE created_at > datetime('now', '-7 day')
+            AND acquisition_source IS NOT NULL
+          GROUP BY acquisition_source, acquisition_medium, acquisition_campaign,
+                   acquisition_content, source
+          ORDER BY starts DESC, acquisition_source ASC, activation_source ASC`
+      )
+      .all() as {
+        acquisition_source: string;
+        acquisition_medium: string;
+        acquisition_campaign: string;
+        acquisition_content: string | null;
+        activation_source: string;
+        starts: number;
+        completions: number;
+      }[]
+  ).map((row) => ({
+    ...row,
+    completion_rate:
+      row.starts > 0 ? Math.round((row.completions / row.starts) * 100) / 100 : null,
+  }));
+
+  const acquisitionFunnel = (
+    d
+      .prepare(
+        `WITH landings AS (
+           SELECT source, medium, campaign, content, COUNT(*) AS sessions
+             FROM acquisition_events
+            WHERE created_at > datetime('now', '-7 day')
+            GROUP BY source, medium, campaign, content
+         ), activations AS (
+           SELECT acquisition_source AS source,
+                  acquisition_medium AS medium,
+                  acquisition_campaign AS campaign,
+                  acquisition_content AS content,
+                  SUM(CASE WHEN action IN ('open_missing_price', 'start_new_pin') THEN 1 ELSE 0 END) AS starts,
+                  SUM(CASE WHEN action = 'completed' THEN 1 ELSE 0 END) AS completions
+             FROM activation_events
+            WHERE created_at > datetime('now', '-7 day')
+              AND acquisition_source IS NOT NULL
+            GROUP BY acquisition_source, acquisition_medium,
+                     acquisition_campaign, acquisition_content
+         ), channels AS (
+           SELECT source, medium, campaign, content FROM landings
+           UNION
+           SELECT source, medium, campaign, content FROM activations
+         )
+         SELECT channels.source, channels.medium, channels.campaign, channels.content,
+                COALESCE(landings.sessions, 0) AS sessions,
+                COALESCE(activations.starts, 0) AS starts,
+                COALESCE(activations.completions, 0) AS completions
+           FROM channels
+           LEFT JOIN landings
+             ON landings.source = channels.source
+            AND landings.medium = channels.medium
+            AND landings.campaign = channels.campaign
+            AND landings.content IS channels.content
+           LEFT JOIN activations
+             ON activations.source = channels.source
+            AND activations.medium = channels.medium
+            AND activations.campaign = channels.campaign
+            AND activations.content IS channels.content
+          ORDER BY starts DESC, sessions DESC, channels.source ASC, channels.content ASC`
+      )
+      .all() as {
+        source: string;
+        medium: string;
+        campaign: string;
+        content: string | null;
+        sessions: number;
+        starts: number;
+        completions: number;
+      }[]
+  ).map((row) => ({
+    ...row,
+    start_rate:
+      row.sessions > 0 ? Math.round((row.starts / row.sessions) * 100) / 100 : null,
+    completion_rate:
+      row.starts > 0 ? Math.round((row.completions / row.starts) * 100) / 100 : null,
+  }));
+
   // Katkı oranı: son 7 günün ziyaretçilerinden pin ekleyenlerin payı (launch KPI'sı)
   const contribution = d
     .prepare(
@@ -299,6 +406,9 @@ export async function GET(request: NextRequest) {
     reviewByAction,
     activationByAction,
     activationBySource,
+    acquisitionByChannel,
+    activationByAcquisition,
+    acquisitionFunnel,
     last14Days: days,
     launchMetrics: {
       ...launchMetrics,

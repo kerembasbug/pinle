@@ -4,6 +4,10 @@ import PlayStoreLink from "@/components/PlayStoreLink";
 import TrackedShareLink from "@/components/TrackedShareLink";
 import { getDistrictPriceTasks, type PriceTask } from "@/lib/priceTasks";
 import {
+  acquisitionContextFromValues,
+  type AcquisitionContext,
+} from "@/lib/acquisition";
+import {
   DISTRICT_SIGNAL_GOAL,
   getIstanbulSprintMetrics,
   ISTANBUL_SPRINT_END,
@@ -38,17 +42,32 @@ const whatsappHref = `https://wa.me/?text=${encodeURIComponent(whatsappText)}`;
 const xHref = `https://twitter.com/intent/tweet?text=${encodeURIComponent(xText)}&url=${encodeURIComponent(`${campaignUrl}?utm_source=x&utm_medium=share&utm_campaign=istanbul_price_sprint_2026_07`)}`;
 const sprintCampaign = "istanbul_price_sprint_2026_07";
 
-function taskHref(task: PriceTask, source: "sprint_beyoglu" | "sprint_kadikoy") {
+function taskHref(
+  task: PriceTask,
+  source: "sprint_beyoglu" | "sprint_kadikoy",
+  incomingAcquisition: AcquisitionContext | null
+) {
+  const acquisition = incomingAcquisition ?? {
+    source: "pinle",
+    medium: "owned",
+    campaign: sprintCampaign,
+    content: source === "sprint_beyoglu" ? "beyoglu_task" : "kadikoy_task",
+  } satisfies AcquisitionContext;
   const params = new URLSearchParams({
     sehir: task.citySlug,
     kategori: task.categoryId,
     pin: task.id,
     katki: source,
-    utm_source: source,
-    utm_medium: "owned",
-    utm_campaign: sprintCampaign,
+    utm_source: acquisition.source,
+    utm_medium: acquisition.medium,
+    utm_campaign: acquisition.campaign,
   });
+  if (acquisition.content) params.set("utm_content", acquisition.content);
   return `/?${params.toString()}`;
+}
+
+function first(value: string | string[] | undefined) {
+  return Array.isArray(value) ? value[0] : value;
 }
 
 function formatTimestamp(date: Date) {
@@ -59,7 +78,18 @@ function formatTimestamp(date: Date) {
   }).format(date);
 }
 
-export default function IstanbulPriceSprintPage() {
+export default async function IstanbulPriceSprintPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const query = await searchParams;
+  const incomingAcquisition = acquisitionContextFromValues(
+    first(query.utm_source),
+    first(query.utm_medium),
+    first(query.utm_campaign),
+    first(query.utm_content)
+  );
   const metrics = getIstanbulSprintMetrics();
   const districtTasks = getDistrictPriceTasks(
     "İstanbul",
@@ -213,7 +243,7 @@ export default function IstanbulPriceSprintPage() {
                           </div>
                         </div>
                         <Link
-                          href={taskHref(task, source)}
+                          href={taskHref(task, source, incomingAcquisition)}
                           className="btn btn-tomato min-h-12 shrink-0 whitespace-normal px-4 py-3 text-center text-sm leading-tight"
                         >
                           Bu fiyatı tamamla →

@@ -34,7 +34,10 @@ export default function Privacy() {
           kimlik bazında, IP adresi saklanmaz), Google Play, paylaşım ve yayıncıya gömülen
           harita bağlantılarındaki anonim kaynak/hedef/zaman sinyali ile katkı sonrası
           değerlendirme istemi ile ilk katkı, organik sayfa, kampüs ve paylaşılan tekil fiyat görevlerinin anonim
-          kaynak/eylem/zaman sinyali.
+          kaynak/eylem/zaman sinyali. UTM etiketli bir bağlantıyla gelirsen landing yüzeyi,
+          izinli kampanya kaynağı/kanalı/içerik etiketi ve zaman; görev açarsan aynı kampanya
+          etiketleri görev kaynağı/eylemiyle birlikte tutulur. Bu sinyaller tarayıcı oturumunda
+          tekilleştirilir; kullanıcı kimliği, pin, IP, konum veya referrer URL&apos;si kaydedilmez.
           Davet linkiyle gelirsen anonim kimliğin davet edenin
           opak koduna bağlanır; paylaştığın metin, hedef kişi veya alıcı saklanmaz.{" "}
           <strong>İsteğe bağlı giriş bilgisi:</strong>{" "}
