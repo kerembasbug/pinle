@@ -24,6 +24,8 @@ export const ACQUISITION_SOURCES = [
   "offline",
   "outreach_email",
   "gazete_kadikoy",
+  "pera_yasam",
+  "beyoglu_dernegi",
   "bilgi_clubs",
   "bilgi_uni",
   "kampus_haber",
@@ -105,6 +107,7 @@ export const ACQUISITION_CONTENTS = [
   "kadikoy_task",
   "readme_sprint",
   "directory_launch",
+  "field_pilot",
   "beyoglu_success",
   "kadikoy_success",
 ] as const;
