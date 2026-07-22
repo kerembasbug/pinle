@@ -15,7 +15,9 @@ export default async function Home({
     katki === "seo_city_category" ||
     katki === "task_board" ||
     katki === "campus" ||
-    katki === "shared_task"
+    katki === "shared_task" ||
+    katki === "sprint_beyoglu" ||
+    katki === "sprint_kadikoy"
       ? katki
       : undefined;
   return (

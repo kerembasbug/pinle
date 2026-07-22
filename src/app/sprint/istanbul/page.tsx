@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import PlayStoreLink from "@/components/PlayStoreLink";
 import TrackedShareLink from "@/components/TrackedShareLink";
+import { getDistrictPriceTasks, type PriceTask } from "@/lib/priceTasks";
 import {
   DISTRICT_SIGNAL_GOAL,
   getIstanbulSprintMetrics,
@@ -35,6 +36,20 @@ const whatsappText = `Beyoğlu mu Kadıköy mü? Pinle İstanbul Fiyat Sprinti'n
 const xText = "Beyoğlu mu Kadıköy mü? Mahallenden bir gerçek fiyat ekle, İstanbul Fiyat Sprinti'ne katıl.";
 const whatsappHref = `https://wa.me/?text=${encodeURIComponent(whatsappText)}`;
 const xHref = `https://twitter.com/intent/tweet?text=${encodeURIComponent(xText)}&url=${encodeURIComponent(`${campaignUrl}?utm_source=x&utm_medium=share&utm_campaign=istanbul_price_sprint_2026_07`)}`;
+const sprintCampaign = "istanbul_price_sprint_2026_07";
+
+function taskHref(task: PriceTask, source: "sprint_beyoglu" | "sprint_kadikoy") {
+  const params = new URLSearchParams({
+    sehir: task.citySlug,
+    kategori: task.categoryId,
+    pin: task.id,
+    katki: source,
+    utm_source: source,
+    utm_medium: "owned",
+    utm_campaign: sprintCampaign,
+  });
+  return `/?${params.toString()}`;
+}
 
 function formatTimestamp(date: Date) {
   return new Intl.DateTimeFormat("tr-TR", {
@@ -46,6 +61,10 @@ function formatTimestamp(date: Date) {
 
 export default function IstanbulPriceSprintPage() {
   const metrics = getIstanbulSprintMetrics();
+  const districtTasks = getDistrictPriceTasks(
+    "İstanbul",
+    metrics.map((district) => district.district)
+  );
   const totalSignals = metrics.reduce((sum, district) => sum + district.priceSignals, 0);
   const totalGoal = DISTRICT_SIGNAL_GOAL * metrics.length;
   const updatedAt = formatTimestamp(new Date());
@@ -78,9 +97,9 @@ export default function IstanbulPriceSprintPage() {
               </p>
             </div>
             <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-              <Link href="/?sehir=istanbul" className="btn btn-tomato px-7 py-3 text-center">
-                Haritayı aç ve fiyat ekle 🗺️
-              </Link>
+              <a href="#hemen-katil" className="btn btn-tomato px-7 py-3 text-center">
+                İlçeni seç, tek görevi aç 🎯
+              </a>
               <PlayStoreLink
                 source="sprint_istanbul_hero"
                 className="btn btn-cream px-7 py-3 text-center"
@@ -138,15 +157,85 @@ export default function IstanbulPriceSprintPage() {
                     <p className="text-xs font-bold opacity-70">doğrulama</p>
                   </div>
                 </div>
-                <Link
-                  href="/?sehir=istanbul"
+                <a
+                  href="#hemen-katil"
                   className={`mt-6 inline-block text-sm font-extrabold underline underline-offset-4 ${index === 0 ? "text-ink" : "text-white"}`}
                 >
-                  {district.district} için bir fiyat ekle →
-                </Link>
+                  {district.district} görevlerini seç →
+                </a>
               </article>
             );
           })}
+        </section>
+
+        <section id="hemen-katil" className="scroll-mt-5 space-y-5" aria-labelledby="sprint-gorevleri">
+          <div>
+            <p className="text-sm font-extrabold uppercase tracking-wide text-tomato">Tek fiyatlık mikro görev</p>
+            <h2 id="sprint-gorevleri" className="text-3xl font-extrabold">İlçeni seç, bildiğin yeri tamamla</h2>
+            <p className="mt-2 max-w-3xl text-sm leading-relaxed opacity-70">
+              Bağlantı doğru mekanı doğrudan açar. Fiyatı gerçekten bilmiyorsan başka göreve geç;
+              tahmin veya eski fiyat ekleme. Açık görev sayısı başarı değil, tamamlanmayı bekleyen kapsamdır.
+            </p>
+          </div>
+          <div className="grid gap-5 lg:grid-cols-2">
+            {districtTasks.map((district, districtIndex) => {
+              const source = district.district === "Beyoğlu" ? "sprint_beyoglu" : "sprint_kadikoy";
+              return (
+                <article key={district.district} className="sticker-flat min-w-0 p-5 sm:p-6">
+                  <div className="flex flex-wrap items-end justify-between gap-3">
+                    <div>
+                      <p className="text-xs font-extrabold uppercase tracking-wide text-tomato">{district.district} takımı</p>
+                      <h3 className="text-2xl font-extrabold">Şimdi açılabilecek görevler</h3>
+                    </div>
+                    <p className="text-right text-xs font-bold opacity-60">
+                      {district.missing.toLocaleString("tr-TR")} açık görev<br />
+                      {district.seedMissing.toLocaleString("tr-TR")} başlangıç · {district.userMissing.toLocaleString("tr-TR")} kullanıcı
+                    </p>
+                  </div>
+                  <div className="mt-4 grid gap-3">
+                    {district.tasks.map((task, taskIndex) => (
+                      <div
+                        key={task.id}
+                        className={`flex min-w-0 flex-col gap-3 rounded-2xl border-2 border-ink/15 p-4 sm:flex-row sm:items-center ${
+                          districtIndex === 0 && taskIndex === 0 ? "bg-mint/35" : "bg-cream/65"
+                        }`}
+                      >
+                        <div className="flex min-w-0 flex-1 items-start gap-3">
+                          <span className="text-2xl" aria-hidden>{task.emoji}</span>
+                          <div className="min-w-0">
+                            <h4 className="truncate font-extrabold">{task.name}</h4>
+                            <p className="text-xs opacity-60">{task.categoryLabel} · fiyat bekliyor</p>
+                            <p className="mt-1 text-[11px] leading-relaxed opacity-55">
+                              {task.source === "seed"
+                                ? "Pinle başlangıç noktası · henüz kullanıcı fiyatı yok"
+                                : "Kullanıcının eklediği yer · fiyat bekliyor"}
+                            </p>
+                          </div>
+                        </div>
+                        <Link
+                          href={taskHref(task, source)}
+                          className="btn btn-tomato min-h-12 shrink-0 whitespace-normal px-4 py-3 text-center text-sm leading-tight"
+                        >
+                          Bu fiyatı tamamla →
+                        </Link>
+                      </div>
+                    ))}
+                  </div>
+                  {district.tasks.length === 0 && (
+                    <p className="mt-4 rounded-2xl bg-cream p-4 text-sm leading-relaxed opacity-70">
+                      Bu ilçedeki seçili görevler şu anda tamamlandı. Yeni görevler için genel panoya geç.
+                    </p>
+                  )}
+                  <Link
+                    href="/gorevler#istanbul"
+                    className="mt-4 inline-block text-sm font-bold underline underline-offset-4"
+                  >
+                    İstanbul’daki diğer görevleri gör →
+                  </Link>
+                </article>
+              );
+            })}
+          </div>
         </section>
 
         <section className="grid gap-4 md:grid-cols-3" aria-labelledby="nasil-sayiliyor">
@@ -211,9 +300,9 @@ export default function IstanbulPriceSprintPage() {
             Hedef uygulama indirmesi değil, mahallede tekrar tekrar işe yarayan güncel fiyat yoğunluğu.
           </p>
           <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-            <Link href="/?sehir=istanbul" className="btn btn-mustard px-7 py-3 text-center text-ink">
-              Haritada katıl 🗺️
-            </Link>
+            <a href="#hemen-katil" className="btn btn-mustard px-7 py-3 text-center text-ink">
+              Görev seç ve katıl 🎯
+            </a>
             <PlayStoreLink
               source="sprint_istanbul_bottom"
               className="btn btn-cream px-7 py-3 text-center text-ink"

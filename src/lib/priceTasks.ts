@@ -103,6 +103,14 @@ export type CityPriceTasks = {
   tasks: PriceTask[];
 };
 
+export type DistrictPriceTasks = {
+  district: string;
+  missing: number;
+  seedMissing: number;
+  userMissing: number;
+  tasks: PriceTask[];
+};
+
 export type PriceTaskBoard = {
   totalMissing: number;
   seedMissing: number;
@@ -128,6 +136,88 @@ function isActionableTask(row: MissingPriceRow) {
   if (row.category === "market") return hasNameHint(row.name, MARKET_NAME_HINTS);
   if (row.category === "oto") return hasNameHint(row.name, AUTO_NAME_HINTS);
   return true;
+}
+
+function toPriceTask(row: MissingPriceRow, citySlug: string): PriceTask {
+  const category = categoryById(row.category);
+  return {
+    id: row.id,
+    name: row.name,
+    city: row.city,
+    citySlug,
+    district: row.district,
+    categoryId: placeTypeIdOf(row.category),
+    categoryLabel: category.label,
+    emoji: category.emoji,
+    source: row.author === SEED_AUTHOR_NAME ? "seed" : "user",
+  };
+}
+
+export function getDistrictPriceTasks(
+  cityName: string,
+  districtNames: readonly string[],
+  limit = 3
+): DistrictPriceTasks[] {
+  const city = CITIES.find((candidate) => candidate.name === cityName);
+  if (!city) {
+    return districtNames.map((district) => ({
+      district,
+      missing: 0,
+      seedMissing: 0,
+      userMissing: 0,
+      tasks: [],
+    }));
+  }
+
+  const rows = db()
+    .prepare(
+      `SELECT p.id, p.name, p.city, p.district, p.category, u.name AS author, p.created_at
+         FROM pins p JOIN users u ON u.id = p.user_id
+        WHERE p.status = 'active'
+          AND p.kind = 'lezzet'
+          AND p.price IS NULL
+          AND p.city = ?
+          AND p.district IS NOT NULL
+        ORDER BY CASE WHEN u.name = ? THEN 1 ELSE 0 END,
+                 p.created_at DESC,
+                 p.name ASC,
+                 p.id ASC`
+    )
+    .all(cityName, SEED_AUTHOR_NAME) as MissingPriceRow[];
+  const actionable = rows.filter(isActionableTask);
+
+  return districtNames.map((district) => {
+    const districtRows = actionable.filter((row) => row.district === district);
+    const selected: MissingPriceRow[] = [];
+    const seenCategories = new Set<string>();
+
+    for (const row of districtRows) {
+      const categoryId = placeTypeIdOf(row.category);
+      if (seenCategories.has(categoryId)) continue;
+      seenCategories.add(categoryId);
+      selected.push(row);
+      if (selected.length === limit) break;
+    }
+
+    // Az kategorili ilçelerde de boş kart bırakmamak için kalan kotayı farklı
+    // mekanlarla tamamla. Aynı mekan hiçbir zaman iki kez seçilmez.
+    if (selected.length < limit) {
+      const selectedIds = new Set(selected.map((row) => row.id));
+      for (const row of districtRows) {
+        if (selectedIds.has(row.id)) continue;
+        selected.push(row);
+        if (selected.length === limit) break;
+      }
+    }
+
+    return {
+      district,
+      missing: districtRows.length,
+      seedMissing: districtRows.filter((row) => row.author === SEED_AUTHOR_NAME).length,
+      userMissing: districtRows.filter((row) => row.author !== SEED_AUTHOR_NAME).length,
+      tasks: selected.map((row) => toPriceTask(row, city.slug)),
+    } satisfies DistrictPriceTasks;
+  });
 }
 
 export function getPriceTaskBoard(): PriceTaskBoard {
@@ -166,18 +256,7 @@ export function getPriceTaskBoard(): PriceTaskBoard {
       const context = `${row.district ?? "-"}:${categoryId}`;
       if (seenContexts.has(context)) continue;
       seenContexts.add(context);
-      const category = categoryById(row.category);
-      selected.push({
-        id: row.id,
-        name: row.name,
-        city: city.name,
-        citySlug: city.slug,
-        district: row.district,
-        categoryId,
-        categoryLabel: category.label,
-        emoji: category.emoji,
-        source: row.author === SEED_AUTHOR_NAME ? "seed" : "user",
-      });
+      selected.push(toPriceTask(row, city.slug));
       if (selected.length === 3) break;
     }
 
