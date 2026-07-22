@@ -1,0 +1,58 @@
+name: Product feedback
+description: Bir kullanıcı problemini veya ürün akışı önerisini paylaş
+title: "[Feedback]: "
+labels:
+  - product-feedback
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Çözümden önce problemi anlamak istiyoruz. İndirme, olumlu yorum veya beş yıldız talebi bu şablonun amacı değildir.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Hangi problemle karşılaştın?
+      description: Nerede, ne yapmaya çalışırken ve neden zorlandığını anlat.
+    validations:
+      required: true
+  - type: dropdown
+    id: journey
+    attributes:
+      label: Akış
+      options:
+        - İlk açılış / yakındaki fiyatı bulma
+        - Fiyat ekleme veya güncelleme
+        - Hâlâ bu fiyat / zamlandı doğrulaması
+        - Tekil fiyat görevi
+        - Paylaşım / davet
+        - Android kurulum veya uygulama davranışı
+        - Erişilebilirlik
+        - Diğer
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: Mevcut davranış
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: İstenen sonuç
+      description: Belirli bir UI dayatmak yerine kullanıcının ulaşması gereken sonucu yazabilirsin.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: Çözüm fikri (opsiyonel)
+  - type: checkboxes
+    id: trust
+    attributes:
+      label: Güven kontrolü
+      options:
+        - label: Önerim seed verisini gerçek kullanıcı katkısı gibi göstermiyor.
+          required: true
+        - label: Issue içinde kişisel veya hassas veri paylaşmıyorum.
+          required: true

@@ -1,0 +1,64 @@
+name: Bug report
+description: Tekrarlanabilir web veya Android ürün hatasını bildir
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Teşekkürler. Kişisel veri, şifre, token, özel mesaj veya başka birinin kimliğini ekleme. Güvenlik açığı için public issue açmadan SECURITY.md dosyasını kullan.
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options:
+        - Android / Google Play (TWA)
+        - Mobil web / PWA
+        - Masaüstü web
+        - Diğer
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Ne oldu?
+      description: Gözlediğin davranışı kısa ve somut anlat.
+      placeholder: "... ekranında ... yaptıktan sonra ... oluyor."
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Tekrarlama adımları
+      placeholder: |
+        1. ... sayfasını aç
+        2. ... seç
+        3. ... davranışını gör
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Beklenen davranış
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Cihaz / tarayıcı
+      placeholder: "Örn. Pixel 8 / Android 16 / Play sürümü veya Chrome 140"
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Güvenli ek kanıt
+      description: Hassas veri içermeyen ekran görüntüsü, konsol hatası veya URL. Secret ve gerçek kullanıcı verisi ekleme.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Kontrol
+      options:
+        - label: Aynı sorunu mevcut issue'larda aradım.
+          required: true
+        - label: Bu bildirim kişisel veri, erişim anahtarı veya güvenlik açığı ayrıntısı içermiyor.
+          required: true

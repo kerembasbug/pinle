@@ -76,6 +76,8 @@ docker run -d -p 3000:3000 -v pinle-data:/app/data pinle
 
 ## Katkı ve iletişim
 
-Ürün geri bildirimi, veri yöntemi veya editoryal talepler için [canlı basın ve medya sayfasındaki](https://pinle.app/basin) iletişim kanalını kullanın. Yanlış veya eski fiyatlar uygulama içindeki doğrulama/güncelleme akışıyla düzeltilmelidir.
+Kod, ürün akışı veya veri-güven modeliyle ilgili katkılar için [CONTRIBUTING.md](CONTRIBUTING.md) ve [GitHub issue şablonlarını](https://github.com/kerembasbug/pinle/issues/new/choose) kullanın. Mevcut seed, güncellik, doğrulama ve anonim ölçüm sözleşmesi [docs/TRUST_MODEL.md](docs/TRUST_MODEL.md) içinde; güvenlik bildirim yolu [SECURITY.md](SECURITY.md) içindedir.
+
+Editoryal talepler için [canlı basın ve medya sayfasındaki](https://pinle.app/basin) iletişim kanalını kullanın. Yanlış veya eski tekil fiyatlar GitHub issue'su yerine uygulama içindeki doğrulama/güncelleme akışıyla düzeltilmelidir.
 
 Kamuya açık launch ve iletişim ilkeleri: [PAZARLAMA.md](PAZARLAMA.md).

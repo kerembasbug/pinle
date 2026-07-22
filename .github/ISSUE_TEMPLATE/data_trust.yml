@@ -1,0 +1,50 @@
+name: Data trust / methodology
+description: Seed ayrımı, güncellik, doğrulama veya anonim ölçüm sözleşmesini sorgula
+title: "[Trust]: "
+labels:
+  - data-trust
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Önce docs/TRUST_MODEL.md dosyasını oku. Tekil yanlış/eski fiyatı GitHub'a yazma; Pinle içindeki doğrulama/güncelleme akışını kullan.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Alan
+      options:
+        - Seed verisi / provenance
+        - Fiyat güncelliği
+        - İkinci-kişi doğrulaması
+        - Anonim acquisition / activation ölçümü
+        - Rate limit / kötüye kullanım
+        - Veri özeti / CSV / metodoloji
+        - Diğer
+    validations:
+      required: true
+  - type: textarea
+    id: contract
+    attributes:
+      label: Hangi mevcut sözleşmeyi sorguluyorsun?
+      description: Doküman veya kod bağlantısı ve mevcut davranış.
+    validations:
+      required: true
+  - type: textarea
+    id: risk
+    attributes:
+      label: Risk veya yanlış yorum ihtimali
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Önerilen değişiklik veya test
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Kontrol
+      options:
+        - label: Bu issue tekil bir işletme/fiyat şikâyeti değildir.
+          required: true
+        - label: Gerçek kullanıcı verisi, koordinat, IP, token veya başka hassas veri içermiyor.
+          required: true

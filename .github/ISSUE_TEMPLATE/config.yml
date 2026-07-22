@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Yanlış veya eski fiyatı güncelle
+    url: https://pinle.app
+    about: Tekil fiyat düzeltmesini doğru pine ve tarihe bağlamak için uygulama içi akışı kullan.
+  - name: Güvenlik bildirimi
+    url: https://pinle.app/basin
+    about: Public issue açmadan özel iletişim kanalını kullan ve SECURITY.md sınırlarını oku.

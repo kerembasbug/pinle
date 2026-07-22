@@ -46,3 +46,11 @@ Ana mesaj sırası:
 Editörler, öğrenci toplulukları, yerel yayınlar ve içerik üreticileri için doğrulanabilir ürün bilgileri ile görsel varlıklar [Pinle basın ve medya kitinde](https://pinle.app/basin) bulunur.
 
 İletişimde bir başarı iddiası henüz ölçülmediyse “başlangıç”, “pilot” veya “katkı çağrısı” olarak açıkça belirtilir. Veri yoğunluğu eşiği aşılmadan “Türkiye'nin fiyat haritası tamamlandı” gibi geniş iddialar kullanılmaz.
+
+## Public teknik geri bildirim
+
+- Kod, ürün ve veri-güven geri bildirimi public GitHub issue şablonlarına yönlendirilebilir.
+- Tekil yanlış/eski fiyat veya işletme şikâyeti GitHub'a taşınmaz; ürün içi güncelleme/bildirim akışı kullanılır.
+- Seed ayrımı, doğrulama ve anonim ölçümün mevcut sözleşmesi `docs/TRUST_MODEL.md` ile kamuya açıktır; bilinen sınırlamalar başarı iddiası altında gizlenmez.
+- Güvenlik açıkları public issue olarak istenmez; `SECURITY.md` içindeki özel kanal kullanılır.
+- Issue, star, fork veya yorum sayısı gerçek kullanıcı fiyat katkısı ya da launch traksiyonu sayılmaz.
