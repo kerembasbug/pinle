@@ -27,6 +27,8 @@ export const SHARE_SOURCES = [
   "task_detail_x",
   "profile_invite",
   "pin_share",
+  "sprint_success_beyoglu",
+  "sprint_success_kadikoy",
 ] as const;
 
 export type ShareSource = (typeof SHARE_SOURCES)[number];

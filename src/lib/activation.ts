@@ -11,7 +11,7 @@ import {
 const STARTED_PREFIX = "pinle-contribution-mission-started:";
 const PENDING_KEY = "pinle-contribution-mission-pending";
 
-type PendingMission = {
+export type CompletedMission = {
   source: ActivationSource;
   acquisition?: AcquisitionContext;
 };
@@ -59,7 +59,7 @@ export function startContributionMission(
     if (sessionStorage.getItem(startedKey)) return;
     sessionStorage.setItem(startedKey, "1");
     const acquisition = acquisitionContextFromSearch(window.location.search) ?? undefined;
-    sessionStorage.setItem(PENDING_KEY, JSON.stringify({ source, acquisition } satisfies PendingMission));
+    sessionStorage.setItem(PENDING_KEY, JSON.stringify({ source, acquisition } satisfies CompletedMission));
     track(source, action, acquisition);
   } catch {
     // Depolama kapalıysa görev yine çalışır; yalnız attribution atlanır.
@@ -67,14 +67,14 @@ export function startContributionMission(
 }
 
 /** Görev açıldıktan sonraki ilk anlamlı katkıyı anonim funnel tamamlanması say. */
-export function completeContributionMission() {
+export function completeContributionMission(): CompletedMission | null {
   try {
     const raw = sessionStorage.getItem(PENDING_KEY);
-    let pending: PendingMission | null = null;
+    let pending: CompletedMission | null = null;
     if (isActivationSource(raw)) {
       pending = { source: raw };
     } else if (raw) {
-      const parsed = JSON.parse(raw) as Partial<PendingMission>;
+      const parsed = JSON.parse(raw) as Partial<CompletedMission>;
       if (isActivationSource(parsed.source)) {
         pending = {
           source: parsed.source,
@@ -84,11 +84,13 @@ export function completeContributionMission() {
     }
     if (!pending) {
       sessionStorage.removeItem(PENDING_KEY);
-      return;
+      return null;
     }
     sessionStorage.removeItem(PENDING_KEY);
     track(pending.source, "completed", pending.acquisition);
+    return pending;
   } catch {
     // Katkı akışı ölçüm sorunundan etkilenmez.
+    return null;
   }
 }

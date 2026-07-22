@@ -37,6 +37,7 @@ const SearchSheet = dynamic(() => import("./SearchSheet"), { ssr: false });
 const Onboarding = dynamic(() => import("./Onboarding"), { ssr: false });
 const AuthSheet = dynamic(() => import("./AuthSheet"), { ssr: false });
 const ReviewPrompt = dynamic(() => import("./ReviewPrompt"), { ssr: false });
+const SprintSuccessPrompt = dynamic(() => import("./SprintSuccessPrompt"), { ssr: false });
 
 const MAP_STYLE = "https://tiles.openfreemap.org/styles/liberty";
 const ISTANBUL: [number, number] = [28.98, 41.03];
@@ -108,6 +109,9 @@ export default function MapApp({
   const [authOpen, setAuthOpen] = useState(false);
   const [liveMode, setLiveMode] = useState(false);
   const [reviewTrigger, setReviewTrigger] = useState(0);
+  const [sprintSuccess, setSprintSuccess] = useState<
+    "sprint_beyoglu" | "sprint_kadikoy" | null
+  >(null);
   const [pinsLoadedVersion, setPinsLoadedVersion] = useState(0);
   const liveMarkersRef = useRef<maplibregl.Marker[]>([]);
 
@@ -115,9 +119,21 @@ export default function MapApp({
     setToast({ msg, key: Date.now() });
   }, []);
 
+  const finishContributionMission = useCallback(() => {
+    const completed = completeContributionMission();
+    if (
+      completed?.source === "sprint_beyoglu" ||
+      completed?.source === "sprint_kadikoy"
+    ) {
+      setSprintSuccess(completed.source);
+    }
+    setReviewTrigger((n) => n + 1);
+  }, []);
+
   // Geri tuşu (TWA/Android): sheet açıkken geri = sheet'i kapat, uygulamadan çıkma.
   // Overlay açılınca 1 history girdisi it; popstate gelince overlay'leri kapat.
-  const anyOverlayOpen = sheet.kind !== "none" || searchOpen || authOpen || placing;
+  const anyOverlayOpen =
+    sheet.kind !== "none" || searchOpen || authOpen || placing || sprintSuccess !== null;
   const overlayOpenRef = useRef(anyOverlayOpen);
   overlayOpenRef.current = anyOverlayOpen;
   const pushedRef = useRef(false);
@@ -135,6 +151,7 @@ export default function MapApp({
         setSearchOpen(false);
         setAuthOpen(false);
         setPlacing(false);
+        setSprintSuccess(null);
       }
     };
     window.addEventListener("popstate", onPop);
@@ -507,8 +524,7 @@ export default function MapApp({
     showToast(`+${earned} puan! 🎉`);
     loadPins();
     refreshMe();
-    completeContributionMission();
-    setReviewTrigger((n) => n + 1);
+    finishContributionMission();
   };
 
   // flyTo, rAF kısıtlanınca (arka plan sekmesi / güç tasarrufu modu) sessizce
@@ -802,8 +818,7 @@ export default function MapApp({
           refreshMe();
         }}
         onMeaningfulContribution={() => {
-          completeContributionMission();
-          setReviewTrigger((n) => n + 1);
+          finishContributionMission();
         }}
       />
       <NewPinSheet
@@ -845,6 +860,11 @@ export default function MapApp({
       <Onboarding skip={Boolean(initialMissionSource)} />
       <InstallPrompt onToast={showToast} />
       <ReviewPrompt trigger={reviewTrigger} />
+      <SprintSuccessPrompt
+        source={sprintSuccess}
+        onClose={() => setSprintSuccess(null)}
+        onToast={showToast}
+      />
 
       {toast && (
         <div key={toast.key} className="toast">
