@@ -81,8 +81,8 @@ const sources = [
   {
     label: "Şeffaflık",
     title: "Veri yöntemi",
-    copy: "Topluluk gözlemi, örneklem sınırı, tarih ve seed/kullanıcı ayrımı.",
-    href: "/fiyatlar#veri-yontemi",
+    copy: "Kaynak ayrımı, güncellik, ikinci kişi doğrulaması ve bilinen teknik sınırlar.",
+    href: "/metodoloji",
   },
   {
     label: "Canlı pilot",
@@ -310,6 +310,7 @@ export default function PressPage() {
           <div className="flex flex-wrap gap-4">
             <Link href="/android">Android</Link>
             <Link href="/fiyatlar">Veri yöntemi</Link>
+            <Link href="/metodoloji">Güven modeli</Link>
             <Link href="/kampus">Kampüs pilotu</Link>
             <Link href="/gizlilik">Gizlilik</Link>
           </div>

@@ -7,6 +7,7 @@ export const ACQUISITION_SURFACES = [
   "task_board",
   "shared_task",
   "pin_detail",
+  "methodology",
 ] as const;
 
 export const ACQUISITION_SOURCES = [
@@ -186,5 +187,6 @@ export function acquisitionSurfaceForPath(pathname: string): AcquisitionSurface 
   if (pathname === "/gorevler") return "task_board";
   if (pathname.startsWith("/gorev/")) return "shared_task";
   if (pathname.startsWith("/pin/")) return "pin_detail";
+  if (pathname === "/metodoloji") return "methodology";
   return null;
 }

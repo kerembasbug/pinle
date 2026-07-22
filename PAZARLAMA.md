@@ -23,6 +23,7 @@ Ana mesaj sırası:
 - İstanbul Fiyat Sprinti: https://pinle.app/sprint/istanbul
 - Basın ve medya kiti: https://pinle.app/basin
 - Fiyat endeksi: https://pinle.app/fiyatlar
+- Veri güven modeli: https://pinle.app/metodoloji
 
 ## Kanıt standardı
 
@@ -51,6 +52,6 @@ Editörler, öğrenci toplulukları, yerel yayınlar ve içerik üreticileri iç
 
 - Kod, ürün ve veri-güven geri bildirimi public GitHub issue şablonlarına yönlendirilebilir.
 - Tekil yanlış/eski fiyat veya işletme şikâyeti GitHub'a taşınmaz; ürün içi güncelleme/bildirim akışı kullanılır.
-- Seed ayrımı, doğrulama ve anonim ölçümün mevcut sözleşmesi `docs/TRUST_MODEL.md` ile kamuya açıktır; bilinen sınırlamalar başarı iddiası altında gizlenmez.
+- Seed ayrımı, doğrulama ve anonim ölçümün mevcut sözleşmesi `docs/TRUST_MODEL.md` ve `https://pinle.app/metodoloji` ile kamuya açıktır; bilinen sınırlamalar başarı iddiası altında gizlenmez.
 - Güvenlik açıkları public issue olarak istenmez; `SECURITY.md` içindeki özel kanal kullanılır.
 - Issue, star, fork veya yorum sayısı gerçek kullanıcı fiyat katkısı ya da launch traksiyonu sayılmaz.

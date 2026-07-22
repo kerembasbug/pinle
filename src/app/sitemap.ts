@@ -51,6 +51,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/sprint/istanbul`, changeFrequency: "daily", priority: 0.85 },
     { url: `${BASE}/liderler`, changeFrequency: "daily", priority: 0.8 },
     { url: `${BASE}/fiyatlar`, changeFrequency: "daily", priority: 0.9 },
+    { url: `${BASE}/metodoloji`, changeFrequency: "monthly", priority: 0.7 },
     { url: `${BASE}/gorevler`, changeFrequency: "hourly", priority: 0.9 },
     { url: `${BASE}/kampus`, changeFrequency: "weekly", priority: 0.8 },
     ...CITIES.map((c) => ({

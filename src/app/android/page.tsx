@@ -201,6 +201,7 @@ export default function AndroidLaunchPage() {
           <p>Pinle · Revoba · 2026</p>
           <div className="flex gap-4">
             <Link href="/fiyatlar">Fiyatlar</Link>
+            <Link href="/metodoloji">Yöntem</Link>
             <Link href="/gorevler">Görevler</Link>
             <Link href="/kampus">Kampüs</Link>
             <Link href="/basin">Basın</Link>

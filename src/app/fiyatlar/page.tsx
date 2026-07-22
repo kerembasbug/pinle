@@ -206,6 +206,9 @@ export default function PricesPage() {
           paylaşılmaz. Kaynak gösterirken <b>Pinle Türkiye Sokak Fiyatları</b>, erişim tarihi
           ve <code>https://pinle.app/fiyatlar</code> adresini belirt.
         </p>
+        <Link href="/metodoloji" className="text-sm font-extrabold underline underline-offset-4">
+          Kaynak, güncellik ve doğrulama sözleşmesini oku →
+        </Link>
         <div className="mt-1 rounded-xl border border-ink/20 bg-paper p-3 text-xs leading-relaxed">
           <p className="font-extrabold">Önerilen atıf</p>
           <code className="mt-1 block break-words">{citation}</code>

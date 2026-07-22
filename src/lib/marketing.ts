@@ -60,6 +60,7 @@ export const ACTIVATION_SOURCES = [
   "shared_task",
   "sprint_beyoglu",
   "sprint_kadikoy",
+  "methodology",
 ] as const;
 export const ACTIVATION_ACTIONS = ["open_missing_price", "start_new_pin", "completed"] as const;
 

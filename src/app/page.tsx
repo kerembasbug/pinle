@@ -17,7 +17,8 @@ export default async function Home({
     katki === "campus" ||
     katki === "shared_task" ||
     katki === "sprint_beyoglu" ||
-    katki === "sprint_kadikoy"
+    katki === "sprint_kadikoy" ||
+    katki === "methodology"
       ? katki
       : undefined;
   return (
@@ -78,6 +79,9 @@ export default async function Home({
             </li>
             <li>
               <Link href="/basin">Pinle basın ve medya kiti — ürün özeti, görseller ve iletişim</Link>
+            </li>
+            <li>
+              <Link href="/metodoloji">Pinle veri güven modeli — fiyatlar nasıl doğrulanıyor</Link>
             </li>
             <li>
               <Link href="/en">Pinle in English — community-updated local price map</Link>

@@ -34,6 +34,7 @@ Beyoğlu ve Kadıköy’de amaç seed mekan sayısını büyütmek değil, insan
 - Kişisel davet linki; davet edilen kişinin ilk gerçek pininden sonra ödül
 - Şehir ve pin bazlı 1200×630 sosyal önizleme kartları
 - [Türkiye sokak fiyatları endeksi](https://pinle.app/fiyatlar)
+- [Veri güven modeli ve metodoloji](https://pinle.app/metodoloji)
 - Gömülebilir harita: `<iframe src="https://pinle.app/embed" width="100%" height="480"></iframe>`
 
 ## Teknoloji
@@ -76,7 +77,7 @@ docker run -d -p 3000:3000 -v pinle-data:/app/data pinle
 
 ## Katkı ve iletişim
 
-Kod, ürün akışı veya veri-güven modeliyle ilgili katkılar için [CONTRIBUTING.md](CONTRIBUTING.md) ve [GitHub issue şablonlarını](https://github.com/kerembasbug/pinle/issues/new/choose) kullanın. Mevcut seed, güncellik, doğrulama ve anonim ölçüm sözleşmesi [docs/TRUST_MODEL.md](docs/TRUST_MODEL.md) içinde; güvenlik bildirim yolu [SECURITY.md](SECURITY.md) içindedir.
+Kod, ürün akışı veya veri-güven modeliyle ilgili katkılar için [CONTRIBUTING.md](CONTRIBUTING.md) ve [GitHub issue şablonlarını](https://github.com/kerembasbug/pinle/issues/new/choose) kullanın. Mevcut seed, güncellik, doğrulama ve anonim ölçüm sözleşmesi [docs/TRUST_MODEL.md](docs/TRUST_MODEL.md) içinde; kullanıcı ve editörler için sadeleştirilmiş sürüm [pinle.app/metodoloji](https://pinle.app/metodoloji) adresinde, güvenlik bildirim yolu [SECURITY.md](SECURITY.md) içindedir.
 
 Editoryal talepler için [canlı basın ve medya sayfasındaki](https://pinle.app/basin) iletişim kanalını kullanın. Yanlış veya eski tekil fiyatlar GitHub issue'su yerine uygulama içindeki doğrulama/güncelleme akışıyla düzeltilmelidir.
 

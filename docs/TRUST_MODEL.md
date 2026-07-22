@@ -4,6 +4,9 @@ Bu belge, Pinle'nin fiyat gözlemlerini nasıl yorumladığını, launch metrikl
 
 Son güncelleme: **22 Temmuz 2026**
 
+Kullanıcı, medya ve veri kullananlar için sadeleştirilmiş canlı sürüm:
+<https://pinle.app/metodoloji>
+
 ## 1. Veri türleri
 
 ### Seed kapsamı
