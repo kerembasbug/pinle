@@ -18,8 +18,8 @@ export const revalidate = 0;
 
 // "döner fiyatı ne kadar 2026", "çay fiyatı", "simit kaç TL" long-tail kümesinin
 // tek güçlü merkezi: kaynağı açıkça ayrılmış canlı sokak fiyat endeksi.
-const title = `Türkiye Sokak Fiyatları ${YEAR} — Döner, Çay, Ekmek Ne Kadar? | Pinle`;
-const description = `Döner, çay, ekmek, berber, şezlong... ${YEAR} tarihli Pinle fiyat kayıtları. Gerçek kullanıcı ve ekip başlangıç verisi ayrı; eski diye işaretlenen kayıtlar dışarıda; yöntem ve CSV açık.`;
+const title = `Türkiye Sokak Fiyatları ${YEAR} — Döner, Çay, Ekmek Ne Kadar?`;
+const description = `Döner, çay, ekmek, berber ve şezlong için ${YEAR} tarihli Pinle fiyat kayıtları. Kullanıcı ve ekip başlangıç verisi ayrı; eski kayıtlar dışarıda; yöntem ve CSV açık.`;
 
 export const metadata: Metadata = {
   title,
