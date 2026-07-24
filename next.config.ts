@@ -9,14 +9,22 @@ const nextConfig: NextConfig = {
     // kapalı; referrer sınırlı. CSP: harita tile'ları + kendi origin + data/blob
     // (OG/ikon), inline stil/script (Next hidration + JSON-LD) izinli.
     const isProd = process.env.NODE_ENV === "production";
+    // Google Sign-In (GIS) — resmi CSP gereksinimleri. Bunlar olmadan GSI script'i
+    // yüklenmiyor (window.google undefined), buton iframe'i bloke oluyor → "Google
+    // ile giriş çıkmıyor". Güvenlik turunda CSP eklenince sessizce kırılmıştı.
+    // https://developers.google.com/identity/gsi/web/guides/csp
     const csp = [
       "default-src 'self'",
-      "img-src 'self' data: blob: https://*.openfreemap.org https://tiles.openfreemap.org",
-      "connect-src 'self' https://*.openfreemap.org https://tiles.openfreemap.org",
-      "style-src 'self' 'unsafe-inline'",
+      // googleusercontent/gstatic: One Tap ve buton avatar/görselleri
+      "img-src 'self' data: blob: https://*.openfreemap.org https://tiles.openfreemap.org https://*.googleusercontent.com https://*.gstatic.com",
+      "connect-src 'self' https://*.openfreemap.org https://tiles.openfreemap.org https://accounts.google.com/gsi/",
+      "style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style",
       // Next runtime + JSON-LD; prod'da inline script'ler hash yerine unsafe-inline
       // (uygulama küçük, harici script yok). dev'de eval için unsafe-eval.
-      `script-src 'self' 'unsafe-inline'${isProd ? "" : " 'unsafe-eval'"}`,
+      // accounts.google.com/gsi/client: Google Identity Services kütüphanesi.
+      `script-src 'self' 'unsafe-inline'${isProd ? "" : " 'unsafe-eval'"} https://accounts.google.com/gsi/client`,
+      // GSI butonu/One Tap kendi iframe'ini accounts.google.com/gsi/ altından açar.
+      "frame-src 'self' https://accounts.google.com/gsi/",
       "worker-src 'self' blob:",
       "frame-ancestors 'self'",
       "base-uri 'self'",
