@@ -39,6 +39,7 @@ export const ACQUISITION_SOURCES = [
   "shiftdelete",
   "webtekno",
   "github_repo",
+  "betalist",
   "uneed",
   "microlaunch",
   "sprint_contributor",
