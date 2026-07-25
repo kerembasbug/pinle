@@ -62,7 +62,12 @@ export const ACTIVATION_SOURCES = [
   "sprint_kadikoy",
   "methodology",
 ] as const;
-export const ACTIVATION_ACTIONS = ["open_missing_price", "start_new_pin", "completed"] as const;
+export const ACTIVATION_ACTIONS = [
+  "open_missing_price",
+  "start_new_pin",
+  "form_engaged",
+  "completed",
+] as const;
 
 export type ActivationSource = (typeof ACTIVATION_SOURCES)[number];
 export type ActivationAction = (typeof ACTIVATION_ACTIONS)[number];

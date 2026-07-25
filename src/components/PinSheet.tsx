@@ -7,6 +7,7 @@ import { formatPrice, timeAgo } from "@/lib/types";
 import { isStalePrice, validityLabel } from "@/lib/validity";
 import { playPinSound } from "@/lib/sfx";
 import { trackShare } from "@/lib/share";
+import { engageContributionMission } from "@/lib/activation";
 import { Avatar } from "./Avatar";
 import { blockAuthor, getBlocked } from "@/lib/blocklist";
 import { useItemSuggest } from "./useItemSuggest";
@@ -299,7 +300,10 @@ export default function PinSheet({
         {suggestions.map((s) => (
           <button
             key={s}
-            onClick={() => setItemInput(s)}
+            onClick={() => {
+              engageContributionMission();
+              setItemInput(s);
+            }}
             className={`btn shrink-0 px-2.5 py-1 text-[12px] ${
               itemInput === s ? "btn-teal" : "btn-cream"
             }`}
@@ -310,6 +314,7 @@ export default function PinSheet({
       </div>
       <input
         value={itemInput}
+        onFocus={engageContributionMission}
         onChange={(e) => setItemInput(e.target.value)}
         maxLength={40}
         placeholder="Ne aldın? (örn. Balık ekmek, 1 saat kano)"
@@ -338,6 +343,7 @@ export default function PinSheet({
           <span className="text-lg font-bold text-tomato">₺</span>
           <input
             value={priceInput}
+            onFocus={engageContributionMission}
             onChange={(e) => setPriceInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && submitPrice()}
             inputMode="decimal"

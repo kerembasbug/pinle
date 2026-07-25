@@ -9,6 +9,7 @@ import {
 } from "./acquisition";
 
 const STARTED_PREFIX = "pinle-contribution-mission-started:";
+const ENGAGED_PREFIX = "pinle-contribution-mission-engaged:";
 const PENDING_KEY = "pinle-contribution-mission-pending";
 
 export type CompletedMission = {
@@ -66,22 +67,37 @@ export function startContributionMission(
   }
 }
 
+function pendingContributionMission(): CompletedMission | null {
+  const raw = sessionStorage.getItem(PENDING_KEY);
+  if (isActivationSource(raw)) return { source: raw };
+  if (!raw) return null;
+
+  const parsed = JSON.parse(raw) as Partial<CompletedMission>;
+  if (!isActivationSource(parsed.source)) return null;
+  return {
+    source: parsed.source,
+    acquisition: parsed.acquisition,
+  };
+}
+
+/** Görevden gelen kullanıcının fiyat formundaki ilk etkileşimini oturumda tekilleştir. */
+export function engageContributionMission() {
+  try {
+    const pending = pendingContributionMission();
+    if (!pending) return;
+    const engagedKey = `${ENGAGED_PREFIX}${pending.source}`;
+    if (sessionStorage.getItem(engagedKey)) return;
+    sessionStorage.setItem(engagedKey, "1");
+    track(pending.source, "form_engaged", pending.acquisition);
+  } catch {
+    // Katkı akışı ölçüm sorunundan etkilenmez.
+  }
+}
+
 /** Görev açıldıktan sonraki ilk anlamlı katkıyı anonim funnel tamamlanması say. */
 export function completeContributionMission(): CompletedMission | null {
   try {
-    const raw = sessionStorage.getItem(PENDING_KEY);
-    let pending: CompletedMission | null = null;
-    if (isActivationSource(raw)) {
-      pending = { source: raw };
-    } else if (raw) {
-      const parsed = JSON.parse(raw) as Partial<CompletedMission>;
-      if (isActivationSource(parsed.source)) {
-        pending = {
-          source: parsed.source,
-          acquisition: parsed.acquisition,
-        };
-      }
-    }
+    const pending = pendingContributionMission();
     if (!pending) {
       sessionStorage.removeItem(PENDING_KEY);
       return null;

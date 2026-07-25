@@ -69,6 +69,8 @@ export async function GET(request: NextRequest) {
             WHERE date(ae.created_at) = dates.day
               AND ae.action IN ('open_missing_price', 'start_new_pin')) AS activation_starts,
          (SELECT COUNT(*) FROM activation_events ae
+            WHERE date(ae.created_at) = dates.day AND ae.action = 'form_engaged') AS activation_form_engagements,
+         (SELECT COUNT(*) FROM activation_events ae
             WHERE date(ae.created_at) = dates.day AND ae.action = 'completed') AS activation_completions,
          (SELECT COUNT(*) FROM acquisition_events aq
             WHERE date(aq.created_at) = dates.day) AS tagged_landings
@@ -100,6 +102,7 @@ export async function GET(request: NextRequest) {
         (SELECT COUNT(*) FROM review_events WHERE action = 'dismissed') AS review_dismissals,
         (SELECT COUNT(*) FROM activation_events
           WHERE action IN ('open_missing_price', 'start_new_pin')) AS activation_starts,
+        (SELECT COUNT(*) FROM activation_events WHERE action = 'form_engaged') AS activation_form_engagements,
         (SELECT COUNT(*) FROM activation_events WHERE action = 'completed') AS activation_completions,
         (SELECT COUNT(*) FROM acquisition_events) AS tagged_landings`
     )
@@ -160,6 +163,8 @@ export async function GET(request: NextRequest) {
            WHERE created_at > datetime('now', '-7 day')
              AND action IN ('open_missing_price', 'start_new_pin')) AS activation_starts,
          (SELECT COUNT(*) FROM activation_events
+           WHERE created_at > datetime('now', '-7 day') AND action = 'form_engaged') AS activation_form_engagements,
+         (SELECT COUNT(*) FROM activation_events
            WHERE created_at > datetime('now', '-7 day') AND action = 'completed') AS activation_completions,
          (SELECT COUNT(*) FROM acquisition_events
            WHERE created_at > datetime('now', '-7 day')) AS tagged_landing_sessions`
@@ -177,6 +182,7 @@ export async function GET(request: NextRequest) {
     review_play_opens: number;
     review_dismissals: number;
     activation_starts: number;
+    activation_form_engagements: number;
     activation_completions: number;
     tagged_landing_sessions: number;
   };
@@ -259,15 +265,23 @@ export async function GET(request: NextRequest) {
       .prepare(
         `SELECT source,
                 SUM(CASE WHEN action IN ('open_missing_price', 'start_new_pin') THEN 1 ELSE 0 END) AS starts,
+                SUM(CASE WHEN action = 'form_engaged' THEN 1 ELSE 0 END) AS form_engagements,
                 SUM(CASE WHEN action = 'completed' THEN 1 ELSE 0 END) AS completions
            FROM activation_events
           WHERE created_at > datetime('now', '-7 day')
           GROUP BY source
           ORDER BY starts DESC, source ASC`
       )
-      .all() as { source: string; starts: number; completions: number }[]
+      .all() as {
+        source: string;
+        starts: number;
+        form_engagements: number;
+        completions: number;
+      }[]
   ).map((row) => ({
     ...row,
+    engagement_rate:
+      row.starts > 0 ? Math.round((row.form_engagements / row.starts) * 100) / 100 : null,
     completion_rate:
       row.starts > 0 ? Math.round((row.completions / row.starts) * 100) / 100 : null,
   }));
@@ -291,6 +305,7 @@ export async function GET(request: NextRequest) {
                 acquisition_content AS acquisition_content,
                 source AS activation_source,
                 SUM(CASE WHEN action IN ('open_missing_price', 'start_new_pin') THEN 1 ELSE 0 END) AS starts,
+                SUM(CASE WHEN action = 'form_engaged' THEN 1 ELSE 0 END) AS form_engagements,
                 SUM(CASE WHEN action = 'completed' THEN 1 ELSE 0 END) AS completions
            FROM activation_events
           WHERE created_at > datetime('now', '-7 day')
@@ -306,10 +321,13 @@ export async function GET(request: NextRequest) {
         acquisition_content: string | null;
         activation_source: string;
         starts: number;
+        form_engagements: number;
         completions: number;
       }[]
   ).map((row) => ({
     ...row,
+    engagement_rate:
+      row.starts > 0 ? Math.round((row.form_engagements / row.starts) * 100) / 100 : null,
     completion_rate:
       row.starts > 0 ? Math.round((row.completions / row.starts) * 100) / 100 : null,
   }));
@@ -328,6 +346,7 @@ export async function GET(request: NextRequest) {
                   acquisition_campaign AS campaign,
                   acquisition_content AS content,
                   SUM(CASE WHEN action IN ('open_missing_price', 'start_new_pin') THEN 1 ELSE 0 END) AS starts,
+                  SUM(CASE WHEN action = 'form_engaged' THEN 1 ELSE 0 END) AS form_engagements,
                   SUM(CASE WHEN action = 'completed' THEN 1 ELSE 0 END) AS completions
              FROM activation_events
             WHERE created_at > datetime('now', '-7 day')
@@ -342,6 +361,7 @@ export async function GET(request: NextRequest) {
          SELECT channels.source, channels.medium, channels.campaign, channels.content,
                 COALESCE(landings.sessions, 0) AS sessions,
                 COALESCE(activations.starts, 0) AS starts,
+                COALESCE(activations.form_engagements, 0) AS form_engagements,
                 COALESCE(activations.completions, 0) AS completions
            FROM channels
            LEFT JOIN landings
@@ -363,12 +383,15 @@ export async function GET(request: NextRequest) {
         content: string | null;
         sessions: number;
         starts: number;
+        form_engagements: number;
         completions: number;
       }[]
   ).map((row) => ({
     ...row,
     start_rate:
       row.sessions > 0 ? Math.round((row.starts / row.sessions) * 100) / 100 : null,
+    engagement_rate:
+      row.starts > 0 ? Math.round((row.form_engagements / row.starts) * 100) / 100 : null,
     completion_rate:
       row.starts > 0 ? Math.round((row.completions / row.starts) * 100) / 100 : null,
   }));
@@ -396,6 +419,12 @@ export async function GET(request: NextRequest) {
           (launchMetrics.activation_completions / launchMetrics.activation_starts) * 100
         ) / 100
       : null;
+  const activationEngagementRate =
+    launchMetrics.activation_starts > 0
+      ? Math.round(
+          (launchMetrics.activation_form_engagements / launchMetrics.activation_starts) * 100
+        ) / 100
+      : null;
 
   return Response.json({
     totals,
@@ -415,6 +444,7 @@ export async function GET(request: NextRequest) {
       weekly_visitors: contribution.weekly_visitors,
       contribution_rate: launchContributionRate,
       review_open_rate: reviewOpenRate,
+      activation_engagement_rate: activationEngagementRate,
       activation_completion_rate: activationCompletionRate,
       district_signals: districtSignals,
       window_days: 7,

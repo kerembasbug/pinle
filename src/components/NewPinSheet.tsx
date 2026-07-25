@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { PLACE_TYPES, itemSuggestionsFor, kindMeta, type PinKind } from "@/lib/categories";
 import { useItemSuggest } from "./useItemSuggest";
+import { engageContributionMission } from "@/lib/activation";
 
 type Props = {
   coords: { lat: number; lng: number } | null;
@@ -159,7 +160,10 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated, onPic
                     {suggestions.map((s) => (
                       <button
                         key={s}
-                        onClick={() => setPriceItem(s)}
+                        onClick={() => {
+                          engageContributionMission();
+                          setPriceItem(s);
+                        }}
                         className={`btn shrink-0 px-2.5 py-1 text-[12px] ${
                           priceItem === s ? "btn-teal" : "btn-cream"
                         }`}
@@ -170,6 +174,7 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated, onPic
                   </div>
                   <input
                     value={priceItem}
+                    onFocus={engageContributionMission}
                     onChange={(e) => setPriceItem(e.target.value)}
                     maxLength={40}
                     placeholder="Ürün/hizmet (örn. Balık ekmek, 1 saat kano)"
@@ -197,6 +202,7 @@ export default function NewPinSheet({ coords, pinKind, onClose, onCreated, onPic
                       <span className="display pl-3 text-lg font-bold text-tomato">₺</span>
                       <input
                         value={price}
+                        onFocus={engageContributionMission}
                         onChange={(e) => setPrice(e.target.value.replace(/[^\d.,]/g, ""))}
                         inputMode="decimal"
                         placeholder={qty > 1 ? "toplam ödenen" : "fiyat"}
