@@ -26,6 +26,7 @@ import {
 } from "@/lib/activation";
 import type { ActivationSource } from "@/lib/marketing";
 import type { SearchResult } from "./SearchSheet";
+import ExploreSheet from "./ExploreSheet";
 
 // Sheet/overlay bileşenleri yalnızca etkileşimde açılır → ilk JS bundle'ından
 // çıkar (lazy-load). Kritik yol yalnızca harita + MapLibre olur.
@@ -46,7 +47,8 @@ type SheetState =
   | { kind: "none" }
   | { kind: "pin"; id: string; firstMission?: boolean }
   | { kind: "new"; lat: number; lng: number; pinKind: PinKind }
-  | { kind: "profile" };
+  | { kind: "profile" }
+  | { kind: "explore" };
 
 const VOTE_ICON: Record<string, string> = { lezzet: "✓", ani: "❤️", sorun: "⚠️" };
 
@@ -668,6 +670,14 @@ export default function MapApp({
             <span className="opacity-60">Ara / şehir seç…</span>
           </button>
           <button
+            onClick={() => setSheet({ kind: "explore" })}
+            className="btn btn-cream pointer-events-auto grid h-10 w-10 shrink-0 place-items-center text-lg"
+            aria-label="Pinle'yi keşfet"
+            title="Keşfet"
+          >
+            🧭
+          </button>
+          <button
             key={me?.points ?? -1} // puan değişince remount → nabız animasyonu oynar
             onClick={() => setSheet({ kind: "profile" })}
             className="btn btn-mustard points-pop pointer-events-auto px-3 py-1.5 text-sm"
@@ -855,6 +865,10 @@ export default function MapApp({
           setSearchOpen(false);
           locate();
         }}
+      />
+      <ExploreSheet
+        open={sheet.kind === "explore"}
+        onClose={() => setSheet({ kind: "none" })}
       />
 
       <Onboarding skip={Boolean(initialMissionSource)} />
