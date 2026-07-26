@@ -18,6 +18,8 @@ const STATIC_LAST_MODIFIED = {
   methodology: "2026-07-22T10:20:38.000Z",
   tasks: "2026-07-22T08:35:17.000Z",
   campus: "2026-07-22T08:16:48.000Z",
+  ankaraStudentPilot: "2026-07-26T12:00:00.000Z",
+  ankaraPressRelease: "2026-07-26T12:00:00.000Z",
   privacy: "2026-07-22T09:08:22.000Z",
 } as const;
 
@@ -100,6 +102,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: STATIC_LAST_MODIFIED.campus,
       changeFrequency: "weekly",
       priority: 0.8,
+    },
+    {
+      url: `${BASE}/ankara/ogrenci-fiyatlari`,
+      lastModified: STATIC_LAST_MODIFIED.ankaraStudentPilot,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${BASE}/basin/ankara-ogrenci-fiyat-pilotu`,
+      lastModified: STATIC_LAST_MODIFIED.ankaraPressRelease,
+      changeFrequency: "monthly",
+      priority: 0.7,
     },
     ...CITIES.map((c) => ({
       url: `${BASE}/sehir/${c.slug}`,

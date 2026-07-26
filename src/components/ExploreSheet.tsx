@@ -21,6 +21,12 @@ const destinations = [
     description: "Beyoğlu veya Kadıköy'ü seç",
   },
   {
+    href: "/ankara/ogrenci-fiyatlari",
+    icon: "🎓",
+    title: "Ankara öğrenci pilotu",
+    description: "Öğrenci ve işletmelerle fiyat şeffaflığı",
+  },
+  {
     href: "/fiyatlar",
     icon: "🏷️",
     title: "Fiyat verisi",

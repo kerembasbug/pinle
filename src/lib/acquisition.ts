@@ -8,6 +8,7 @@ export const ACQUISITION_SURFACES = [
   "shared_task",
   "pin_detail",
   "methodology",
+  "ankara_student_pilot",
 ] as const;
 
 export const ACQUISITION_SOURCES = [
@@ -84,6 +85,7 @@ export const ACQUISITION_CAMPAIGNS = [
   "missing_price_tasks",
   "price_tasks",
   "single_price_task",
+  "ankara_student_price_pilot_2026_07",
 ] as const;
 
 export const ACQUISITION_CONTENTS = [
@@ -113,6 +115,9 @@ export const ACQUISITION_CONTENTS = [
   "field_pilot",
   "beyoglu_success",
   "kadikoy_success",
+  "student_invite",
+  "business_call",
+  "whatsapp_status",
 ] as const;
 
 export type AcquisitionSurface = (typeof ACQUISITION_SURFACES)[number];
@@ -194,5 +199,6 @@ export function acquisitionSurfaceForPath(pathname: string): AcquisitionSurface 
   if (pathname.startsWith("/gorev/")) return "shared_task";
   if (pathname.startsWith("/pin/")) return "pin_detail";
   if (pathname === "/metodoloji") return "methodology";
+  if (pathname === "/ankara/ogrenci-fiyatlari") return "ankara_student_pilot";
   return null;
 }

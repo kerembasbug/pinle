@@ -10,6 +10,7 @@ export const PLAY_SOURCES = [
   "pin_detail_play",
   "install_banner",
   "campus_play",
+  "ankara_pilot_play",
 ] as const;
 
 export type PlaySource = (typeof PLAY_SOURCES)[number];
@@ -29,6 +30,8 @@ export const SHARE_SOURCES = [
   "pin_share",
   "sprint_success_beyoglu",
   "sprint_success_kadikoy",
+  "ankara_business_whatsapp",
+  "ankara_pilot_whatsapp",
 ] as const;
 
 export type ShareSource = (typeof SHARE_SOURCES)[number];

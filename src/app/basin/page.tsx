@@ -96,6 +96,12 @@ const sources = [
     copy: "5–10 gönüllüyle 7 günlük, kaynak-şeffaf kampüs çevresi fiyat görevi.",
     href: "/kampus",
   },
+  {
+    label: "Yeni basın bülteni",
+    title: "Ankara öğrenci fiyat pilotu",
+    copy: "Bahçelievler, Maltepe ve Kızılay’da öğrenci–işletme fiyat şeffaflığı çağrısı.",
+    href: "/basin/ankara-ogrenci-fiyat-pilotu",
+  },
 ] as const;
 
 export default function PressPage() {
