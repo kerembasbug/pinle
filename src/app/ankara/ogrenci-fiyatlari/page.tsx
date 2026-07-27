@@ -12,8 +12,10 @@ const businessOptInText =
   "Merhaba, ben [İŞLETME ADI] adına yazıyorum. Pinle Ankara Öğrenci Fiyat Dostu İşletme Pilotu'nun katılım şartlarını öğrenmek istiyorum. Bu sohbet kapsamında pilotla ilgili WhatsApp mesajları almayı kabul ediyorum.";
 const businessWhatsappUrl = `https://wa.me/905059116353?text=${encodeURIComponent(businessOptInText)}`;
 const studentShareText =
-  "Ankara'da öğrencilerin gitmeden önce güncel fiyatı görebileceği açık bir fiyat haritası pilotu başlıyor. Bahçelievler, Maltepe ve Kızılay'dan bir fiyat ekleyebilir veya işletmeni önerebilirsin:";
-const studentWhatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${studentShareText} ${canonicalUrl}?utm_source=whatsapp&utm_medium=share&utm_campaign=ankara_student_price_pilot_2026_07`)}`;
+  "Ankara'da bir gerçek fiyat ekle, görev kartını bir arkadaşına gönder; o da güncelliğini sınasın. Bahçelievler, Maltepe ve Kızılay öğrenci fiyat pilotu:";
+const studentWhatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${studentShareText} ${canonicalUrl}?utm_source=whatsapp&utm_medium=share&utm_campaign=ankara_student_price_pilot_2026_07&utm_content=student_challenge`)}`;
+const studentChallengeUrl =
+  "/gorevler?utm_source=pinle&utm_medium=owned&utm_campaign=ankara_student_price_pilot_2026_07&utm_content=student_challenge#ankara";
 
 export const metadata: Metadata = {
   title,
@@ -118,7 +120,7 @@ export default function AnkaraStudentPricePilotPage() {
         description,
         url: canonicalUrl,
         datePublished: "2026-07-26",
-        dateModified: "2026-07-26",
+        dateModified: "2026-07-27",
         publisher: { "@type": "Organization", name: "Revoba", url: "https://revoba.net" },
       },
       {
@@ -255,6 +257,37 @@ export default function AnkaraStudentPricePilotPage() {
               {businessRewards.map((reward) => <li key={reward}>{reward}</li>)}
             </ul>
           </article>
+        </section>
+
+        <section
+          id="ankara-fiyat-pasi"
+          className="sticker sticker-mustard grid items-center gap-6 p-6 sm:p-8 md:grid-cols-[1fr_auto]"
+          aria-labelledby="ankara-fiyat-pasi-baslik"
+        >
+          <div>
+            <p className="text-sm font-extrabold uppercase tracking-wide text-tomato">
+              Ankara Fiyat Pası
+            </p>
+            <h2 id="ankara-fiyat-pasi-baslik" className="mt-1 text-3xl font-extrabold">
+              Bir fiyat ekle. Görev kartını bir arkadaşına pasla.
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm leading-relaxed opacity-80">
+              Ankara’dan gerçekten bildiğin bir yeri seç, tarihli fiyatı tamamla ve ortaya
+              çıkan tekil görev kartını bir arkadaşına gönder. Arkadaşının işi yeni bir
+              yorum yazmak değil; fiyat hâlâ geçerliyse doğrulamak, değiştiyse güncellemek.
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2 text-xs font-bold">
+              <span className="sticker-flat bg-cream px-3 py-1.5">1 gerçek fiyat</span>
+              <span className="sticker-flat bg-cream px-3 py-1.5">1 görev kartı</span>
+              <span className="sticker-flat sticker-mint px-3 py-1.5">1 bağımsız kontrol</span>
+            </div>
+          </div>
+          <Link
+            href={studentChallengeUrl}
+            className="btn btn-tomato px-7 py-3 text-center"
+          >
+            Ankara görevini seç →
+          </Link>
         </section>
 
         <section className="sticker-flat sticker-tomato p-6 text-white sm:p-8">

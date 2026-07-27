@@ -18,6 +18,7 @@ export default async function Home({
     katki === "shared_task" ||
     katki === "sprint_beyoglu" ||
     katki === "sprint_kadikoy" ||
+    katki === "ankara_pilot" ||
     katki === "methodology"
       ? katki
       : undefined;

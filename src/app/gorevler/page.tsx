@@ -23,31 +23,49 @@ export const revalidate = 0;
 const CAMPUS_SOURCES = new Set(["campus", "gsu_gastronomi", "ozu_cuisine", "yeditepe_gastroyunica"]);
 
 type TaskContext = {
-  activationSource: "task_board" | "campus";
+  activationSource: "task_board" | "campus" | "ankara_pilot";
   utmSource: string;
   utmMedium: string;
   utmCampaign: string;
+  utmContent?: string;
 };
 
+const DEFAULT_TASK_CONTEXT: TaskContext = {
+  activationSource: "task_board",
+  utmSource: "task_board",
+  utmMedium: "owned",
+  utmCampaign: "missing_price_tasks",
+};
+
+function contextForTask(task: PriceTask, context: TaskContext) {
+  return context.activationSource === "ankara_pilot" && task.citySlug !== "ankara"
+    ? DEFAULT_TASK_CONTEXT
+    : context;
+}
+
 function taskHref(task: PriceTask, context: TaskContext) {
+  const effectiveContext = contextForTask(task, context);
   const params = new URLSearchParams({
     sehir: task.citySlug,
     kategori: task.categoryId,
     pin: task.id,
-    katki: context.activationSource,
-    utm_source: context.utmSource,
-    utm_medium: context.utmMedium,
-    utm_campaign: context.utmCampaign,
+    katki: effectiveContext.activationSource,
+    utm_source: effectiveContext.utmSource,
+    utm_medium: effectiveContext.utmMedium,
+    utm_campaign: effectiveContext.utmCampaign,
   });
+  if (effectiveContext.utmContent) params.set("utm_content", effectiveContext.utmContent);
   return `/?${params.toString()}`;
 }
 
 function taskLandingHref(task: PriceTask, context: TaskContext) {
+  const effectiveContext = contextForTask(task, context);
   const params = new URLSearchParams({
-    utm_source: context.utmSource,
-    utm_medium: context.utmMedium,
-    utm_campaign: context.utmCampaign,
+    utm_source: effectiveContext.utmSource,
+    utm_medium: effectiveContext.utmMedium,
+    utm_campaign: effectiveContext.utmCampaign,
   });
+  if (effectiveContext.utmContent) params.set("utm_content", effectiveContext.utmContent);
   return `/gorev/${task.id}?${params.toString()}`;
 }
 
@@ -62,6 +80,10 @@ export default async function PriceTasksPage({
   const incomingCampaign = typeof query.utm_campaign === "string" ? query.utm_campaign : "";
   const fromCampus =
     incomingCampaign === "campus_price_tasks_2026_07" && CAMPUS_SOURCES.has(incomingSource);
+  const fromAnkaraPilot =
+    incomingCampaign === "ankara_student_price_pilot_2026_07" &&
+    incomingSource === "pinle" &&
+    incomingMedium === "owned";
   const taskContext: TaskContext = fromCampus
     ? {
         activationSource: "campus",
@@ -69,12 +91,15 @@ export default async function PriceTasksPage({
         utmMedium: incomingMedium === "outreach_email" ? "outreach_email" : "owned",
         utmCampaign: "campus_price_tasks_2026_07",
       }
-    : {
-        activationSource: "task_board",
-        utmSource: "task_board",
-        utmMedium: "owned",
-        utmCampaign: "missing_price_tasks",
-      };
+    : fromAnkaraPilot
+      ? {
+          activationSource: "ankara_pilot",
+          utmSource: "pinle",
+          utmMedium: "owned",
+          utmCampaign: "ankara_student_price_pilot_2026_07",
+          utmContent: "student_challenge",
+        }
+      : DEFAULT_TASK_CONTEXT;
   const board = getPriceTaskBoard();
   const formattedTotal = board.totalMissing.toLocaleString("tr-TR");
   const campaignUrl = "https://pinle.app/gorevler";

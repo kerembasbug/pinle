@@ -63,6 +63,7 @@ export const ACTIVATION_SOURCES = [
   "shared_task",
   "sprint_beyoglu",
   "sprint_kadikoy",
+  "ankara_pilot",
   "methodology",
 ] as const;
 export const ACTIVATION_ACTIONS = [

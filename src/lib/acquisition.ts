@@ -116,6 +116,7 @@ export const ACQUISITION_CONTENTS = [
   "beyoglu_success",
   "kadikoy_success",
   "student_invite",
+  "student_challenge",
   "business_call",
   "whatsapp_status",
 ] as const;
