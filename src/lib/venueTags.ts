@@ -20,9 +20,21 @@ export type VenueTag = {
   /** SEO sayfası slug'ı ve arama karşılığı */
   slug: string;
   seoTitle: string;
-  /** true = yalnız yeme-içme mekanlarında sorulur (kuaförde "vejetaryen" saçma) */
-  foodOnly?: boolean;
+  /**
+   * Bu özelliğin sorulduğu yer tipleri (categories.ts PLACE_TYPES id'leri).
+   * Tanımsız = her mekanda sorulur. NOT: isPriceable kullanılmaz — o market,
+   * benzinlik ve plajı da kapsıyor, "vejetaryen seçenek" oralarda saçma olur.
+   */
+  types?: readonly string[];
 };
+
+// Yeme-içme mekanları
+const YEME = ["restoran", "doner", "kafe", "firin", "bar", "beach"] as const;
+// Alkol: yeme-içme + MARKET (tekel bayii — "bu markette içki var mı" da aranan
+// ama bulunamayan bilgi). Fırın hariç.
+const ALKOL = ["restoran", "doner", "kafe", "bar", "beach", "market"] as const;
+// Priz+wifi ile oturmak: bar/plaj degil, kafe-agirlikli
+const CALISMA = ["kafe", "restoran", "firin"] as const;
 
 export const VENUE_TAGS: readonly VenueTag[] = [
   {
@@ -42,6 +54,7 @@ export const VENUE_TAGS: readonly VenueTag[] = [
     detail: "Mama sandalyesi var, çocukla rahat oturulur.",
     slug: "cocuk-dostu",
     seoTitle: "Çocuk Dostu Mekanlar",
+    types: YEME,
   },
   {
     id: "erisim",
@@ -69,7 +82,7 @@ export const VENUE_TAGS: readonly VenueTag[] = [
     detail: "Priz ve wifi var; laptopla oturmak sorun olmuyor.",
     slug: "calismaya-uygun",
     seoTitle: "Çalışmaya Uygun Kafeler",
-    foodOnly: true,
+    types: CALISMA,
   },
   {
     id: "bahce",
@@ -79,6 +92,17 @@ export const VENUE_TAGS: readonly VenueTag[] = [
     detail: "Açık havada oturabileceğin bir alanı var.",
     slug: "bahceli",
     seoTitle: "Bahçeli Mekanlar",
+    types: YEME,
+  },
+  {
+    id: "alkol",
+    label: "İçkili",
+    emoji: "🍷",
+    question: "Alkol servisi var mı?",
+    detail: "Bira/rakı/şarap servisi yapılıyor.",
+    slug: "ickili",
+    seoTitle: "İçkili Mekanlar — Alkol Servisi Olan Yerler",
+    types: ALKOL,
   },
   {
     id: "vejetaryen",
@@ -88,7 +112,7 @@ export const VENUE_TAGS: readonly VenueTag[] = [
     detail: "Menüde etsiz doyurucu bir seçenek var.",
     slug: "vejetaryen",
     seoTitle: "Vejetaryen Seçeneği Olan Mekanlar",
-    foodOnly: true,
+    types: YEME,
   },
   {
     id: "otopark",
@@ -116,11 +140,11 @@ export function isValidTag(id: string): boolean {
 }
 
 /**
- * Bu mekanda hangi özellikler sorulur. `isFood`, categories.ts'teki
- * isPriceable() sonucudur (yeme-içme mekanı mı).
+ * Bu mekanda hangi özellikler sorulur.
+ * `placeTypeId` = categories.ts placeTypeIdOf(pin.category) sonucu.
  */
-export function tagsForVenue(isFood: boolean): readonly VenueTag[] {
-  return VENUE_TAGS.filter((t) => !t.foodOnly || isFood);
+export function tagsForVenue(placeTypeId: string): readonly VenueTag[] {
+  return VENUE_TAGS.filter((t) => !t.types || t.types.includes(placeTypeId));
 }
 
 /** Bir özelliğin topluluk oylarından çıkan sonucu. */

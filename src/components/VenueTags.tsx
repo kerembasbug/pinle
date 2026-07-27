@@ -48,19 +48,19 @@ export function TagBadges({ tags }: { tags: TagVerdict[] }) {
 export function TagAsk({
   tags,
   myTags,
-  isFood,
+  placeTypeId,
   onVote,
 }: {
   tags: TagVerdict[];
   myTags: Record<string, boolean>;
-  isFood: boolean;
+  placeTypeId: string;
   onVote: VoteFn;
 }) {
   const [busy, setBusy] = useState<string | null>(null);
   const [justAnswered, setJustAnswered] = useState<Set<string>>(new Set());
 
   const counts = new Map(tags.map((t) => [t.id, t]));
-  const pending = tagsForVenue(isFood)
+  const pending = tagsForVenue(placeTypeId)
     .filter((t) => myTags[t.id] === undefined && !justAnswered.has(t.id))
     // Az bilinenler önce sorulsun (veri en çok orada eksik)
     .sort((a, b) => {

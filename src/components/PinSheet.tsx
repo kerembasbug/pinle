@@ -643,7 +643,12 @@ export default function PinSheet({
             </div>
 
             {/* Eksik özellikleri sor — "burayı bilen" bilgiyi buradan giriyor */}
-            <TagAsk tags={tags} myTags={myTags} isFood={priceable} onVote={voteTag} />
+            <TagAsk
+              tags={tags}
+              myTags={myTags}
+              placeTypeId={placeTypeIdOf(pin.category)}
+              onVote={voteTag}
+            />
 
             {/* Yorumlar */}
             <h3 className="mt-5 text-sm font-bold opacity-70">Yorumlar ({visibleComments.length})</h3>
