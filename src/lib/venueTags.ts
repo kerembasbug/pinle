@@ -63,7 +63,7 @@ export const VENUE_TAGS: readonly VenueTag[] = [
     question: "Tekerlekli sandalyeyle girilebiliyor mu?",
     detail: "Girişte basamak/rampa sorunu yok, içeride dönüş alanı var.",
     slug: "engelsiz-erisim",
-    seoTitle: "Engelsiz Erişimi Olan Mekanlar",
+    seoTitle: "Engelsiz Erişimli Mekanlar",
   },
   {
     id: "kart",
@@ -101,7 +101,7 @@ export const VENUE_TAGS: readonly VenueTag[] = [
     question: "Alkol servisi var mı?",
     detail: "Bira/rakı/şarap servisi yapılıyor.",
     slug: "ickili",
-    seoTitle: "İçkili Mekanlar — Alkol Servisi Olan Yerler",
+    seoTitle: "İçkili Mekanlar",
     types: ALKOL,
   },
   {
@@ -111,7 +111,7 @@ export const VENUE_TAGS: readonly VenueTag[] = [
     question: "Etsiz (vejetaryen) seçenek var mı?",
     detail: "Menüde etsiz doyurucu bir seçenek var.",
     slug: "vejetaryen",
-    seoTitle: "Vejetaryen Seçeneği Olan Mekanlar",
+    seoTitle: "Vejetaryen Mekanlar",
     types: YEME,
   },
   {
