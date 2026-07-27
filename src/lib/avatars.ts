@@ -5,6 +5,9 @@ export const AVATARS = [
   // fal.ai maskotları — mahalle hayvanları + simit
   "a1", "a2", "a3", "a4", "a5", "a6",
   "a7", "a8", "a9", "a10", "a11", "a13",
+  // fal.ai maskotları 2. tur — sokak/kır hayvanları (aynı krem rozet şablonu)
+  "kopek", "kaplan", "karga", "sincap", "leylek", "horoz",
+  "kuzu", "hamsi", "ahtapot", "muhabbet",
   // el çizimi SVG maskotlar — Türk sokak-lezzeti & simgeleri
   "nazar", "karpuz", "limon", "ayyildiz", "zeytin", "lokum", "cay", "biber",
 ] as const;

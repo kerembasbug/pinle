@@ -21,6 +21,7 @@ const LIMITS: Record<string, { perDay: number }> = {
   report: { perDay: 20 },
   price: { perDay: 60 },
   thanks: { perDay: 100 },
+  tag: { perDay: 120 },
 };
 
 const TABLES: Record<string, string> = {
@@ -29,6 +30,7 @@ const TABLES: Record<string, string> = {
   vote: "votes",
   report: "reports",
   price: "price_reports",
+  tag: "pin_tags",
   thanks: "thanks",
 };
 

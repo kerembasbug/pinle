@@ -17,6 +17,7 @@ export type SearchResult = {
 
 // Merkezler lib/cityCenters.ts'te (tek kaynak — SEO sayfaları da aynısını kullanır)
 import { PLACE_CHIPS } from "@/lib/cityCenters";
+import { VENUE_TAGS } from "@/lib/venueTags";
 export { PLACE_CHIPS as CITY_CENTERS };
 
 type Props = {
@@ -25,9 +26,11 @@ type Props = {
   onPickResult: (r: SearchResult) => void;
   onPickCity: (center: [number, number], zoom?: number) => void;
   onLocate: () => void;
+  activeTags: string[];
+  onToggleTag: (tag: string) => void;
 };
 
-export default function SearchSheet({ open, onClose, onPickResult, onPickCity, onLocate }: Props) {
+export default function SearchSheet({ open, onClose, onPickResult, onPickCity, onLocate, activeTags, onToggleTag }: Props) {
   const [q, setQ] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
@@ -118,6 +121,25 @@ export default function SearchSheet({ open, onClose, onPickResult, onPickCity, o
           {/* Şehirler + konum (arama boşken) */}
           {q.trim().length < 2 && (
             <>
+              {/* Mekan özelliği filtresi — "köpek kabul eden kafe" gibi
+                  aramaların haritadaki karşılığı (lib/venueTags.ts) */}
+              <h3 className="mt-4 text-sm font-bold opacity-70">Nasıl bir yer arıyorsun?</h3>
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {VENUE_TAGS.map((t) => {
+                  const on = activeTags.includes(t.id);
+                  return (
+                    <button
+                      key={t.id}
+                      onClick={() => onToggleTag(t.id)}
+                      aria-pressed={on}
+                      className={`btn px-3 py-1.5 text-sm ${on ? "btn-teal" : "btn-cream"}`}
+                    >
+                      {t.emoji} {t.label}
+                    </button>
+                  );
+                })}
+              </div>
+
               <h3 className="mt-4 text-sm font-bold opacity-70">Şehir</h3>
               <div className="mt-2 flex flex-wrap gap-1.5">
                 {PLACE_CHIPS.map((c) => (

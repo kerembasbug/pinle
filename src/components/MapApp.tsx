@@ -20,6 +20,7 @@ import { playPinSound } from "@/lib/sfx";
 import { avatarUrl } from "@/lib/avatars";
 import { getBlocked } from "@/lib/blocklist";
 import { DEFAULT_CITY_ZOOM } from "@/lib/cityCenters";
+import { tagById } from "@/lib/venueTags";
 import {
   completeContributionMission,
   startContributionMission,
@@ -56,11 +57,13 @@ export default function MapApp({
   initialPinId,
   initialCenter,
   initialCategory,
+  initialTags,
   initialMissionSource,
 }: {
   initialPinId?: string;
   initialCenter?: [number, number];
   initialCategory?: string;
+  initialTags?: string[];
   initialMissionSource?: ActivationSource;
 }) {
   // Şehir/kategori sayfasından gelen ön-filtre → yer tipi (eski id de çözülür)
@@ -95,6 +98,9 @@ export default function MapApp({
   const [placing, setPlacing] = useState(false);
   const [placeType, setPlaceType] = useState(initialType); // seçili yer tipi ("" = tümü)
   const [dealsOnly, setDealsOnly] = useState(false); // 🏷️ İndirimler filtresi
+  // Mekan özelliği filtresi (pati dostu, engelsiz erişim…) — lib/venueTags.ts
+  const [activeTags, setActiveTags] = useState<string[]>(initialTags ?? []);
+  const tagsRef = useRef<string>((initialTags ?? []).join(","));
   const [me, setMe] = useState<Me | null>(null);
   const meRef = useRef<Me | null>(null);
   meRef.current = me;
@@ -229,6 +235,7 @@ export default function MapApp({
       kind: kindRef.current,
       categories: categoriesRef.current,
       deals: dealsRef.current ? "1" : "",
+      tags: tagsRef.current,
     });
     fetch(`/api/pins?${params}`)
       .then((r) => r.json())
@@ -446,6 +453,21 @@ export default function MapApp({
     clearMarkers();
     loadPins();
     if (next) showToast("🏷️ Sadece aktif indirimler gösteriliyor");
+  };
+
+  // Mekan özelliği filtresi: "pati dostu olanları göster". Birden fazla seçilirse
+  // HEPSİ doğrulanmış olmalı (hem pati hem bahçe).
+  const toggleTag = (tag: string) => {
+    const next = activeTags.includes(tag)
+      ? activeTags.filter((t) => t !== tag)
+      : [...activeTags, tag];
+    setActiveTags(next);
+    tagsRef.current = next.join(",");
+    clearMarkers();
+    loadPins();
+    const def = tagById(tag);
+    if (def && next.includes(tag)) showToast(`${def.emoji} Sadece "${def.label}" olanlar`);
+    if (next.length === 0) showToast("Özellik filtresi kalktı");
   };
 
   // Konumu haritada göster (me-marker + kamera). locate ve otomatik açılış paylaşır.
@@ -859,6 +881,8 @@ export default function MapApp({
       <SearchSheet
         open={searchOpen}
         onClose={() => setSearchOpen(false)}
+        activeTags={activeTags}
+        onToggleTag={toggleTag}
         onPickResult={gotoResult}
         onPickCity={gotoCity}
         onLocate={() => {

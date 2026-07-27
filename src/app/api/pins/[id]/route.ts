@@ -5,6 +5,7 @@ import { withinRateLimit } from "@/lib/moderation";
 import { categoryInKind } from "@/lib/categories";
 import { overloadGuard } from "@/lib/flags";
 import { cacheClear } from "@/lib/pinsCache";
+import { tagsForPin, myTagVotes } from "@/lib/pinTags";
 
 // TÜR (yer tipi) düzelt — YALNIZ pin sahibi. (Ad artık topluluk oylamalı:
 // bkz. /api/pins/[id]/name — herkes önerir, en çok önerilen kazanır.)
@@ -88,5 +89,13 @@ export async function GET(
   const isMine = me?.id === pin.user_id;
   const authorId = authorIdFor(pin.user_id as string);
   delete pin.user_id;
-  return Response.json({ pin: { ...pin, isMine, authorId }, comments, myVote, myThanks });
+  return Response.json({
+    pin: { ...pin, isMine, authorId },
+    comments,
+    myVote,
+    myThanks,
+    // Mekan özellikleri (pati dostu, engelsiz erişim…) + kullanıcının kendi oyları
+    tags: tagsForPin(id),
+    myTags: me ? myTagVotes(id, me.id) : {},
+  });
 }

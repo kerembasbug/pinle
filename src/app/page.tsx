@@ -2,13 +2,16 @@ import Link from "next/link";
 import Script from "next/script";
 import MapApp from "@/components/MapApp";
 import { CITIES, cityBySlug } from "@/lib/cities";
+import { VENUE_TAGS, isValidTag } from "@/lib/venueTags";
 
 export default async function Home({
   searchParams,
 }: {
-  searchParams: Promise<{ pin?: string; sehir?: string; kategori?: string; katki?: string }>;
+  searchParams: Promise<{ pin?: string; sehir?: string; kategori?: string; katki?: string; ozellik?: string }>;
 }) {
-  const { pin, sehir, kategori, katki } = await searchParams;
+  const { pin, sehir, kategori, katki, ozellik } = await searchParams;
+  // /ozellik/pati-dostu sayfasindan gelen derin baglanti -> haritayi o filtreyle ac
+  const initialTags = ozellik && isValidTag(ozellik) ? [ozellik] : undefined;
   const initialCenter = sehir ? cityBySlug(sehir)?.center : undefined;
   const initialMissionSource =
     katki === "seo_city" ||
@@ -72,6 +75,13 @@ export default async function Home({
             <li>
               <Link href="/liderler">Liderlik tablosu</Link>
             </li>
+            {VENUE_TAGS.map((t) => (
+              <li key={t.id}>
+                <Link href={`/ozellik/${t.slug}`}>
+                  {t.seoTitle} — {t.question}
+                </Link>
+              </li>
+            ))}
             <li>
               <Link href="/android">Pinle Android uygulaması — gerçek fiyat haritasını indir</Link>
             </li>

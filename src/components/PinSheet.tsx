@@ -5,6 +5,8 @@ import { PLACE_TYPES, categoryById, categoryIcon, isPriceable, itemSuggestionsFo
 import type { Comment, PinDetail } from "@/lib/types";
 import { formatPrice, timeAgo } from "@/lib/types";
 import { isStalePrice, validityLabel } from "@/lib/validity";
+import { TagBadges, TagAsk } from "./VenueTags";
+import type { TagVerdict } from "@/lib/venueTags";
 import { playPinSound } from "@/lib/sfx";
 import { trackShare } from "@/lib/share";
 import { engageContributionMission } from "@/lib/activation";
@@ -56,6 +58,8 @@ export default function PinSheet({
   const [comments, setComments] = useState<Comment[]>([]);
   const [myVote, setMyVote] = useState(0);
   const [myThanks, setMyThanks] = useState(false);
+  const [tags, setTags] = useState<TagVerdict[]>([]);
+  const [myTags, setMyTags] = useState<Record<string, boolean>>({});
   const [text, setText] = useState("");
   const [priceInput, setPriceInput] = useState("");
   const [itemInput, setItemInput] = useState("");
@@ -73,6 +77,8 @@ export default function PinSheet({
     if (!pinId) return;
     loadedFor.current = pinId;
     setPin(null);
+    setTags([]);
+    setMyTags({});
     setPriceInput("");
     setQty(1);
     setValidInput("");
@@ -88,6 +94,8 @@ export default function PinSheet({
         setComments(data.comments);
         setMyVote(data.myVote);
         setMyThanks(!!data.myThanks);
+        setTags(data.tags ?? []);
+        setMyTags(data.myTags ?? {});
         // Mevcut kalem varsa ön-doldur; yoksa BOŞ bırak (kategori adı değil —
         // "Esnaf Lokantası" bir ürün değildir; öneri çipleri yol gösterir).
         setItemInput(data.pin.price_item ?? "");
@@ -137,6 +145,26 @@ export default function PinSheet({
     if (data.isNew) {
       onToast("Teşekkürün pinleyene iletildi 🙏");
       pop();
+    }
+  };
+
+  // Mekan özelliği bildir (pati dostu / engelsiz erişim…)
+  const voteTag = async (tag: string, value: boolean) => {
+    if (!pin) return;
+    const res = await fetch(`/api/pins/${pin.id}/tags`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tag, value }),
+    });
+    const data = await res.json();
+    if (!res.ok) return onToast(data.error ?? "Kaydedilemedi");
+    setTags(data.tags ?? []);
+    setMyTags((m) => ({ ...m, [tag]: value }));
+    if (data.earned > 0) {
+      onToast(`+${data.earned} puan — teşekkürler! 🙌`);
+      pop();
+      onChanged();
+      onMeaningfulContribution();
     }
   };
 
@@ -525,6 +553,9 @@ export default function PinSheet({
               </div>
             )}
 
+            {/* Mekan özellikleri — topluluğun doğruladığı bilgi */}
+            <TagBadges tags={tags} />
+
             {pin.note && <p className="mt-3 text-[15px] leading-snug">{pin.note}</p>}
             {pin.photo && (
               // eslint-disable-next-line @next/next/no-img-element
@@ -610,6 +641,9 @@ export default function PinSheet({
                 </button>
               )}
             </div>
+
+            {/* Eksik özellikleri sor — "burayı bilen" bilgiyi buradan giriyor */}
+            <TagAsk tags={tags} myTags={myTags} isFood={priceable} onVote={voteTag} />
 
             {/* Yorumlar */}
             <h3 className="mt-5 text-sm font-bold opacity-70">Yorumlar ({visibleComments.length})</h3>

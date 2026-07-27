@@ -14,6 +14,7 @@ import { overloadGuard } from "@/lib/flags";
 // bbox 2 ondalığa GENİŞLETİLEREK yuvarlanır (superset — pin kaybolmaz, fazlası
 // zaten viewport dışında kalır). Kişiselleştirme yok → herkese aynı yanıt.
 import { cacheGet, cacheSet, cacheClear } from "@/lib/pinsCache";
+import { isValidTag } from "@/lib/venueTags";
 
 export async function GET(request: NextRequest) {
   const q = request.nextUrl.searchParams;
@@ -31,6 +32,12 @@ export async function GET(request: NextRequest) {
     .map((c) => c.trim())
     .filter(Boolean)
     .slice(0, 40);
+  // `tags`: mekan özelliği filtresi (pati,cocuk…) — hepsi DOĞRULANMIŞ olmalı
+  const tags = (q.get("tags") ?? "")
+    .split(",")
+    .map((t) => t.trim())
+    .filter((t) => isValidTag(t))
+    .slice(0, 8);
   if ([minLat, maxLat, minLng, maxLng].some(Number.isNaN)) {
     return Response.json({ error: "Geçersiz sınırlar" }, { status: 400 });
   }
@@ -39,13 +46,20 @@ export async function GET(request: NextRequest) {
   const f = (v: number, up: boolean) => (up ? Math.ceil(v * 100) / 100 : Math.floor(v * 100) / 100);
   const cMinLat = f(minLat, false), cMaxLat = f(maxLat, true);
   const cMinLng = f(minLng, false), cMaxLng = f(maxLng, true);
-  const cacheKey = `${cMinLat},${cMaxLat},${cMinLng},${cMaxLng}|${kind}|${categories.join(",")}|${dealsOnly ? 1 : 0}`;
+  const cacheKey = `${cMinLat},${cMaxLat},${cMinLng},${cMaxLng}|${kind}|${categories.join(",")}|${dealsOnly ? 1 : 0}|${tags.join(",")}`;
   const headers = { "Content-Type": "application/json", "Cache-Control": "public, max-age=10" };
   const hit = cacheGet(cacheKey);
   if (hit) return new Response(hit, { headers });
 
   const catFilter =
     categories.length > 0 ? `AND p.category IN (${categories.map(() => "?").join(",")})` : "";
+  // Her özellik için ayrı EXISTS — "hem pati hem bahçe" = ikisi de doğrulanmış
+  const tagFilter = tags
+    .map(
+      () => `AND EXISTS (SELECT 1 FROM pin_tags pt WHERE pt.pin_id = p.id AND pt.tag = ?
+             GROUP BY pt.pin_id HAVING SUM(CASE WHEN pt.value = 1 THEN 1 ELSE -1 END) > 0)`
+    )
+    .join(" ");
   const dealFilter = dealsOnly
     ? "AND p.price_valid_until IS NOT NULL AND date(p.price_valid_until) >= date('now')"
     : "";
@@ -60,6 +74,7 @@ export async function GET(request: NextRequest) {
       AND p.lat BETWEEN ? AND ? AND p.lng BETWEEN ? AND ?
       AND (? = '' OR p.kind = ?)
       ${catFilter}
+      ${tagFilter}
       ${dealFilter}
     GROUP BY p.id
     ORDER BY p.created_at DESC
@@ -68,7 +83,7 @@ export async function GET(request: NextRequest) {
   // Sorgu KABA bbox ile çalışır (cache anahtarıyla birebir) — superset güvenli.
   const rows = db()
     .prepare(sql)
-    .all(cMinLat, cMaxLat, cMinLng, cMaxLng, kind, kind, ...categories) as Record<
+    .all(cMinLat, cMaxLat, cMinLng, cMaxLng, kind, kind, ...categories, ...tags) as Record<
     string,
     unknown
   >[];

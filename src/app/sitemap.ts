@@ -1,5 +1,7 @@
 import type { MetadataRoute } from "next";
 import { db } from "@/lib/db";
+import { VENUE_TAGS } from "@/lib/venueTags";
+import { tagCount } from "@/lib/pinTags";
 import { CITIES, cityCatCombos } from "@/lib/cities";
 
 const BASE = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
@@ -124,6 +126,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${BASE}/sehir/${c.city}/${c.category}`,
       changeFrequency: "daily" as const,
       priority: 0.7,
+    })),
+    // Mekan özelliği sayfaları — liste dolmadan sitemap'e girmesin (ince içerik).
+    // Eşik page.tsx'teki MIN_INDEX ile aynı olmalı.
+    ...VENUE_TAGS.filter((t) => tagCount(t.id) >= 3).map((t) => ({
+      url: `${BASE}/ozellik/${t.slug}`,
+      changeFrequency: "daily" as const,
+      priority: 0.8,
     })),
     {
       url: `${BASE}/gizlilik`,

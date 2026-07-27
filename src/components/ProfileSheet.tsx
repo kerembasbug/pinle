@@ -111,16 +111,23 @@ export default function ProfileSheet({ open, me, onClose, onOpenAuth, onLogout, 
               {picking && (
                 <div className="sticker-flat mt-3 bg-cream p-2.5">
                   <p className="mb-1.5 text-xs font-bold opacity-60">Avatarını seç 👇</p>
-                  <div className="grid grid-cols-6 gap-1.5">
+                  {/* SABİT boyutlu hücreler: grid-cols-N + aspect-square geniş
+                      ekranda hücreleri devleştirip avatarları küçücük noktalara
+                      çeviriyordu. flex-wrap her genişlikte aynı görünür. */}
+                  <div className="flex flex-wrap gap-1.5">
                     {AVATARS.map((a) => (
                       <button
                         key={a}
                         onClick={() => pickAvatar(a)}
-                        className={`grid aspect-square place-items-center rounded-xl p-0.5 ${
-                          me.avatar === a ? "border-2 border-tomato bg-paper" : "active:bg-paper"
+                        aria-label={`Avatar ${a}`}
+                        aria-pressed={me.avatar === a}
+                        className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl ${
+                          me.avatar === a
+                            ? "border-2 border-tomato bg-paper"
+                            : "border-2 border-transparent hover:bg-paper active:bg-paper"
                         }`}
                       >
-                        <Avatar value={a} size={40} />
+                        <Avatar value={a} size={38} />
                       </button>
                     ))}
                   </div>

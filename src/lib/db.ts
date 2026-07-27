@@ -103,6 +103,21 @@ function migrate(d: Database.Database) {
     );
     CREATE INDEX IF NOT EXISTS idx_namevotes_pin ON name_votes(pin_id);
 
+    -- Mekan özellikleri ("pati dostu", "engelsiz erişim"…) — topluluk oylu.
+    -- Kullanıcı başına özellik başına 1 oy (evet/hayır, değiştirilebilir).
+    -- Çoğunluk kazanır; bkz. lib/venueTags.ts verdictOf().
+    CREATE TABLE IF NOT EXISTS pin_tags (
+      pin_id TEXT NOT NULL REFERENCES pins(id),
+      user_id TEXT NOT NULL REFERENCES users(id),
+      tag TEXT NOT NULL,
+      value INTEGER NOT NULL CHECK (value IN (1, -1)),
+      created_at TEXT NOT NULL DEFAULT (datetime('now')),
+      PRIMARY KEY (pin_id, user_id, tag)
+    );
+    CREATE INDEX IF NOT EXISTS idx_pintags_pin ON pin_tags(pin_id);
+    -- Haritada "pati dostu olanları göster" filtresi bu indeksi kullanır
+    CREATE INDEX IF NOT EXISTS idx_pintags_tag ON pin_tags(tag, pin_id);
+
     CREATE TABLE IF NOT EXISTS points_events (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       user_id TEXT NOT NULL REFERENCES users(id),
