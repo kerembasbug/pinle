@@ -10,7 +10,7 @@ const description =
 const canonicalUrl = "https://pinle.app/ankara/ogrenci-fiyatlari";
 const businessOptInText =
   "Merhaba, ben [İŞLETME ADI] adına yazıyorum. Pinle Ankara Öğrenci Fiyat Dostu İşletme Pilotu'nun katılım şartlarını öğrenmek istiyorum. Bu sohbet kapsamında pilotla ilgili WhatsApp mesajları almayı kabul ediyorum.";
-const businessWhatsappUrl = `https://wa.me/905059116353?text=${encodeURIComponent(businessOptInText)}`;
+const businessWhatsappUrl = `https://wa.me/13024459836?text=${encodeURIComponent(businessOptInText)}`;
 const studentShareText =
   "Ankara'da bir gerçek fiyat ekle, görev kartını bir arkadaşına gönder; o da güncelliğini sınasın. Bahçelievler, Maltepe ve Kızılay öğrenci fiyat pilotu:";
 const studentWhatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${studentShareText} ${canonicalUrl}?utm_source=whatsapp&utm_medium=share&utm_campaign=ankara_student_price_pilot_2026_07&utm_content=student_challenge`)}`;
