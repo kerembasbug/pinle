@@ -1,0 +1,32 @@
+[
+ {
+  "name": "Çankaya Kent Lokantası — Cebeci",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": 95,
+  "price_item": "4 çeşit menü",
+  "lat": 39.930093,
+  "lng": 32.873517,
+  "note": "Çankaya Belediyesi Kent Lokantası — 4 çeşit sulu yemek 95₺, su+ekmek ücretsiz (kaynak: cankaya.bel.tr, May 2026). Hafta içi 11:30-15:00. Adres: Fakülteler Mah. Seyhan Sok. 6/B (konum mahalle merkezi, yaklaşık)."
+ },
+ {
+  "name": "Çankaya Kent Lokantası — Seyranbağları",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": 95,
+  "price_item": "4 çeşit menü",
+  "lat": 39.915165,
+  "lng": 32.877593,
+  "note": "Çankaya Belediyesi Kent Lokantası — 4 çeşit sulu yemek 95₺, su+ekmek ücretsiz (kaynak: cankaya.bel.tr, May 2026). Hafta içi 11:30-15:00. Adres: Mimar Sinan Mah. 115. Cad. No:34 (konum mahalle merkezi, yaklaşık). 16 May 2026'da açıldı."
+ },
+ {
+  "name": "Çankaya Kent Lokantası — Sokullu",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "price": 95,
+  "price_item": "4 çeşit menü",
+  "lat": 39.888171,
+  "lng": 32.836714,
+  "note": "Çankaya Belediyesi Kent Lokantası — 4 çeşit sulu yemek 95₺, su+ekmek ücretsiz (kaynak: cankaya.bel.tr, May 2026). Hafta içi 11:30-15:00. Adres: Harbiye Mah. Sokullu Mehmet Paşa Cad. 73/A."
+ }
+]
