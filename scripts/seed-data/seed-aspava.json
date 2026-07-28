@@ -8,5 +8,15 @@
   "lat": 39.964848,
   "lng": 32.644493,
   "note": "Fiyat kaynağı: işletmenin resmi QR menüsü menu.halilgulcimenaspava.com (Tem 2026) — SSK dürüm ₺740, İskender ₺800. İkramlar (patates, cacık, helva…) fiyata dahil. Şubeye göre değişebilir."
+ },
+ {
+  "name": "Şimşek Aspava Mithatpaşa",
+  "kind": "lezzet",
+  "category": "doner",
+  "price": 680,
+  "price_item": "Döner kebap (porsiyon)",
+  "lat": 39.919829,
+  "lng": 32.859162,
+  "note": "Fiyat kaynağı: işletmenin kendi sitesi simsekaspavamithatpasa.com (Tem 2026) — SSK dürüm ₺690, İskender ₺720, ayran ₺90. İkramlar dahil. Adres: Kocatepe Mah. Mithatpaşa Cd. 58/B."
  }
 ]
