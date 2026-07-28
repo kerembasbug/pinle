@@ -1,0 +1,2214 @@
+[
+ {
+  "name": "Halil İbo Tandir ve Etli Ekmek",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.928794,
+  "lng": 32.819804
+ },
+ {
+  "name": "Limanlı Bahçe",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.927688,
+  "lng": 32.8267
+ },
+ {
+  "name": "Aslı Börek",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.930964,
+  "lng": 32.826031
+ },
+ {
+  "name": "Noma",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.928809,
+  "lng": 32.826097
+ },
+ {
+  "name": "Burger King",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.932432,
+  "lng": 32.829251
+ },
+ {
+  "name": "Geyik Kafe",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.930444,
+  "lng": 32.863771
+ },
+ {
+  "name": "Devrez",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.905256,
+  "lng": 32.868392
+ },
+ {
+  "name": "Uludağ Kebapçısı",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.934494,
+  "lng": 32.857228
+ },
+ {
+  "name": "Starbucks",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.917929,
+  "lng": 32.854687
+ },
+ {
+  "name": "McDonald's",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.918147,
+  "lng": 32.855518
+ },
+ {
+  "name": "Hosta",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.931529,
+  "lng": 32.825783
+ },
+ {
+  "name": "Sardunya",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.906624,
+  "lng": 32.862126
+ },
+ {
+  "name": "Kebap 49",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.907398,
+  "lng": 32.860066
+ },
+ {
+  "name": "Pizzacı Altan",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.909225,
+  "lng": 32.861256
+ },
+ {
+  "name": "Starbucks",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.922007,
+  "lng": 32.826054
+ },
+ {
+  "name": "Burger King",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.919004,
+  "lng": 32.827545
+ },
+ {
+  "name": "Hosta",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.923411,
+  "lng": 32.825684
+ },
+ {
+  "name": "Marco Pasha",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.923016,
+  "lng": 32.825749
+ },
+ {
+  "name": "Antep Sis",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.929607,
+  "lng": 32.826186
+ },
+ {
+  "name": "Bilge Şahin Pasta Dükkanı",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.907546,
+  "lng": 32.85898
+ },
+ {
+  "name": "Edessa Kebap",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.924735,
+  "lng": 32.822628
+ },
+ {
+  "name": "Öz 52 Ciğer",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.911693,
+  "lng": 32.820212
+ },
+ {
+  "name": "Bursa Hacıbey Kebapçısı",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.911841,
+  "lng": 32.821057
+ },
+ {
+  "name": "Kesman Ciğer",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.91178,
+  "lng": 32.820453
+ },
+ {
+  "name": "Keyfimce",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.93084,
+  "lng": 32.817791
+ },
+ {
+  "name": "ABA Piknik",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.917813,
+  "lng": 32.855241
+ },
+ {
+  "name": "Burger King",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.917195,
+  "lng": 32.855291
+ },
+ {
+  "name": "Özçelik Aspava",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.906546,
+  "lng": 32.866537
+ },
+ {
+  "name": "Yıldırım Aspava",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.906627,
+  "lng": 32.866464
+ },
+ {
+  "name": "Cafe Sobe",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.918246,
+  "lng": 32.85616
+ },
+ {
+  "name": "3E Restoran",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.92213,
+  "lng": 32.857146
+ },
+ {
+  "name": "Kukla Kebap",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.909821,
+  "lng": 32.81606
+ },
+ {
+  "name": "pastane",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.930662,
+  "lng": 32.833815
+ },
+ {
+  "name": "Palais",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.9262,
+  "lng": 32.818306
+ },
+ {
+  "name": "Lizbon Cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.933892,
+  "lng": 32.822925
+ },
+ {
+  "name": "Topkapı cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.925314,
+  "lng": 32.847541
+ },
+ {
+  "name": "Oranlı Börek Tatlı",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.924896,
+  "lng": 32.847793
+ },
+ {
+  "name": "Özler Döner",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.928559,
+  "lng": 32.853458
+ },
+ {
+  "name": "London Pub",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.907565,
+  "lng": 32.858499
+ },
+ {
+  "name": "Net Piknik",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.922279,
+  "lng": 32.855924
+ },
+ {
+  "name": "Tarihî Özen Lokantası",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.922704,
+  "lng": 32.856028
+ },
+ {
+  "name": "Pilita Pastaevi",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.933567,
+  "lng": 32.836393
+ },
+ {
+  "name": "illy Espressamente",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.912725,
+  "lng": 32.809902
+ },
+ {
+  "name": "Gümüş Pastanesi",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.934134,
+  "lng": 32.834147
+ },
+ {
+  "name": "Karma mutfak",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.926987,
+  "lng": 32.854554
+ },
+ {
+  "name": "Keyifli Kafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.924352,
+  "lng": 32.85594
+ },
+ {
+  "name": "Akay Çorba",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.913018,
+  "lng": 32.857765
+ },
+ {
+  "name": "Hicaz pastanesi",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.928012,
+  "lng": 32.854522
+ },
+ {
+  "name": "CafeModern",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.931764,
+  "lng": 32.849314
+ },
+ {
+  "name": "Mutlu Döner",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.923078,
+  "lng": 32.850205
+ },
+ {
+  "name": "Aspava kebap",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.918861,
+  "lng": 32.82709
+ },
+ {
+  "name": "Sim pastanesi",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.921642,
+  "lng": 32.826439
+ },
+ {
+  "name": "Karadeniz ev yemekleri",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.922943,
+  "lng": 32.828266
+ },
+ {
+  "name": "Dolunay Cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.919074,
+  "lng": 32.828572
+ },
+ {
+  "name": "Coffee Lab",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.919469,
+  "lng": 32.827358
+ },
+ {
+  "name": "uygur",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.925457,
+  "lng": 32.864699
+ },
+ {
+  "name": "The Italian Cut",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.920306,
+  "lng": 32.829672
+ },
+ {
+  "name": "Ala Döner",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.924844,
+  "lng": 32.852156
+ },
+ {
+  "name": "Balcon",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.908895,
+  "lng": 32.858829
+ },
+ {
+  "name": "Rumeli",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.906543,
+  "lng": 32.859965
+ },
+ {
+  "name": "Marmaris Balıkçısı",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.906438,
+  "lng": 32.859979
+ },
+ {
+  "name": "Wuyang",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.906356,
+  "lng": 32.86
+ },
+ {
+  "name": "Abbas Waffle",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.905872,
+  "lng": 32.860059
+ },
+ {
+  "name": "Subway",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.905796,
+  "lng": 32.860445
+ },
+ {
+  "name": "Leman Kültür",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.90707,
+  "lng": 32.85981
+ },
+ {
+  "name": "Mangal Kebap",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.90732,
+  "lng": 32.859659
+ },
+ {
+  "name": "Cafe Rosso",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.90815,
+  "lng": 32.861481
+ },
+ {
+  "name": "Beeves Burger",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.907278,
+  "lng": 32.861487
+ },
+ {
+  "name": "Elizinn",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.906779,
+  "lng": 32.861259
+ },
+ {
+  "name": "Hosta",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.905825,
+  "lng": 32.860905
+ },
+ {
+  "name": "Domino's",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.918799,
+  "lng": 32.859387
+ },
+ {
+  "name": "Meşhur Özçelik Aspava",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.906562,
+  "lng": 32.869265
+ },
+ {
+  "name": "Domino's",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.905217,
+  "lng": 32.867227
+ },
+ {
+  "name": "Bolulu Hasan Usta",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.921268,
+  "lng": 32.855516
+ },
+ {
+  "name": "McDonald's",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.921936,
+  "lng": 32.854481
+ },
+ {
+  "name": "McDonald's",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.920541,
+  "lng": 32.852847
+ },
+ {
+  "name": "Can Balık",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.922194,
+  "lng": 32.855965
+ },
+ {
+  "name": "Balıkhane",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.922405,
+  "lng": 32.856699
+ },
+ {
+  "name": "Hosta",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.922049,
+  "lng": 32.856546
+ },
+ {
+  "name": "Tattaze Sakarya",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.921995,
+  "lng": 32.856461
+ },
+ {
+  "name": "HD İskender",
+  "kind": "lezzet",
+  "category": "doner",
+  "lat": 39.922213,
+  "lng": 32.855379
+ },
+ {
+  "name": "Simit Dünyası",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.921948,
+  "lng": 32.855104
+ },
+ {
+  "name": "Hosta",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.921714,
+  "lng": 32.855233
+ },
+ {
+  "name": "Kebo",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.919092,
+  "lng": 32.856165
+ },
+ {
+  "name": "Colambia Coffee",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.923613,
+  "lng": 32.825551
+ },
+ {
+  "name": "Ayvalık Meze Balık",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.908249,
+  "lng": 32.860837
+ },
+ {
+  "name": "Beyzade",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.913129,
+  "lng": 32.85908
+ },
+ {
+  "name": "Döneristan",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.922284,
+  "lng": 32.855337
+ },
+ {
+  "name": "Ankara Simitçisi",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.923125,
+  "lng": 32.854904
+ },
+ {
+  "name": "Urfalı Kebap",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.923666,
+  "lng": 32.856306
+ },
+ {
+  "name": "Hicaz Pastanesi",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.923584,
+  "lng": 32.856804
+ },
+ {
+  "name": "Simit Dünyası",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.922463,
+  "lng": 32.850948
+ },
+ {
+  "name": "Karacabey İskendercisi",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.906963,
+  "lng": 32.814107
+ },
+ {
+  "name": "Mis Başak Restaurant",
+  "kind": "lezzet",
+  "category": "doner",
+  "lat": 39.908352,
+  "lng": 32.809594
+ },
+ {
+  "name": "Ankara Hamsi",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.930368,
+  "lng": 32.816351
+ },
+ {
+  "name": "Jaffa Coffee Co.",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.907328,
+  "lng": 32.861167
+ },
+ {
+  "name": "Varuna Gezgin",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.921632,
+  "lng": 32.828863
+ },
+ {
+  "name": "Linsa Gıda",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.910232,
+  "lng": 32.819029
+ },
+ {
+  "name": "ROR caffee and roestery",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.922096,
+  "lng": 32.825419
+ },
+ {
+  "name": "Arabica",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.932029,
+  "lng": 32.825508
+ },
+ {
+  "name": "Arabica Kahve Evi",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.924374,
+  "lng": 32.825807
+ },
+ {
+  "name": "Tahtakale Kahvecisi",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.932955,
+  "lng": 32.866557
+ },
+ {
+  "name": "Vegisso",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.913825,
+  "lng": 32.86331
+ },
+ {
+  "name": "Kakule Kahve",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.914888,
+  "lng": 32.85798
+ },
+ {
+  "name": "Cafe Kıraç",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.914926,
+  "lng": 32.858344
+ },
+ {
+  "name": "Anıt Lezzet",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.920718,
+  "lng": 32.839902
+ },
+ {
+  "name": "Kare Çarşı",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.932747,
+  "lng": 32.821875
+ },
+ {
+  "name": "Koala Café",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.906785,
+  "lng": 32.861871
+ },
+ {
+  "name": "f451",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.909278,
+  "lng": 32.860824
+ },
+ {
+  "name": "Yemekhane",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.935664,
+  "lng": 32.829703
+ },
+ {
+  "name": "Baklavacı Karagöz",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.922249,
+  "lng": 32.857234
+ },
+ {
+  "name": "Seyir Çay Evi",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.922306,
+  "lng": 32.857516
+ },
+ {
+  "name": "Kahveci Ezgizade",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.922079,
+  "lng": 32.856875
+ },
+ {
+  "name": "Öncü Döner",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.922173,
+  "lng": 32.856833
+ },
+ {
+  "name": "Kebo",
+  "kind": "lezzet",
+  "category": "doner",
+  "lat": 39.9188,
+  "lng": 32.827731
+ },
+ {
+  "name": "Matbaa",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.930489,
+  "lng": 32.856167
+ },
+ {
+  "name": "Simit Sarayı",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.919358,
+  "lng": 32.855045
+ },
+ {
+  "name": "Gobitte",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.919153,
+  "lng": 32.855329
+ },
+ {
+  "name": "SR Döner",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.91947,
+  "lng": 32.85557
+ },
+ {
+  "name": "ÇaySimit",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.919488,
+  "lng": 32.855709
+ },
+ {
+  "name": "Alaros",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.919495,
+  "lng": 32.855769
+ },
+ {
+  "name": "Simit Sarayı",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.922898,
+  "lng": 32.855233
+ },
+ {
+  "name": "Little Green",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.922242,
+  "lng": 32.828904
+ },
+ {
+  "name": "Zigana Pide",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.923471,
+  "lng": 32.817472
+ },
+ {
+  "name": "Midyeci Ahmet",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.924822,
+  "lng": 32.825204
+ },
+ {
+  "name": "Ciğerci Bahattin",
+  "kind": "lezzet",
+  "category": "doner",
+  "lat": 39.917643,
+  "lng": 32.817129
+ },
+ {
+  "name": "VegAnka",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.910413,
+  "lng": 32.858196
+ },
+ {
+  "name": "Şehrize Mantı",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.927067,
+  "lng": 32.846837
+ },
+ {
+  "name": "Durdu Usta",
+  "kind": "lezzet",
+  "category": "doner",
+  "lat": 39.91692,
+  "lng": 32.817469
+ },
+ {
+  "name": "Grano Coffee & Sandwiches",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.917412,
+  "lng": 32.816629
+ },
+ {
+  "name": "Gülçimen Aspava",
+  "kind": "lezzet",
+  "category": "doner",
+  "lat": 39.91635,
+  "lng": 32.817243
+ },
+ {
+  "name": "Coffee Project",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.917353,
+  "lng": 32.817516
+ },
+ {
+  "name": "Liman Kitap Kafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.909377,
+  "lng": 32.810425
+ },
+ {
+  "name": "Emirgan çayevi",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.925678,
+  "lng": 32.847491
+ },
+ {
+  "name": "Çınar Saklıbahçe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.931917,
+  "lng": 32.866384
+ },
+ {
+  "name": "Eylül Kafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.919502,
+  "lng": 32.855833
+ },
+ {
+  "name": "Vengo Kafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.919102,
+  "lng": 32.858534
+ },
+ {
+  "name": "Özlem Pide Restoran",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.923164,
+  "lng": 32.805722
+ },
+ {
+  "name": "Ekşi Maya",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.922985,
+  "lng": 32.803927
+ },
+ {
+  "name": "Volkan Piknik",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.923022,
+  "lng": 32.85027
+ },
+ {
+  "name": "Ayaküstü Kahve",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.91092,
+  "lng": 32.820254
+ },
+ {
+  "name": "Başkent Unlu Mamüller",
+  "kind": "lezzet",
+  "category": "firin",
+  "lat": 39.924637,
+  "lng": 32.850975
+ },
+ {
+  "name": "CoffeeLab",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.923298,
+  "lng": 32.855439
+ },
+ {
+  "name": "Kruvasanre",
+  "kind": "lezzet",
+  "category": "firin",
+  "lat": 39.906041,
+  "lng": 32.862877
+ },
+ {
+  "name": "Pheru Coffee",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.916773,
+  "lng": 32.819259
+ },
+ {
+  "name": "Kronotrop",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.911837,
+  "lng": 32.856413
+ },
+ {
+  "name": "Gupse Fırın & Cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.927136,
+  "lng": 32.818906
+ },
+ {
+  "name": "Uzay Cafe & Piknik",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.928939,
+  "lng": 32.822407
+ },
+ {
+  "name": "Starbucks",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.922986,
+  "lng": 32.855467
+ },
+ {
+  "name": "Tost Makinem",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.913253,
+  "lng": 32.856683
+ },
+ {
+  "name": "Burger King",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.919926,
+  "lng": 32.856275
+ },
+ {
+  "name": "Kahveci Hacibaba",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.920382,
+  "lng": 32.856428
+ },
+ {
+  "name": "Dürüm Aspava",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.920467,
+  "lng": 32.856385
+ },
+ {
+  "name": "Rüyam",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.915175,
+  "lng": 32.862387
+ },
+ {
+  "name": "Uygur Mutfaği",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.914969,
+  "lng": 32.859371
+ },
+ {
+  "name": "Niyokki Armada",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.91301,
+  "lng": 32.808338
+ },
+ {
+  "name": "Coffee Lab",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.918199,
+  "lng": 32.857298
+ },
+ {
+  "name": "Ömer Aybak Adıyaman Çiğ Köftecisi",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.918242,
+  "lng": 32.862784
+ },
+ {
+  "name": "Otau Orta Asya Mutfağı",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.91848,
+  "lng": 32.862737
+ },
+ {
+  "name": "İrene Kültür Evi",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.918044,
+  "lng": 32.859107
+ },
+ {
+  "name": "Kajun Bring More",
+  "kind": "lezzet",
+  "category": "tatli",
+  "lat": 39.916727,
+  "lng": 32.858013
+ },
+ {
+  "name": "Arabica",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.916471,
+  "lng": 32.858126
+ },
+ {
+  "name": "Quito Coffee",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.916122,
+  "lng": 32.858264
+ },
+ {
+  "name": "Black Fish Cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.916745,
+  "lng": 32.858742
+ },
+ {
+  "name": "Bizim Lokanta Tavukçusu",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.919136,
+  "lng": 32.862755
+ },
+ {
+  "name": "Simit Kafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.918887,
+  "lng": 32.858659
+ },
+ {
+  "name": "Kitapça",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.918989,
+  "lng": 32.858598
+ },
+ {
+  "name": "Baklavacı Şemsettin",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.918662,
+  "lng": 32.860032
+ },
+ {
+  "name": "Boğaziçi Pastanesi",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.918264,
+  "lng": 32.858461
+ },
+ {
+  "name": "Antakya Efsanesi",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.918332,
+  "lng": 32.858687
+ },
+ {
+  "name": "Olgunlar Simitçisi",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.914949,
+  "lng": 32.857923
+ },
+ {
+  "name": "Khatoon Bağdat Restoranı",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.916542,
+  "lng": 32.855211
+ },
+ {
+  "name": "Tatlı Center",
+  "kind": "lezzet",
+  "category": "firin",
+  "lat": 39.910824,
+  "lng": 32.861333
+ },
+ {
+  "name": "29 MUTLU Kebap",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.911085,
+  "lng": 32.860803
+ },
+ {
+  "name": "Tarihi Sariyer Börek & Simıt Cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.911102,
+  "lng": 32.860329
+ },
+ {
+  "name": "Gümüşhane Ekmeği",
+  "kind": "lezzet",
+  "category": "firin",
+  "lat": 39.910291,
+  "lng": 32.862305
+ },
+ {
+  "name": "Sahel Restoran",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.914796,
+  "lng": 32.858284
+ },
+ {
+  "name": "Korelee",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.909824,
+  "lng": 32.858856
+ },
+ {
+  "name": "Reynata Ev Yemekleri & Doğal İçecekler",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.919989,
+  "lng": 32.851705
+ },
+ {
+  "name": "Dalyan Food and Drink",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.905077,
+  "lng": 32.860187
+ },
+ {
+  "name": "Meşhur Gülçimen Aspava ESAT",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.906493,
+  "lng": 32.86658
+ },
+ {
+  "name": "Çukurağa Sofrası",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.916622,
+  "lng": 32.818759
+ },
+ {
+  "name": "Dayi Kürek Lahmacun (Emek)",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.916922,
+  "lng": 32.81962
+ },
+ {
+  "name": "Ciğerci Aydın",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.932576,
+  "lng": 32.842709
+ },
+ {
+  "name": "Sefa Kahvaltı Evi",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.921925,
+  "lng": 32.843811
+ },
+ {
+  "name": "Hanzade Lounge",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.92289,
+  "lng": 32.863909
+ },
+ {
+  "name": "Bosco",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.9141,
+  "lng": 32.807971
+ },
+ {
+  "name": "Ardıç Kitabevi Cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.919257,
+  "lng": 32.855771
+ },
+ {
+  "name": "Bosco Caffe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.928561,
+  "lng": 32.819479
+ },
+ {
+  "name": "Ezgi cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.918385,
+  "lng": 32.856115
+ },
+ {
+  "name": "Dois",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.918468,
+  "lng": 32.85636
+ },
+ {
+  "name": "Taş fırın",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.918484,
+  "lng": 32.856083
+ },
+ {
+  "name": "Fiesta Cafe & Pub",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.920866,
+  "lng": 32.856699
+ },
+ {
+  "name": "Big Baker",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.91984,
+  "lng": 32.857274
+ },
+ {
+  "name": "Kahveci Hacıbaba",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.919474,
+  "lng": 32.856853
+ },
+ {
+  "name": "Cajun Corner",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.920198,
+  "lng": 32.856555
+ },
+ {
+  "name": "Sanat Edebiyat Kafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.92046,
+  "lng": 32.855903
+ },
+ {
+  "name": "Gıyma Kebap",
+  "kind": "lezzet",
+  "category": "doner",
+  "lat": 39.922479,
+  "lng": 32.817742
+ },
+ {
+  "name": "İLO Adana Kebapçısı",
+  "kind": "lezzet",
+  "category": "doner",
+  "lat": 39.922598,
+  "lng": 32.817246
+ },
+ {
+  "name": "Divan Brasserie Çengelhan",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.937481,
+  "lng": 32.863294
+ },
+ {
+  "name": "Castello",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.931599,
+  "lng": 32.828407
+ },
+ {
+  "name": "Caribou Coffee",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.918291,
+  "lng": 32.855509
+ },
+ {
+  "name": "Gabo Kitchen Ankara",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.924533,
+  "lng": 32.828919
+ },
+ {
+  "name": "Starbucks",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.923499,
+  "lng": 32.825955
+ },
+ {
+  "name": "Gloria Jean's",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.924825,
+  "lng": 32.82584
+ },
+ {
+  "name": "Starbucks",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.93208,
+  "lng": 32.82602
+ },
+ {
+  "name": "Kahve Dünyası",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.91893,
+  "lng": 32.827284
+ },
+ {
+  "name": "Subway",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.919089,
+  "lng": 32.8275
+ },
+ {
+  "name": "Coffy",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.917903,
+  "lng": 32.857387
+ },
+ {
+  "name": "Colambia Coffee",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.917659,
+  "lng": 32.856327
+ },
+ {
+  "name": "Carmelo Coffee",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.918027,
+  "lng": 32.855569
+ },
+ {
+  "name": "Dr. Falafel",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.917349,
+  "lng": 32.857573
+ },
+ {
+  "name": "Meydan 1957",
+  "kind": "lezzet",
+  "category": "doner",
+  "lat": 39.937289,
+  "lng": 32.863886
+ },
+ {
+  "name": "Burger King",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.934489,
+  "lng": 32.843236
+ },
+ {
+  "name": "Popeyes",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.934588,
+  "lng": 32.843217
+ },
+ {
+  "name": "Süha  Döner & Köfteci",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.9131,
+  "lng": 32.859479
+ },
+ {
+  "name": "Hamsi",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.905836,
+  "lng": 32.816388
+ },
+ {
+  "name": "Junk Vegan",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.908636,
+  "lng": 32.858453
+ },
+ {
+  "name": "seda nakare",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.916792,
+  "lng": 32.855626
+ },
+ {
+  "name": "Arabica",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.918796,
+  "lng": 32.85624
+ },
+ {
+  "name": "Miso Ramen Ankara",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.911091,
+  "lng": 32.858966
+ },
+ {
+  "name": "Çedene Lokantası",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.909546,
+  "lng": 32.817782
+ },
+ {
+  "name": "Mersinli Ciğerci Apo",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.909652,
+  "lng": 32.818037
+ },
+ {
+  "name": "Konakbay Çibörek-Mantı",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.90578,
+  "lng": 32.821494
+ },
+ {
+  "name": "Cafe Bianca",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.93134,
+  "lng": 32.842225
+ },
+ {
+  "name": "3 Cores Roastery Coffee Shop",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.92673,
+  "lng": 32.851724
+ },
+ {
+  "name": "HYPE COFFEE",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.91718,
+  "lng": 32.857875
+ },
+ {
+  "name": "Şimşek Aspava Bahçelievler",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.930082,
+  "lng": 32.826045
+ },
+ {
+  "name": "Bogazici Lokantasi",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.937911,
+  "lng": 32.859155
+ },
+ {
+  "name": "Fevzi Hoca Balık Lokantası",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.916706,
+  "lng": 32.80568
+ },
+ {
+  "name": "Veganarsist Kızılay",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.921915,
+  "lng": 32.860385
+ },
+ {
+  "name": "Hypatia Kütüphane Kafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.917996,
+  "lng": 32.859116
+ },
+ {
+  "name": "Arabica",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.914856,
+  "lng": 32.855955
+ },
+ {
+  "name": "Arabica",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.907091,
+  "lng": 32.860228
+ },
+ {
+  "name": "Gadasını Aldığım Mantı",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.924797,
+  "lng": 32.824554
+ },
+ {
+  "name": "Coffee Lab",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.916901,
+  "lng": 32.855724
+ },
+ {
+  "name": "Cici Piknik",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.919865,
+  "lng": 32.851002
+ },
+ {
+  "name": "Eltiler Pide Kebap",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.913784,
+  "lng": 32.864242
+ },
+ {
+  "name": "Coffee LAB Bahçeli 71",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.921204,
+  "lng": 32.82737
+ },
+ {
+  "name": "Tabu Cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.922237,
+  "lng": 32.826431
+ },
+ {
+  "name": "Coffee LAB Bahçeli 72",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.920235,
+  "lng": 32.827656
+ },
+ {
+  "name": "Yaprak Dönercisi Bahçelievler",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.920803,
+  "lng": 32.826428
+ },
+ {
+  "name": "Fanus Komünite Kafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.920781,
+  "lng": 32.840456
+ },
+ {
+  "name": "Komagene",
+  "kind": "lezzet",
+  "category": "doner",
+  "lat": 39.935049,
+  "lng": 32.843629
+ },
+ {
+  "name": "Baydöner",
+  "kind": "lezzet",
+  "category": "doner",
+  "lat": 39.93522,
+  "lng": 32.842138
+ },
+ {
+  "name": "Dürümle",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.924324,
+  "lng": 32.825515
+ },
+ {
+  "name": "Coffee de Madrid",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.924546,
+  "lng": 32.825495
+ },
+ {
+  "name": "Nico La Pizza",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.90789,
+  "lng": 32.861223
+ },
+ {
+  "name": "Ankara Simitçisi",
+  "kind": "lezzet",
+  "category": "firin",
+  "lat": 39.923513,
+  "lng": 32.866774
+ },
+ {
+  "name": "alamania",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.911597,
+  "lng": 32.858732
+ },
+ {
+  "name": "Erdemli Tantuni",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.927469,
+  "lng": 32.846625
+ },
+ {
+  "name": "Damla Pastanesi",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.924853,
+  "lng": 32.842112
+ },
+ {
+  "name": "Burger King",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.922229,
+  "lng": 32.856271
+ },
+ {
+  "name": "Coffy",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.922519,
+  "lng": 32.855783
+ },
+ {
+  "name": "SR Döner",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.922149,
+  "lng": 32.855814
+ },
+ {
+  "name": "Zafer Piknik",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.922656,
+  "lng": 32.855722
+ },
+ {
+  "name": "Coffee de Madrid Cubes",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.905697,
+  "lng": 32.803249
+ },
+ {
+  "name": "Pizza Il Forno",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.906572,
+  "lng": 32.861739
+ },
+ {
+  "name": "ROR",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.90593,
+  "lng": 32.862356
+ },
+ {
+  "name": "Coffy",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.918535,
+  "lng": 32.82743
+ },
+ {
+  "name": "Vişi Kafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.919389,
+  "lng": 32.827348
+ },
+ {
+  "name": "Tavuk Dünyası",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.919465,
+  "lng": 32.827032
+ },
+ {
+  "name": "Komagene",
+  "kind": "lezzet",
+  "category": "doner",
+  "lat": 39.917594,
+  "lng": 32.827726
+ },
+ {
+  "name": "McDonald's",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.921095,
+  "lng": 32.82634
+ },
+ {
+  "name": "Hosta",
+  "kind": "lezzet",
+  "category": "firin",
+  "lat": 39.92233,
+  "lng": 32.817241
+ },
+ {
+  "name": "Colambia Coffee",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.918739,
+  "lng": 32.827354
+ },
+ {
+  "name": "100 Burger",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.922348,
+  "lng": 32.817064
+ },
+ {
+  "name": "Firik Antakya Künefe",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.921112,
+  "lng": 32.850951
+ },
+ {
+  "name": "Börek's Cafe",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.92821,
+  "lng": 32.869057
+ },
+ {
+  "name": "Arabica",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.928391,
+  "lng": 32.869884
+ },
+ {
+  "name": "Pub Locale",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.907321,
+  "lng": 32.858627
+ },
+ {
+  "name": "Caribou Coffee",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.912294,
+  "lng": 32.809335
+ },
+ {
+  "name": "Krispy Kreme",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.911411,
+  "lng": 32.81185
+ },
+ {
+  "name": "Greenwich Coffee",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.905623,
+  "lng": 32.803189
+ },
+ {
+  "name": "Ciğerci Bahattin",
+  "kind": "lezzet",
+  "category": "doner",
+  "lat": 39.917736,
+  "lng": 32.824318
+ },
+ {
+  "name": "Ade Miel Coffee Shop",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.918093,
+  "lng": 32.858539
+ },
+ {
+  "name": "Fried Meister",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.917744,
+  "lng": 32.857445
+ },
+ {
+  "name": "Arabica Coffe House Mülkiyeliler",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.919298,
+  "lng": 32.856674
+ },
+ {
+  "name": "Arabica Coffe House Selanik",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.919843,
+  "lng": 32.856651
+ },
+ {
+  "name": "Cozy Vintage Coffee",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.909341,
+  "lng": 32.859939
+ },
+ {
+  "name": "Kocatepe Coffee 1919",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.922055,
+  "lng": 32.826261
+ },
+ {
+  "name": "Kocatepe Coffee 1919 Bahçelievler 7.Cadde",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.921892,
+  "lng": 32.825517
+ },
+ {
+  "name": "Â La Lune Patisserie",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.924512,
+  "lng": 32.825197
+ },
+ {
+  "name": "Faust Coffee",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.921249,
+  "lng": 32.823236
+ },
+ {
+  "name": "Coffee de Madrid",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.922034,
+  "lng": 32.851533
+ },
+ {
+  "name": "Part II Coffee",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.919902,
+  "lng": 32.824976
+ },
+ {
+  "name": "Speco Coffee",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.919792,
+  "lng": 32.825338
+ },
+ {
+  "name": "Tortilla Fırın",
+  "kind": "lezzet",
+  "category": "firin",
+  "lat": 39.920059,
+  "lng": 32.826035
+ },
+ {
+  "name": "Bahçeli Falan",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.920979,
+  "lng": 32.829481
+ },
+ {
+  "name": "Rubby Coffee & Cake",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.920689,
+  "lng": 32.829307
+ },
+ {
+  "name": "Skål Coffee & Dessert",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.920305,
+  "lng": 32.829478
+ },
+ {
+  "name": "Pizzacı Sedat",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.91972,
+  "lng": 32.830017
+ },
+ {
+  "name": "Sun Brothers Pizza",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.919576,
+  "lng": 32.830315
+ },
+ {
+  "name": "Çeyrek",
+  "kind": "lezzet",
+  "category": "doner",
+  "lat": 39.919742,
+  "lng": 32.830208
+ },
+ {
+  "name": "Cafe Down Engelsiz Cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.922987,
+  "lng": 32.853996
+ },
+ {
+  "name": "Glütensiz Cafe",
+  "kind": "lezzet",
+  "category": "firin",
+  "lat": 39.915706,
+  "lng": 32.82805
+ },
+ {
+  "name": "Helvacı Ali",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.917644,
+  "lng": 32.827704
+ },
+ {
+  "name": "Burger Wave",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.909298,
+  "lng": 32.859869
+ },
+ {
+  "name": "Krispy Kreme",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.920727,
+  "lng": 32.826822
+ },
+ {
+  "name": "Caffè di Toeè",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.923237,
+  "lng": 32.824779
+ },
+ {
+  "name": "LAOS Coffee Roastery",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.923443,
+  "lng": 32.825003
+ },
+ {
+  "name": "Patisserie Coffee",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.923571,
+  "lng": 32.822722
+ },
+ {
+  "name": "Dabıl Meze",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.923974,
+  "lng": 32.822773
+ },
+ {
+  "name": "Meşhur Polat Aspava",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.924413,
+  "lng": 32.82247
+ },
+ {
+  "name": "Bubu",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.924114,
+  "lng": 32.822801
+ },
+ {
+  "name": "Yağmur Pide Kebap Döner Lahmacun",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.924709,
+  "lng": 32.822504
+ },
+ {
+  "name": "Milet Coffee",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.924759,
+  "lng": 32.823005
+ },
+ {
+  "name": "Mikado Ramen",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.928136,
+  "lng": 32.824801
+ },
+ {
+  "name": "Dürüm Döner",
+  "kind": "lezzet",
+  "category": "lokanta",
+  "lat": 39.919789,
+  "lng": 32.8584
+ },
+ {
+  "name": "Ciğerci Apo",
+  "kind": "lezzet",
+  "category": "doner",
+  "lat": 39.909141,
+  "lng": 32.817812
+ },
+ {
+  "name": "Kesit Cafe",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.93085,
+  "lng": 32.846476
+ },
+ {
+  "name": "Gazi Üniversitesi Mühendislik Yemekhanesi",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.931001,
+  "lng": 32.846207
+ },
+ {
+  "name": "Anka E-Spor Merkezi Bayındır",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.922003,
+  "lng": 32.857303
+ },
+ {
+  "name": "Ankara Büyükşehir Belediyesi",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.920389,
+  "lng": 32.809401
+ },
+ {
+  "name": "Burger King",
+  "kind": "lezzet",
+  "category": "tost",
+  "lat": 39.924231,
+  "lng": 32.846216
+ },
+ {
+  "name": "CoffeeHub",
+  "kind": "lezzet",
+  "category": "kafe",
+  "lat": 39.924315,
+  "lng": 32.845829
+ }
+]
