@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Script from "next/script";
 import MapApp from "@/components/MapApp";
 import { CITIES, cityBySlug } from "@/lib/cities";
 import { VENUE_TAGS, isValidTag } from "@/lib/venueTags";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+  robots: { index: true, follow: true },
+};
 
 export default async function Home({
   searchParams,
