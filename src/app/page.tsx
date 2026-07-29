@@ -50,6 +50,7 @@ export default async function Home({
         initialPinId={pin}
         initialCenter={initialCenter}
         initialCategory={kategori}
+        initialTags={initialTags}
         initialMissionSource={initialMissionSource}
       />
       {/* Taranabilir SEO içeriği + şehir sayfalarına iç link akışı (harita SPA'sı istemci tarafı) */}
