@@ -177,17 +177,25 @@ export default function AnkaraStudentPricePilotPage() {
               >
                 İşletmemle katıl · WhatsApp ↗
               </TrackedShareLink>
+              <Link
+                href={studentChallengeUrl}
+                className="btn btn-cream px-7 py-3 text-center"
+              >
+                Öğrenci olarak 1 fiyat ekle →
+              </Link>
+            </div>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs leading-relaxed">
+              <p className="opacity-60">
+                İlk 15 uygun işletme · Ücretsiz · İndirim zorunlu değil · Olumlu yorum karşılığı ödül yok
+              </p>
               <PlayStoreLink
                 source="ankara_pilot_play"
-                className="btn btn-cream px-7 py-3 text-center"
+                className="font-bold underline underline-offset-4"
                 ariaLabel="Pinle Android uygulamasını Google Play'de aç"
               >
-                Öğrenci olarak katıl ↗
+                Android uygulamasını indir ↗
               </PlayStoreLink>
             </div>
-            <p className="text-xs leading-relaxed opacity-60">
-              İlk 15 uygun işletme · Ücretsiz · İndirim zorunlu değil · Olumlu yorum karşılığı ödül yok
-            </p>
           </div>
 
           <aside className="sticker sticker-mustard p-6 sm:p-7" aria-label="Pilotun ölçülebilir hedefi">
