@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import TrackedShareLink from "@/components/TrackedShareLink";
+import { acquisitionContextFromValues } from "@/lib/acquisition";
 import { jsonLdSafe } from "@/lib/jsonld";
 import { getPriceTaskBoard, type PriceTask } from "@/lib/priceTasks";
 
@@ -21,6 +22,15 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 const CAMPUS_SOURCES = new Set(["campus", "gsu_gastronomi", "ozu_cuisine", "yeditepe_gastroyunica"]);
+const ANKARA_PILOT_SOURCES = new Set([
+  "pinle",
+  "instagram",
+  "whatsapp",
+  "founder_network",
+  "outreach_email",
+  "hacettepe_hit",
+  "odtu_arge",
+]);
 
 type TaskContext = {
   activationSource: "task_board" | "campus" | "ankara_pilot";
@@ -78,26 +88,33 @@ export default async function PriceTasksPage({
   const incomingSource = typeof query.utm_source === "string" ? query.utm_source : "";
   const incomingMedium = typeof query.utm_medium === "string" ? query.utm_medium : "";
   const incomingCampaign = typeof query.utm_campaign === "string" ? query.utm_campaign : "";
+  const incomingContent = typeof query.utm_content === "string" ? query.utm_content : "";
+  const acquisition = acquisitionContextFromValues(
+    incomingSource,
+    incomingMedium,
+    incomingCampaign,
+    incomingContent
+  );
   const fromCampus =
-    incomingCampaign === "campus_price_tasks_2026_07" && CAMPUS_SOURCES.has(incomingSource);
+    acquisition?.campaign === "campus_price_tasks_2026_07" &&
+    CAMPUS_SOURCES.has(acquisition.source);
   const fromAnkaraPilot =
-    incomingCampaign === "ankara_student_price_pilot_2026_07" &&
-    incomingSource === "pinle" &&
-    incomingMedium === "owned";
+    acquisition?.campaign === "ankara_student_price_pilot_2026_07" &&
+    ANKARA_PILOT_SOURCES.has(acquisition.source);
   const taskContext: TaskContext = fromCampus
     ? {
         activationSource: "campus",
-        utmSource: incomingSource,
-        utmMedium: incomingMedium === "outreach_email" ? "outreach_email" : "owned",
+        utmSource: acquisition.source,
+        utmMedium: acquisition.medium === "outreach_email" ? "outreach_email" : "owned",
         utmCampaign: "campus_price_tasks_2026_07",
       }
     : fromAnkaraPilot
       ? {
           activationSource: "ankara_pilot",
-          utmSource: "pinle",
-          utmMedium: "owned",
+          utmSource: acquisition.source,
+          utmMedium: acquisition.medium,
           utmCampaign: "ankara_student_price_pilot_2026_07",
-          utmContent: "student_challenge",
+          utmContent: acquisition.content ?? "student_challenge",
         }
       : DEFAULT_TASK_CONTEXT;
   const board = getPriceTaskBoard();

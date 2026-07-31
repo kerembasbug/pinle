@@ -47,6 +47,8 @@ export const ACQUISITION_SOURCES = [
   "gsu_gastronomi",
   "ozu_cuisine",
   "yeditepe_gastroyunica",
+  "hacettepe_hit",
+  "odtu_arge",
   "publisher",
   "pin_share",
   "referral",
@@ -119,6 +121,8 @@ export const ACQUISITION_CONTENTS = [
   "student_challenge",
   "business_call",
   "whatsapp_status",
+  "first_price_story",
+  "campus_pilot_invite",
 ] as const;
 
 export type AcquisitionSurface = (typeof ACQUISITION_SURFACES)[number];
