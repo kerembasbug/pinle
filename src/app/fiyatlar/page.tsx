@@ -69,7 +69,7 @@ export default function PricesPage() {
           encodingFormat: "text/csv",
           name: `Toplulaştırılmış Türkiye Sokak Fiyatları ${YEAR} CSV`,
         },
-        spatialCoverage: { "@type": "Country", name: "Türkiye" },
+        spatialCoverage: "Türkiye",
         temporalCoverage:
           firstObservedIso && lastObservedIso
             ? `${firstObservedIso.slice(0, 10)}/${lastObservedIso.slice(0, 10)}`
@@ -85,7 +85,7 @@ export default function PricesPage() {
           "En az bir ikinci-kişi doğrulaması bulunan gözlem sayısı",
         ],
         measurementTechnique:
-          "Güncel Pinle fiyat kayıtlarının ürün veya hizmet adına göre gruplanması; eski diye işaretlenmiş kayıtların dışlanması; gerçek kullanıcı ve Pinle Ekibi başlangıç kaynağının ayrılması; en az iki gözlemi olan gruplarda çift örneklem için iki orta değerin ortalamasıyla medyan ve fiyat aralığı hesabı.",
+          "Güncel Pinle fiyat kayıtlarının ürün veya hizmet adına göre gruplanması; eski diye işaretlenmiş kayıtlar ile açık test adlarının dışlanması; gerçek kullanıcı ve Pinle Ekibi başlangıç kaynağının ayrılması; en az iki gözlemi olan gruplarda çift örneklem için iki orta değerin ortalamasıyla medyan ve fiyat aralığı hesabı.",
       },
     ],
   };

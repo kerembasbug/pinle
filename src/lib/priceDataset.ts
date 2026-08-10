@@ -1,8 +1,10 @@
 import { db } from "./db";
 
-export const PRICE_DATASET_METHOD_VERSION = "2026-07-21.2";
-export const PRICE_DATASET_METHOD_RELEASED_AT = "2026-07-21T00:00:00Z";
+export const PRICE_DATASET_METHOD_VERSION = "2026-08-10.1";
+export const PRICE_DATASET_METHOD_RELEASED_AT = "2026-08-10T00:00:00Z";
 export const SEED_AUTHOR_NAME = "Pinle Ekibi 📌";
+
+const PLACEHOLDER_PRICE_ITEMS = ["deneme", "test", "test ürün", "test urun"] as const;
 
 type PriceObservation = {
   item: string;
@@ -85,11 +87,12 @@ export function getPriceDataset(): PriceDataset {
           AND p.price > 0
           AND p.price_item IS NOT NULL
           AND trim(p.price_item) != ''
+          AND lower(trim(p.price_item)) NOT IN (${PLACEHOLDER_PRICE_ITEMS.map(() => "?").join(", ")})
           AND NOT EXISTS (
             SELECT 1 FROM votes v2 WHERE v2.pin_id = p.id AND v2.value = -1
           )`
     )
-    .all() as PriceObservation[];
+    .all(...PLACEHOLDER_PRICE_ITEMS) as PriceObservation[];
 
   const byItem = new Map<string, PriceObservation[]>();
   for (const row of rows) {

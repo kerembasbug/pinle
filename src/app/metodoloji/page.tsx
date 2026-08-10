@@ -77,7 +77,7 @@ const methodJsonLd = {
       description,
       url: "https://pinle.app/metodoloji",
       datePublished: "2026-07-22",
-      dateModified: "2026-07-22",
+      dateModified: "2026-08-10",
       version: PRICE_DATASET_METHOD_VERSION,
       about: {
         "@type": "Dataset",
@@ -233,6 +233,7 @@ export default function MethodologyPage() {
             <li>Seed kaynağı bugün değişmez bir provenance alanı yerine ekip yazar adına dayanıyor; birden fazla seed editöründen önce bu alan sağlamlaştırılmalı.</li>
             <li>Fotoğraf ve not desteklense de her fiyat için fiş veya menü kanıtı zorunlu değil.</li>
             <li>Rate limit, farklı anonim oturumları veya koordineli kötüye kullanımı tek başına tamamen çözmez.</li>
+            <li>“Deneme” ve “test” gibi açık placeholder ürün adları kamu fiyat veri setine alınmaz; kaynak kayıtlar moderasyon incelemesi için korunur.</li>
             <li>SQLite tek production instance için uygun; yüksek eşzamanlı katkı ve çoklu yazan instance öncesi veri katmanı yeniden değerlendirilmeli.</li>
           </ul>
         </section>
