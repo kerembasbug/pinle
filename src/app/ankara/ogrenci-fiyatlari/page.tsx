@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import PlayStoreLink from "@/components/PlayStoreLink";
 import TrackedShareLink from "@/components/TrackedShareLink";
+import { acquisitionContextFromValues } from "@/lib/acquisition";
 import { jsonLdSafe } from "@/lib/jsonld";
 
 const title = "Ankara Öğrenci Fiyat Dostu İşletme Pilotu | Pinle";
@@ -14,7 +15,7 @@ const businessWhatsappUrl = `https://wa.me/13024459836?text=${encodeURIComponent
 const studentShareText =
   "Ankara'da bir gerçek fiyat ekle, görev kartını bir arkadaşına gönder; o da güncelliğini sınasın. Bahçelievler, Maltepe ve Kızılay öğrenci fiyat pilotu:";
 const studentWhatsappUrl = `https://wa.me/?text=${encodeURIComponent(`${studentShareText} ${canonicalUrl}?utm_source=whatsapp&utm_medium=share&utm_campaign=ankara_student_price_pilot_2026_07&utm_content=student_challenge`)}`;
-const studentChallengeUrl =
+const defaultStudentChallengeUrl =
   "/gorevler?utm_source=pinle&utm_medium=owned&utm_campaign=ankara_student_price_pilot_2026_07&utm_content=student_challenge#ankara";
 
 export const metadata: Metadata = {
@@ -110,7 +111,26 @@ const faqs = [
   },
 ] as const;
 
-export default function AnkaraStudentPricePilotPage() {
+export default async function AnkaraStudentPricePilotPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const query = await searchParams;
+  const incomingAcquisition = acquisitionContextFromValues(
+    typeof query.utm_source === "string" ? query.utm_source : "",
+    typeof query.utm_medium === "string" ? query.utm_medium : "",
+    typeof query.utm_campaign === "string" ? query.utm_campaign : "",
+    typeof query.utm_content === "string" ? query.utm_content : ""
+  );
+  const studentChallengeUrl = incomingAcquisition?.campaign === "ankara_student_price_pilot_2026_07"
+    ? `/gorevler?${new URLSearchParams({
+        utm_source: incomingAcquisition.source,
+        utm_medium: incomingAcquisition.medium,
+        utm_campaign: incomingAcquisition.campaign,
+        utm_content: incomingAcquisition.content ?? "student_challenge",
+      }).toString()}#ankara`
+    : defaultStudentChallengeUrl;
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -120,7 +140,7 @@ export default function AnkaraStudentPricePilotPage() {
         description,
         url: canonicalUrl,
         datePublished: "2026-07-26",
-        dateModified: "2026-07-27",
+        dateModified: "2026-08-13",
         publisher: { "@type": "Organization", name: "Revoba", url: "https://revoba.net" },
       },
       {
