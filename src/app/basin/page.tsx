@@ -30,7 +30,7 @@ const pressJsonLd = {
   description,
   url: "https://pinle.app/basin",
   datePublished: "2026-07-21",
-  dateModified: "2026-07-21",
+  dateModified: "2026-08-13",
   about: {
     "@type": "MobileApplication",
     name: "Pinle",
@@ -181,6 +181,37 @@ export default function PressPage() {
           <p className="text-xs leading-relaxed opacity-60">
             Haritadaki ekip/OSM kapsamı gerçek kullanıcı katkısı gibi sunulmaz. Kullanıcı
             traksiyonu, fiyat sinyali ve doğrulama metrikleri seed veriden ayrı raporlanır.
+          </p>
+        </section>
+
+        <section aria-labelledby="basinda-pinle" className="space-y-4">
+          <div>
+            <p className="text-sm font-extrabold uppercase tracking-wide text-tomato">Kazanılmış yayın</p>
+            <h2 id="basinda-pinle" className="text-3xl font-extrabold">Basında Pinle</h2>
+          </div>
+          <a
+            href="https://egirisim.com/2026/08/06/6-agustos-2026-ekosistemden-guncel-gelismeler/"
+            target="_blank"
+            rel="noreferrer"
+            className="sticker-flat sticker-mint block p-6 sm:p-7"
+          >
+            <p className="text-xs font-extrabold uppercase tracking-wide text-tomato">
+              eGirişim · 6 Ağustos 2026
+            </p>
+            <h3 className="mt-1 text-2xl font-extrabold">
+              6 Ağustos 2026 – Ekosistemden Güncel Gelişmeler
+            </h3>
+            <p className="mt-3 max-w-3xl text-sm leading-relaxed opacity-75">
+              Pinle&apos;nin Android yayını ve Ankara öğrenci–işletme fiyat şeffaflığı pilotu,
+              eGirişim&apos;in ekosistem derlemesinde ayrı bir bölüm ve ürün görseliyle yer aldı.
+            </p>
+            <span className="mt-4 inline-block text-sm font-extrabold underline underline-offset-4">
+              Yayını eGirişim&apos;de aç ↗
+            </span>
+          </a>
+          <p className="text-xs leading-relaxed opacity-60">
+            Bu bölüm bağımsız editoryal yayını gösterir; yayınlanmak kullanıcı katkısı,
+            doğrulama veya indirme sayısı olarak değerlendirilmez.
           </p>
         </section>
 
